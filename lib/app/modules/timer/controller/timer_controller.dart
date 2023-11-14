@@ -1,9 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-class TimerController extends ChangeNotifier {
+class TimerController extends ChangeNotifier implements Disposable {
   final ValueNotifier<bool> isRunningTimer = ValueNotifier(false);
   final ValueNotifier<bool> isRunningCountDown = ValueNotifier(false);
+
+  late StreamSubscription subFifty;
+
+  TimerController() {
+    subFifty = _listenFiftySecondRemains();
+  }
+
+  @override
+  void dispose() {
+    subFifty.cancel();
+
+    super.dispose();
+  }
 
   final timer = StopWatchTimer(
     mode: StopWatchMode.countUp,
@@ -15,24 +31,20 @@ class TimerController extends ChangeNotifier {
   );
 
   void toggleTimer() {
-    // if (!isRunningCountDown.value) {
-    //   startTimerCountDown();
-    // } else {
     if (isRunningTimer.value) {
-      timer.onStopTimer();
       isRunningTimer.value = false;
+      timer.onStopTimer();
     } else {
-      timer.onStartTimer();
       isRunningTimer.value = true;
-      // }
+      timer.onStartTimer();
     }
 
     notifyListeners();
   }
 
   void startTimerCountDown() {
-    timerFifty.onStartTimer();
     isRunningCountDown.value = true;
+    timerFifty.onStartTimer();
 
     notifyListeners();
   }
@@ -41,7 +53,16 @@ class TimerController extends ChangeNotifier {
     return timer.rawTime;
   }
 
-  Stream getTimerFifty() {
+  Stream<int> getTimerFifty() {
     return timerFifty.secondTime;
+  }
+
+  StreamSubscription _listenFiftySecondRemains() {
+    return timerFifty.secondTime.listen((time) {
+      if (time == 0) {
+        isRunningTimer.value = true;
+        timer.onStartTimer();
+      }
+    });
   }
 }
