@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:math';
 
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
@@ -14,32 +14,17 @@ class TimerPage extends StatefulWidget {
 
 class _TimerPageState extends State<TimerPage> {
   final timerController = TimerController();
-  Color textColor = Colors.white;
-  late Timer colorChangeTimer;
+  final pageController = PageController();
 
   @override
   void initState() {
     super.initState();
-    colorChangeTimer = Timer(const Duration(milliseconds: 500), () {
-      _changeColor(Colors.white);
-    });
-  }
 
-  @override
-  void dispose() {
-    colorChangeTimer.cancel(); // Cancela o timer ao descartar o widget
-    super.dispose();
-  }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final random = Random();
 
-  void _startTimer() {
-    colorChangeTimer = Timer(const Duration(milliseconds: 500), () {
-      _changeColor(Colors.green);
-    });
-  }
-
-  void _changeColor(Color color) {
-    setState(() {
-      textColor = color;
+      pageController
+          .jumpToPage(random.nextInt(timerController.listScrambles.length));
     });
   }
 
@@ -50,20 +35,24 @@ class _TimerPageState extends State<TimerPage> {
         title: const Text('Novo Timer'),
       ),
       body: GestureDetector(
-        onTap: timerController.timer.onStopTimer,
+        onTap: () {
+          timerController.toggleTimer();
+        },
         onLongPress: () {
-          _startTimer();
-          _changeColor(Colors.yellow);
+          timerController.startTimerColor();
+          timerController.changeColor(Colors.yellow);
           timerController.startTimerCountDown();
         },
         onLongPressEnd: (details) {
-          colorChangeTimer.cancel();
+          timerController.colorChangeTimer.cancel();
 
-          if (textColor == Colors.green) {
+          if (timerController.textColor == Colors.green) {
             timerController.toggleTimer();
           }
 
-          _resetColor();
+          timerController.resetColor();
+
+          setState(() {});
         },
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -73,14 +62,14 @@ class _TimerPageState extends State<TimerPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              StreamBuilder<Object>(
-                stream: timerController.getTimerFifty(),
+              StreamBuilder<int>(
+                stream: timerController.getTimerFifty,
                 builder: (context, snap) {
                   if (snap.hasData) {
                     final data = snap.data!;
 
                     return Visibility(
-                      visible: !timerController.isRunningTimer.value,
+                      visible: !timerController.timer.isRunning,
                       child: Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,10 +82,27 @@ class _TimerPageState extends State<TimerPage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(
-                                  "R2 R L D B2 L2 F' L' R' ",
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    fontSize: 20,
+                                GestureDetector(
+                                  onTap: () {
+                                    if (pageController.page! < 6) {
+                                      pageController.nextPage(
+                                          duration: const Duration(seconds: 1),
+                                          curve: Curves.ease);
+                                    } else {
+                                      pageController.previousPage(
+                                          duration: const Duration(seconds: 1),
+                                          curve: Curves.ease);
+                                    }
+                                  },
+                                  child: SizedBox(
+                                    height: 50,
+                                    width: context.screenWidth,
+                                    child: PageView(
+                                      controller: pageController,
+                                      children: timerController.listScrambles
+                                          .map((e) => Text(e))
+                                          .toList(),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -106,7 +112,7 @@ class _TimerPageState extends State<TimerPage> {
                               style: context.textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
-                                color: textColor,
+                                color: timerController.textColor,
                               ),
                             ),
                             const Text(
@@ -123,7 +129,7 @@ class _TimerPageState extends State<TimerPage> {
                 },
               ),
               StreamBuilder(
-                stream: timerController.getTimer(),
+                stream: timerController.getTimer,
                 builder: (context, snap) {
                   if (snap.hasData) {
                     final data = snap.data!;
@@ -151,13 +157,5 @@ class _TimerPageState extends State<TimerPage> {
         ),
       ),
     );
-  }
-
-  void _resetColor() {
-    setState(() {
-      textColor = Colors.white; // Retorna para branco ao soltar
-      colorChangeTimer
-          .cancel(); // Cancela o timer para evitar transição para verde
-    });
   }
 }
