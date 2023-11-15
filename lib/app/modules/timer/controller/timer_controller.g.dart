@@ -8,54 +8,47 @@ part of 'timer_controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$TimerController on _TimerControllerBase, Store {
+mixin _$TimerController on TimerControllerBase, Store {
   Computed<List<String>>? _$listScramblesComputed;
 
   @override
   List<String> get listScrambles => (_$listScramblesComputed ??=
           Computed<List<String>>(() => super.listScrambles,
-              name: '_TimerControllerBase.listScrambles'))
+              name: 'TimerControllerBase.listScrambles'))
       .value;
   Computed<String>? _$randomScrambleComputed;
 
   @override
   String get randomScramble =>
       (_$randomScrambleComputed ??= Computed<String>(() => super.randomScramble,
-              name: '_TimerControllerBase.randomScramble'))
+              name: 'TimerControllerBase.randomScramble'))
           .value;
   Computed<Stream<int>>? _$getTimerComputed;
 
   @override
   Stream<int> get getTimer =>
       (_$getTimerComputed ??= Computed<Stream<int>>(() => super.getTimer,
-              name: '_TimerControllerBase.getTimer'))
+              name: 'TimerControllerBase.getTimer'))
           .value;
-  Computed<Stream<int>>? _$getTimerFiftyComputed;
+
+  late final _$stateAtom =
+      Atom(name: 'TimerControllerBase.state', context: context);
 
   @override
-  Stream<int> get getTimerFifty => (_$getTimerFiftyComputed ??=
-          Computed<Stream<int>>(() => super.getTimerFifty,
-              name: '_TimerControllerBase.getTimerFifty'))
-      .value;
-
-  late final _$subFiftyAtom =
-      Atom(name: '_TimerControllerBase.subFifty', context: context);
-
-  @override
-  StreamSubscription<dynamic> get subFifty {
-    _$subFiftyAtom.reportRead();
-    return super.subFifty;
+  TimerStates get state {
+    _$stateAtom.reportRead();
+    return super.state;
   }
 
   @override
-  set subFifty(StreamSubscription<dynamic> value) {
-    _$subFiftyAtom.reportWrite(value, super.subFifty, () {
-      super.subFifty = value;
+  set state(TimerStates value) {
+    _$stateAtom.reportWrite(value, super.state, () {
+      super.state = value;
     });
   }
 
   late final _$textColorAtom =
-      Atom(name: '_TimerControllerBase.textColor', context: context);
+      Atom(name: 'TimerControllerBase.textColor', context: context);
 
   @override
   Color get textColor {
@@ -71,7 +64,7 @@ mixin _$TimerController on _TimerControllerBase, Store {
   }
 
   late final _$colorChangeTimerAtom =
-      Atom(name: '_TimerControllerBase.colorChangeTimer', context: context);
+      Atom(name: 'TimerControllerBase.colorChangeTimer', context: context);
 
   @override
   Timer get colorChangeTimer {
@@ -86,85 +79,95 @@ mixin _$TimerController on _TimerControllerBase, Store {
     });
   }
 
-  late final _$_TimerControllerBaseActionController =
-      ActionController(name: '_TimerControllerBase', context: context);
+  late final _$TimerControllerBaseActionController =
+      ActionController(name: 'TimerControllerBase', context: context);
+
+  @override
+  TimerStates emit(TimerStates newState) {
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.emit');
+    try {
+      return super.emit(newState);
+    } finally {
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void toggleTimer() {
-    final _$actionInfo = _$_TimerControllerBaseActionController.startAction(
-        name: '_TimerControllerBase.toggleTimer');
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.toggleTimer');
     try {
       return super.toggleTimer();
     } finally {
-      _$_TimerControllerBaseActionController.endAction(_$actionInfo);
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void startTimerCountDown() {
-    final _$actionInfo = _$_TimerControllerBaseActionController.startAction(
-        name: '_TimerControllerBase.startTimerCountDown');
+  void stopTimer() {
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.stopTimer');
     try {
-      return super.startTimerCountDown();
+      return super.stopTimer();
     } finally {
-      _$_TimerControllerBaseActionController.endAction(_$actionInfo);
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  StreamSubscription<dynamic> _listenFiftySecondRemains() {
-    final _$actionInfo = _$_TimerControllerBaseActionController.startAction(
-        name: '_TimerControllerBase._listenFiftySecondRemains');
+  void resetTimer() {
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.resetTimer');
     try {
-      return super._listenFiftySecondRemains();
+      return super.resetTimer();
     } finally {
-      _$_TimerControllerBaseActionController.endAction(_$actionInfo);
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void startTimerColor() {
-    final _$actionInfo = _$_TimerControllerBaseActionController.startAction(
-        name: '_TimerControllerBase.startTimerColor');
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.startTimerColor');
     try {
       return super.startTimerColor();
     } finally {
-      _$_TimerControllerBaseActionController.endAction(_$actionInfo);
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void changeColor(Color color) {
-    final _$actionInfo = _$_TimerControllerBaseActionController.startAction(
-        name: '_TimerControllerBase.changeColor');
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.changeColor');
     try {
       return super.changeColor(color);
     } finally {
-      _$_TimerControllerBaseActionController.endAction(_$actionInfo);
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void resetColor() {
-    final _$actionInfo = _$_TimerControllerBaseActionController.startAction(
-        name: '_TimerControllerBase.resetColor');
+    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
+        name: 'TimerControllerBase.resetColor');
     try {
       return super.resetColor();
     } finally {
-      _$_TimerControllerBaseActionController.endAction(_$actionInfo);
+      _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   String toString() {
     return '''
-subFifty: ${subFifty},
+state: ${state},
 textColor: ${textColor},
 colorChangeTimer: ${colorChangeTimer},
 listScrambles: ${listScrambles},
 randomScramble: ${randomScramble},
-getTimer: ${getTimer},
-getTimerFifty: ${getTimerFifty}
+getTimer: ${getTimer}
     ''';
   }
 }

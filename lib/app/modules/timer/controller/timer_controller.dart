@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
@@ -8,9 +9,12 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 part 'timer_controller.g.dart';
 
-class TimerController = _TimerControllerBase with _$TimerController;
+class TimerController = TimerControllerBase with _$TimerController;
 
-abstract class _TimerControllerBase with Store implements Disposable {
+abstract class TimerControllerBase with Store implements Disposable {
+  @observable
+  TimerStates state = StopTimerState();
+
   @computed
   List<String> get listScrambles => [
         "R2 F D2 F2 L F2 B' U B2 R F2 R F2 R U2 F2 U2 L2 B2 U'",
@@ -20,6 +24,13 @@ abstract class _TimerControllerBase with Store implements Disposable {
         "D U2 R' U2 F2 R U2 R B2 L' B2 R' F2 D B' F' D' B2 F' D R2",
         "R F' R2 U' B' R2 D R' U2 R2 L2 B' U2 B L2 F' R2 B' L2 B2",
         "U' F2 U' B2 D B2 L2 D' R2 F2 L' B' U L2 B D' B' F' L' F'",
+        "F2 D' R2 F2 D' U2 R2 D2 B2 L2 B2 L2 R B2 R D2 U B' D2 U",
+        "L2 F2 D2 L2 B2 R B2 R' B2 U2 B2 F D' R2 B2 F2 R' D' B L'",
+        "R B L2 F' U' D' R B2 D2 F' R2 B' R2 F L2 D2 F' R F",
+        "D2 F R2 B L2 B D2 B L2 D2 F L2 D' L B D' F' D2 L2 B' U",
+        "B L2 R2 D2 F2 D F2 R2 D2 U R2 F' R D' L2 B' L U' R U'",
+        "D L' B2 R2 L' B' U' R D' F2 U2 F L2 D2 B D2 F' L2 B' D2",
+        "D' R F' B2 D2 R U B' R2 L2 B2 R2 B R2 D2 R2 F L U",
       ];
 
   @computed
@@ -33,14 +44,6 @@ abstract class _TimerControllerBase with Store implements Disposable {
     mode: StopWatchMode.countUp,
   );
 
-  final timerFifty = StopWatchTimer(
-    mode: StopWatchMode.countDown,
-    presetMillisecond: 15000,
-  );
-
-  @observable
-  late StreamSubscription subFifty = _listenFiftySecondRemains();
-
   @observable
   Color textColor = Colors.white;
 
@@ -49,41 +52,41 @@ abstract class _TimerControllerBase with Store implements Disposable {
 
   @override
   void dispose() {
-    subFifty.cancel();
     colorChangeTimer.cancel();
 
     dispose();
   }
 
   @action
+  TimerStates emit(TimerStates newState) {
+    return state = newState;
+  }
+
+  @action
   void toggleTimer() {
     if (timer.isRunning) {
+      emit(StopTimerState());
       timer.onStopTimer();
     } else {
-      timerFifty.onStopTimer();
+      emit(StartTimerState());
       timer.onStartTimer();
     }
   }
 
   @action
-  void startTimerCountDown() {
-    timerFifty.onStartTimer();
+  void stopTimer() {
+    emit(StopTimerState());
+    timer.onStopTimer();
+  }
+
+  @action
+  void resetTimer() {
+    emit(StopTimerState());
+    timer.onResetTimer();
   }
 
   @computed
   Stream<int> get getTimer => timer.rawTime;
-
-  @computed
-  Stream<int> get getTimerFifty => timerFifty.secondTime;
-
-  @action
-  StreamSubscription _listenFiftySecondRemains() {
-    return timerFifty.secondTime.listen((time) {
-      if (time == 0) {
-        timer.onStartTimer();
-      }
-    });
-  }
 
   @action
   void startTimerColor() {
