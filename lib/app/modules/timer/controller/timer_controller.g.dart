@@ -79,6 +79,14 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
+  late final _$stopTimerAsyncAction =
+      AsyncAction('TimerControllerBase.stopTimer', context: context);
+
+  @override
+  Future<dynamic> stopTimer() {
+    return _$stopTimerAsyncAction.run(() => super.stopTimer());
+  }
+
   late final _$TimerControllerBaseActionController =
       ActionController(name: 'TimerControllerBase', context: context);
 
@@ -99,17 +107,6 @@ mixin _$TimerController on TimerControllerBase, Store {
         name: 'TimerControllerBase.toggleTimer');
     try {
       return super.toggleTimer();
-    } finally {
-      _$TimerControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void stopTimer() {
-    final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.stopTimer');
-    try {
-      return super.stopTimer();
     } finally {
       _$TimerControllerBaseActionController.endAction(_$actionInfo);
     }

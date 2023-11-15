@@ -1,6 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cuber_timer/app/core_module/services/local_database/helpers/tables.dart';
+import 'package:cuber_timer/app/core_module/services/local_database/local_database.dart';
+import 'package:cuber_timer/app/core_module/services/local_database/params/local_database_params.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -12,8 +16,15 @@ part 'timer_controller.g.dart';
 class TimerController = TimerControllerBase with _$TimerController;
 
 abstract class TimerControllerBase with Store implements Disposable {
+  final ILocalDatabase localDatabase;
+
+  TimerControllerBase({required this.localDatabase});
+
   @observable
   TimerStates state = StopTimerState();
+
+  @observable
+  Color textColor = Colors.white;
 
   @computed
   List<String> get listScrambles => [
@@ -45,9 +56,6 @@ abstract class TimerControllerBase with Store implements Disposable {
   );
 
   @observable
-  Color textColor = Colors.white;
-
-  @observable
   Timer colorChangeTimer = Timer(const Duration(milliseconds: 500), () {});
 
   @override
@@ -74,9 +82,14 @@ abstract class TimerControllerBase with Store implements Disposable {
   }
 
   @action
-  void stopTimer() {
+  Future stopTimer() async {
     emit(StopTimerState());
     timer.onStopTimer();
+
+    final params = UpdateOrInsertDataParams(
+        table: Tables.records, data: {'timer': timer.rawTime.value});
+
+    await localDatabase.updateOrInsert(params: params);
   }
 
   @action

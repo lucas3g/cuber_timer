@@ -33,10 +33,11 @@ class _TimerPageState extends State<TimerPage> {
         final state = timerController.state;
 
         return GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (timerController.timer.isRunning) {
-              timerController.stopTimer();
               terminated = true;
+              setState(() {});
+              await timerController.stopTimer();
             }
           },
           onLongPress: () {
