@@ -9,13 +9,13 @@ part of 'record.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetRecordCollection on Isar {
-  IsarCollection<Record> get records => this.collection();
+extension GetRecordEntityCollection on Isar {
+  IsarCollection<RecordEntity> get recordEntitys => this.collection();
 }
 
-const RecordSchema = CollectionSchema(
-  name: r'Record',
-  id: -5560585825827271694,
+const RecordEntitySchema = CollectionSchema(
+  name: r'RecordEntity',
+  id: 6472922730841492343,
   properties: {
     r'timer': PropertySchema(
       id: 0,
@@ -23,22 +23,22 @@ const RecordSchema = CollectionSchema(
       type: IsarType.long,
     )
   },
-  estimateSize: _recordEstimateSize,
-  serialize: _recordSerialize,
-  deserialize: _recordDeserialize,
-  deserializeProp: _recordDeserializeProp,
+  estimateSize: _recordEntityEstimateSize,
+  serialize: _recordEntitySerialize,
+  deserialize: _recordEntityDeserialize,
+  deserializeProp: _recordEntityDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _recordGetId,
-  getLinks: _recordGetLinks,
-  attach: _recordAttach,
+  getId: _recordEntityGetId,
+  getLinks: _recordEntityGetLinks,
+  attach: _recordEntityAttach,
   version: '3.1.0+1',
 );
 
-int _recordEstimateSize(
-  Record object,
+int _recordEntityEstimateSize(
+  RecordEntity object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -46,8 +46,8 @@ int _recordEstimateSize(
   return bytesCount;
 }
 
-void _recordSerialize(
-  Record object,
+void _recordEntitySerialize(
+  RecordEntity object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -55,20 +55,20 @@ void _recordSerialize(
   writer.writeLong(offsets[0], object.timer);
 }
 
-Record _recordDeserialize(
+RecordEntity _recordEntityDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Record(
+  final object = RecordEntity(
     timer: reader.readLong(offsets[0]),
   );
   object.id = id;
   return object;
 }
 
-P _recordDeserializeProp<P>(
+P _recordEntityDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -82,28 +82,31 @@ P _recordDeserializeProp<P>(
   }
 }
 
-Id _recordGetId(Record object) {
+Id _recordEntityGetId(RecordEntity object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _recordGetLinks(Record object) {
+List<IsarLinkBase<dynamic>> _recordEntityGetLinks(RecordEntity object) {
   return [];
 }
 
-void _recordAttach(IsarCollection<dynamic> col, Id id, Record object) {
+void _recordEntityAttach(
+    IsarCollection<dynamic> col, Id id, RecordEntity object) {
   object.id = id;
 }
 
-extension RecordQueryWhereSort on QueryBuilder<Record, Record, QWhere> {
-  QueryBuilder<Record, Record, QAfterWhere> anyId() {
+extension RecordEntityQueryWhereSort
+    on QueryBuilder<RecordEntity, RecordEntity, QWhere> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension RecordQueryWhere on QueryBuilder<Record, Record, QWhereClause> {
-  QueryBuilder<Record, Record, QAfterWhereClause> idEqualTo(Id id) {
+extension RecordEntityQueryWhere
+    on QueryBuilder<RecordEntity, RecordEntity, QWhereClause> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -112,7 +115,8 @@ extension RecordQueryWhere on QueryBuilder<Record, Record, QWhereClause> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -134,7 +138,8 @@ extension RecordQueryWhere on QueryBuilder<Record, Record, QWhereClause> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<RecordEntity, RecordEntity, QAfterWhereClause> idGreaterThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -143,7 +148,7 @@ extension RecordQueryWhere on QueryBuilder<Record, Record, QWhereClause> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<RecordEntity, RecordEntity, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -152,7 +157,7 @@ extension RecordQueryWhere on QueryBuilder<Record, Record, QWhereClause> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterWhereClause> idBetween(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -169,8 +174,9 @@ extension RecordQueryWhere on QueryBuilder<Record, Record, QWhereClause> {
   }
 }
 
-extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
-  QueryBuilder<Record, Record, QAfterFilterCondition> idIsNull() {
+extension RecordEntityQueryFilter
+    on QueryBuilder<RecordEntity, RecordEntity, QFilterCondition> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'id',
@@ -178,7 +184,8 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> idIsNotNull() {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'id',
@@ -186,7 +193,8 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> idEqualTo(Id? value) {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> idEqualTo(
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -195,7 +203,7 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> idGreaterThan(
     Id? value, {
     bool include = false,
   }) {
@@ -208,7 +216,7 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> idLessThan(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> idLessThan(
     Id? value, {
     bool include = false,
   }) {
@@ -221,7 +229,7 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> idBetween(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> idBetween(
     Id? lower,
     Id? upper, {
     bool includeLower = true,
@@ -238,7 +246,8 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> timerEqualTo(int value) {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> timerEqualTo(
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'timer',
@@ -247,7 +256,8 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> timerGreaterThan(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      timerGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -260,7 +270,7 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> timerLessThan(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> timerLessThan(
     int value, {
     bool include = false,
   }) {
@@ -273,7 +283,7 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Record, Record, QAfterFilterCondition> timerBetween(
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> timerBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -291,66 +301,72 @@ extension RecordQueryFilter on QueryBuilder<Record, Record, QFilterCondition> {
   }
 }
 
-extension RecordQueryObject on QueryBuilder<Record, Record, QFilterCondition> {}
+extension RecordEntityQueryObject
+    on QueryBuilder<RecordEntity, RecordEntity, QFilterCondition> {}
 
-extension RecordQueryLinks on QueryBuilder<Record, Record, QFilterCondition> {}
+extension RecordEntityQueryLinks
+    on QueryBuilder<RecordEntity, RecordEntity, QFilterCondition> {}
 
-extension RecordQuerySortBy on QueryBuilder<Record, Record, QSortBy> {
-  QueryBuilder<Record, Record, QAfterSortBy> sortByTimer() {
+extension RecordEntityQuerySortBy
+    on QueryBuilder<RecordEntity, RecordEntity, QSortBy> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByTimer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timer', Sort.asc);
     });
   }
 
-  QueryBuilder<Record, Record, QAfterSortBy> sortByTimerDesc() {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByTimerDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timer', Sort.desc);
     });
   }
 }
 
-extension RecordQuerySortThenBy on QueryBuilder<Record, Record, QSortThenBy> {
-  QueryBuilder<Record, Record, QAfterSortBy> thenById() {
+extension RecordEntityQuerySortThenBy
+    on QueryBuilder<RecordEntity, RecordEntity, QSortThenBy> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<Record, Record, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<Record, Record, QAfterSortBy> thenByTimer() {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByTimer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timer', Sort.asc);
     });
   }
 
-  QueryBuilder<Record, Record, QAfterSortBy> thenByTimerDesc() {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByTimerDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timer', Sort.desc);
     });
   }
 }
 
-extension RecordQueryWhereDistinct on QueryBuilder<Record, Record, QDistinct> {
-  QueryBuilder<Record, Record, QDistinct> distinctByTimer() {
+extension RecordEntityQueryWhereDistinct
+    on QueryBuilder<RecordEntity, RecordEntity, QDistinct> {
+  QueryBuilder<RecordEntity, RecordEntity, QDistinct> distinctByTimer() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'timer');
     });
   }
 }
 
-extension RecordQueryProperty on QueryBuilder<Record, Record, QQueryProperty> {
-  QueryBuilder<Record, int, QQueryOperations> idProperty() {
+extension RecordEntityQueryProperty
+    on QueryBuilder<RecordEntity, RecordEntity, QQueryProperty> {
+  QueryBuilder<RecordEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<Record, int, QQueryOperations> timerProperty() {
+  QueryBuilder<RecordEntity, int, QQueryOperations> timerProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'timer');
     });

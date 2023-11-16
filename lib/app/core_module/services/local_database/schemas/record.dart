@@ -3,9 +3,9 @@ import 'package:isar/isar.dart';
 part 'record.g.dart';
 
 @collection
-class Record {
+class RecordEntity {
   Id? id = Isar.autoIncrement;
   int timer;
 
-  Record({required this.timer});
+  RecordEntity({required this.timer});
 }

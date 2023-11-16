@@ -11,7 +11,7 @@ class IsarService implements ILocalDatabase {
     final dir = await getApplicationDocumentsDirectory();
 
     return await Isar.open(
-      [RecordSchema],
+      [RecordEntitySchema],
       directory: dir.path,
     );
   }
@@ -27,7 +27,7 @@ class IsarService implements ILocalDatabase {
         // result =
         //     await isar.records.filter().placaContains(params.filter!).findFirst();
       } else {
-        result = await isar.records.where().findAll();
+        result = await isar.recordEntitys.where().findAll();
       }
     }
 
@@ -45,9 +45,9 @@ class IsarService implements ILocalDatabase {
 
     await isar.writeTxn(() async {
       if (params.table == Tables.records) {
-        final record = Record(timer: params.data['timer']);
+        final record = RecordEntity(timer: params.data['timer']);
 
-        result = await isar.records.put(record) > 0;
+        result = await isar.recordEntitys.put(record) > 0;
       }
     });
 
@@ -65,9 +65,9 @@ class IsarService implements ILocalDatabase {
     await isar.writeTxn(() async {
       if (params.table == Tables.records) {
         if (params.id != null) {
-          result = await isar.records.delete(params.id!);
+          result = await isar.recordEntitys.delete(params.id!);
         } else {
-          result = await isar.records.where().deleteAll() > 0;
+          result = await isar.recordEntitys.where().deleteAll() > 0;
         }
       }
     });
