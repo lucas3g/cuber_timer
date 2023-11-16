@@ -31,8 +31,7 @@ abstract class RecordControllerBase with Store {
 
       final params = GetDataParams(table: Tables.records);
 
-      final result =
-          await localDatabase.get(params: params) as List<RecordEntity>;
+      final result = localDatabase.get(params: params) as List<RecordEntity>;
 
       final records = result
           .map(
@@ -61,10 +60,6 @@ abstract class RecordControllerBase with Store {
 
   @computed
   int get bestTime {
-    if (state.records.isEmpty) {
-      return -1;
-    }
-
     return state.records
         .reduce(
             (value, element) => value.timer < element.timer ? value : element)
