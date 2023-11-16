@@ -82,7 +82,8 @@ class _TimerPageState extends State<TimerPage> {
                                 children: [
                                   Text(
                                     context.translate(
-                                        'timer_page.title_scrambles'),
+                                      'timer_page.title_scrambles',
+                                    ),
                                     style:
                                         context.textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
@@ -148,7 +149,8 @@ class _TimerPageState extends State<TimerPage> {
                               ),
                               Text(
                                 context.translate(
-                                    'timer_page.text_help_to_use_app'),
+                                  'timer_page.text_help_to_use_app',
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -184,8 +186,11 @@ class _TimerPageState extends State<TimerPage> {
                           Visibility(
                             visible: data > 0 && (state is StopTimerState),
                             child: MyElevatedButtonWidget(
-                              label: Text(context.translate(
-                                  'timer_page.text_button_new_stop_watch')),
+                              label: Text(
+                                context.translate(
+                                  'timer_page.text_button_new_stop_watch',
+                                ),
+                              ),
                               onPressed: () {
                                 timerController.resetTimer();
                                 countDownController.resetTimerCountDown();
