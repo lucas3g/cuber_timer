@@ -6,6 +6,7 @@ import 'package:cuber_timer/app/shared/components/my_circular_progress_widget.da
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_snackbar.dart';
 import 'package:cuber_timer/app/shared/components/no_data_widget.dart';
+import 'package:cuber_timer/app/shared/translation/i18_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const MyCircularProgressWidget(),
                       Text(
-                        'Loading...',
+                        context.translate('home_page.text_loading'),
                         style: context.textTheme.bodyLarge,
                       ),
                     ],
@@ -75,7 +76,8 @@ class _HomePageState extends State<HomePage> {
                 final records = state.records;
 
                 if (records.isEmpty) {
-                  return const NoDataWidget(text: 'List is empty.');
+                  return NoDataWidget(
+                      text: context.translate('home_page.list_empty'));
                 }
 
                 return Expanded(
@@ -90,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         child: Text(
-                          'List of Highscore',
+                          context.translate('home_page.title_list'),
                           style: context.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -218,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     MyElevatedButtonWidget(
                       width: context.screenWidth * .4,
-                      label: const Text('New Stopwatch'),
+                      label: Text(context.translate('home_page.button_start')),
                       onPressed: () async {
                         await Modular.to.pushNamed('./timer/');
                         await getAllRecords();

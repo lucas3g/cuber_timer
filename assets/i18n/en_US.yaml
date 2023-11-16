@@ -1,0 +1,11 @@
+home_page:
+  button_start: New Stopwatch
+  text_loading: Loading...
+  list_empty: List is empty.
+  title_list: Highscore List
+
+timer_page:
+  title_appbar: Stopwatch
+  title_scrambles: Scrambles - WCA
+  text_help_to_use_app: Keep the screen pressed until the time marker changes to green and thus releases the stopwatch.
+  text_button_new_stop_watch: New Stopwatch

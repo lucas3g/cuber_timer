@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cuber_timer/app/shared/themes/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -34,14 +35,27 @@ class _AppWidgetState extends State<AppWidget> {
       theme: lightThemeApp,
       darkTheme: darkThemeApp,
       routerConfig: Modular.routerConfig,
-      builder: (context, child) => BotToastInit()(context, child),
-      localizationsDelegates: const [
+      builder: (context, child) {
+        BotToastInit()(context, child);
+        FlutterI18n.rootAppBuilder();
+
+        return child!;
+      },
+      localizationsDelegates: [
+        FlutterI18nDelegate(
+          translationLoader: FileTranslationLoader(
+            basePath: 'assets/i18n',
+            useCountryCode: true,
+            fallbackFile: 'en_US',
+          ),
+          missingTranslationHandler: (key, locale) {},
+        ),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('pt', 'BR')],
-      locale: const Locale('pt', 'BR'),
+      supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
+      //locale: const Locale('pt', 'BR'),
     );
   }
 }

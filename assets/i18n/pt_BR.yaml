@@ -1,0 +1,11 @@
+home_page:
+  button_start: Novo Conometro
+  text_loading: Carregando...
+  list_empty: Lista está vazia.
+  title_list: Lista de Recordes
+
+timer_page:
+  title_appbar: Conometro
+  title_scrambles: Embaralhamentos - WCA
+  text_help_to_use_app: Mantenha a tela pressionada até que o marcador de tempo mude para verde e assim libere o cronômetro.
+  text_button_new_stop_watch: Novo Conometro

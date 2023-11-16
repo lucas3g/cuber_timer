@@ -3,6 +3,7 @@ import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.d
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
+import 'package:cuber_timer/app/shared/translation/i18_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -27,7 +28,7 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stopwatch'),
+        title: Text(context.translate('timer_page.title_appbar')),
       ),
       body: Observer(builder: (context) {
         final state = timerController.state;
@@ -80,7 +81,8 @@ class _TimerPageState extends State<TimerPage> {
                               Column(
                                 children: [
                                   Text(
-                                    'Scrambles',
+                                    context.translate(
+                                        'timer_page.title_scrambles'),
                                     style:
                                         context.textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
@@ -144,8 +146,9 @@ class _TimerPageState extends State<TimerPage> {
                                   color: timerController.textColor,
                                 ),
                               ),
-                              const Text(
-                                'Keep the screen pressed until the time marker changes to green and thus releases the stopwatch.',
+                              Text(
+                                context.translate(
+                                    'timer_page.text_help_to_use_app'),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -181,7 +184,8 @@ class _TimerPageState extends State<TimerPage> {
                           Visibility(
                             visible: data > 0 && (state is StopTimerState),
                             child: MyElevatedButtonWidget(
-                              label: const Text('New Stopwatch'),
+                              label: Text(context.translate(
+                                  'timer_page.text_button_new_stop_watch')),
                               onPressed: () {
                                 timerController.resetTimer();
                                 countDownController.resetTimerCountDown();
