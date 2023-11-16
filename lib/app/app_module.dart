@@ -22,6 +22,11 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.module('/', module: SplashModule());
-    r.module('/home', module: HomeModule());
+
+    r.module(
+      '/home',
+      module: HomeModule(),
+      transition: TransitionType.noTransition,
+    );
   }
 }

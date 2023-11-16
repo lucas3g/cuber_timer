@@ -1,10 +1,10 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cuber_timer/app/shared/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'shared/stores/app_store.dart';
-import 'shared/themes/themes.dart';
 import 'utils/global_context.dart';
 
 class AppWidget extends StatefulWidget {
@@ -31,8 +31,8 @@ class _AppWidgetState extends State<AppWidget> {
       title: 'Cuber Time',
       debugShowCheckedModeBanner: false,
       themeMode: appStore.themeMode.value,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: lightThemeApp,
+      darkTheme: darkThemeApp,
       routerConfig: Modular.routerConfig,
       builder: (context, child) => BotToastInit()(context, child),
       localizationsDelegates: const [

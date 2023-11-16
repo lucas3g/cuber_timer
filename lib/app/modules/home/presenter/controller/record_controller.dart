@@ -27,12 +27,18 @@ abstract class RecordControllerBase with Store {
     try {
       emit(state.loading());
 
+      await Future.delayed(const Duration(milliseconds: 1500));
+
       final params = GetDataParams(table: Tables.records);
 
       final result =
           await localDatabase.get(params: params) as List<RecordEntity>;
 
-      final records = result.map((e) => RecordEntity(timer: e.timer)).toList();
+      final records = result
+          .map(
+            (e) => RecordEntity(id: e.id, timer: e.timer),
+          )
+          .toList();
 
       records.sort((a, b) => a.timer.compareTo(b.timer));
 
@@ -40,5 +46,16 @@ abstract class RecordControllerBase with Store {
     } catch (e) {
       emit(state.error('Error when trying to load the highscore list'));
     }
+  }
+
+  @action
+  Future deleteRecord(RecordEntity record) async {
+    final params = RemoveDataParams(table: Tables.records, id: record.id);
+
+    await localDatabase.remove(params: params);
+
+    state.records.remove(record);
+
+    emit(state.success());
   }
 }

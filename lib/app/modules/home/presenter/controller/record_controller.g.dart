@@ -33,6 +33,14 @@ mixin _$RecordController on RecordControllerBase, Store {
     return _$getAllRecordsAsyncAction.run(() => super.getAllRecords());
   }
 
+  late final _$deleteRecordAsyncAction =
+      AsyncAction('RecordControllerBase.deleteRecord', context: context);
+
+  @override
+  Future<dynamic> deleteRecord(RecordEntity record) {
+    return _$deleteRecordAsyncAction.run(() => super.deleteRecord(record));
+  }
+
   late final _$RecordControllerBaseActionController =
       ActionController(name: 'RecordControllerBase', context: context);
 

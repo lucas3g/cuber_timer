@@ -7,5 +7,5 @@ class RecordEntity {
   Id? id = Isar.autoIncrement;
   int timer;
 
-  RecordEntity({required this.timer});
+  RecordEntity({this.id, required this.timer});
 }
