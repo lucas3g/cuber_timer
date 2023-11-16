@@ -1,8 +1,15 @@
+splash_page:
+  title: 'Cube Time'
+  
 home_page:
   button_start: New Stopwatch
   text_loading: Loading...
   list_empty: List is empty.
   title_list: Highscore List
+  title_avg: AVG Score
+  best: BEST
+  avg_5: AVG 5
+  avg_12: AVG 12
 
 timer_page:
   title_appbar: Stopwatch

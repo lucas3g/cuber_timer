@@ -82,19 +82,22 @@ class _HomePageState extends State<HomePage> {
 
                 return Expanded(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.symmetric(
-                            horizontal: BorderSide(
-                              color: context.myTheme.onBackground,
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.symmetric(
+                              horizontal: BorderSide(
+                                color: context.myTheme.onBackground,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Text(
-                          context.translate('home_page.title_list'),
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+                          child: Text(
+                            context.translate('home_page.title_list'),
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -201,6 +204,86 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(height: 10),
                           itemCount: records.length,
                         ),
+                      ),
+                      Divider(
+                        color: context.myTheme.onBackground,
+                      ),
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.symmetric(
+                              horizontal: BorderSide(
+                                color: context.myTheme.onBackground,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            context.translate('home_page.title_avg'),
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                context.translate('home_page.best'),
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber,
+                                ),
+                              ),
+                              Text(
+                                StopWatchTimer.getDisplayTime(
+                                  widget.recordController.bestTime,
+                                  hours: false,
+                                ),
+                                style: context.textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                context.translate('home_page.avg_5'),
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Text(
+                                StopWatchTimer.getDisplayTime(
+                                  widget.recordController.avgFive,
+                                  hours: false,
+                                ),
+                                style: context.textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                context.translate('home_page.avg_12'),
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              Text(
+                                StopWatchTimer.getDisplayTime(
+                                  widget.recordController.avgTwelve,
+                                  hours: false,
+                                ),
+                                style: context.textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       Divider(
                         color: context.myTheme.onBackground,

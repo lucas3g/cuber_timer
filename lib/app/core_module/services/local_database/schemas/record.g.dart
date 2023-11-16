@@ -62,9 +62,9 @@ RecordEntity _recordEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = RecordEntity(
+    id: id,
     timer: reader.readLong(offsets[0]),
   );
-  object.id = id;
   return object;
 }
 

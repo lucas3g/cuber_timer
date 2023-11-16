@@ -9,6 +9,27 @@ part of 'record_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RecordController on RecordControllerBase, Store {
+  Computed<int>? _$bestTimeComputed;
+
+  @override
+  int get bestTime =>
+      (_$bestTimeComputed ??= Computed<int>(() => super.bestTime,
+              name: 'RecordControllerBase.bestTime'))
+          .value;
+  Computed<int>? _$avgFiveComputed;
+
+  @override
+  int get avgFive => (_$avgFiveComputed ??= Computed<int>(() => super.avgFive,
+          name: 'RecordControllerBase.avgFive'))
+      .value;
+  Computed<int>? _$avgTwelveComputed;
+
+  @override
+  int get avgTwelve =>
+      (_$avgTwelveComputed ??= Computed<int>(() => super.avgTwelve,
+              name: 'RecordControllerBase.avgTwelve'))
+          .value;
+
   late final _$stateAtom =
       Atom(name: 'RecordControllerBase.state', context: context);
 
@@ -58,7 +79,10 @@ mixin _$RecordController on RecordControllerBase, Store {
   @override
   String toString() {
     return '''
-state: ${state}
+state: ${state},
+bestTime: ${bestTime},
+avgFive: ${avgFive},
+avgTwelve: ${avgTwelve}
     ''';
   }
 }

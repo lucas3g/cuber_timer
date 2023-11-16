@@ -58,4 +58,36 @@ abstract class RecordControllerBase with Store {
 
     emit(state.success());
   }
+
+  @computed
+  int get bestTime {
+    return state.records
+        .reduce(
+            (value, element) => value.timer < element.timer ? value : element)
+        .timer;
+  }
+
+  @computed
+  int get avgFive {
+    final lenghList = state.records.length < 5 ? state.records.length : 5;
+
+    final sum = state.records
+        .take(lenghList)
+        .map((e) => e.timer)
+        .reduce((value, element) => value + element);
+
+    return (sum ~/ lenghList);
+  }
+
+  @computed
+  int get avgTwelve {
+    final lenghList = state.records.length < 12 ? state.records.length : 12;
+
+    final sum = state.records
+        .take(lenghList)
+        .map((e) => e.timer)
+        .reduce((value, element) => value + element);
+
+    return (sum ~/ lenghList);
+  }
 }

@@ -30,7 +30,7 @@ class _AppWidgetState extends State<AppWidget> {
     );
 
     return MaterialApp.router(
-      title: 'Cuber Time',
+      title: 'Cube Time',
       debugShowCheckedModeBanner: false,
       themeMode: appStore.themeMode.value,
       theme: lightThemeApp,
