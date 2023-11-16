@@ -2,11 +2,13 @@ import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
+import 'package:cuber_timer/app/modules/timer/presenter/widgets/alert_congrats_beat_record_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:cuber_timer/app/shared/translation/i18_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class TimerPage extends StatefulWidget {
@@ -23,6 +25,24 @@ class _TimerPageState extends State<TimerPage> {
   int pageIndex = 0;
 
   bool terminated = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    autorun(
+      (_) {
+        final state = timerController.state;
+
+        if (state is BeatRecordTimerState) {
+          showDialog(
+            context: context,
+            builder: (_) => const AlertCongratsBeatRecordWidget(),
+          );
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

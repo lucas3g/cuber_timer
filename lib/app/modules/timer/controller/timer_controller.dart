@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:cuber_timer/app/core_module/services/local_database/helpers/tables.dart';
 import 'package:cuber_timer/app/core_module/services/local_database/local_database.dart';
 import 'package:cuber_timer/app/core_module/services/local_database/params/local_database_params.dart';
+import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -17,8 +18,12 @@ class TimerController = TimerControllerBase with _$TimerController;
 
 abstract class TimerControllerBase with Store implements Disposable {
   final ILocalDatabase localDatabase;
+  final RecordController recordController;
 
-  TimerControllerBase({required this.localDatabase});
+  TimerControllerBase({
+    required this.localDatabase,
+    required this.recordController,
+  });
 
   @observable
   TimerStates state = StopTimerState();
@@ -86,6 +91,20 @@ abstract class TimerControllerBase with Store implements Disposable {
     emit(StopTimerState());
     timer.onStopTimer();
 
+    final bestTimer = recordController.bestTime;
+
+    if (bestTimer > 0) {
+      if (timer.rawTime.value < bestTimer) {
+        emit(BeatRecordTimerState());
+        await Future.delayed(const Duration(microseconds: 100));
+        emit(StopTimerState());
+      }
+    }
+
+    await saveTimerLocalDatabase();
+  }
+
+  Future saveTimerLocalDatabase() async {
     final params = UpdateOrInsertDataParams(
         table: Tables.records, data: {'timer': timer.rawTime.value});
 

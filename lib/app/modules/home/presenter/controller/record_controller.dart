@@ -61,6 +61,10 @@ abstract class RecordControllerBase with Store {
 
   @computed
   int get bestTime {
+    if (state.records.isEmpty) {
+      return -1;
+    }
+
     return state.records
         .reduce(
             (value, element) => value.timer < element.timer ? value : element)
