@@ -1,6 +1,5 @@
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/shared/components/my_circular_progress_widget.dart';
-import 'package:cuber_timer/app/shared/translation/i18_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -32,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            context.translate('splash_page.title'),
+            context.translate.splashPage.title,
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 25,

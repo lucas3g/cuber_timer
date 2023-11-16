@@ -16,8 +16,3 @@ class I18nHelper {
     }
   }
 }
-
-extension TranslateContext on BuildContext {
-  String translate(String key, {Map<String, String>? params}) =>
-      I18nHelper().translate(this, key, params: params);
-}

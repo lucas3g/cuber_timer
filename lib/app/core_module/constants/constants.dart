@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cuber_timer/app/shared/translation/app_translation.dart';
 import 'package:flutter/material.dart';
 
 const baseUrl = String.fromEnvironment('BASE_URL');
@@ -39,6 +40,8 @@ extension ContextExtensions on BuildContext {
 
   double get screenHeight => MediaQuery.of(this).size.height;
   double get screenWidth => MediaQuery.of(this).size.width;
+
+  AppTranslation get translate => AppTranslation(this);
 
   void closeKeyboard() => FocusScope.of(this).unfocus();
 

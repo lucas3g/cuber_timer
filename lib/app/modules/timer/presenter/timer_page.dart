@@ -4,7 +4,6 @@ import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:cuber_timer/app/modules/timer/presenter/widgets/alert_congrats_beat_record_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
-import 'package:cuber_timer/app/shared/translation/i18_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -48,7 +47,7 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate('timer_page.title_appbar')),
+        title: Text(context.translate.timerPage.titleAppBar),
       ),
       body: Observer(builder: (context) {
         final state = timerController.state;
@@ -101,9 +100,7 @@ class _TimerPageState extends State<TimerPage> {
                               Column(
                                 children: [
                                   Text(
-                                    context.translate(
-                                      'timer_page.title_scrambles',
-                                    ),
+                                    context.translate.timerPage.titleScrambles,
                                     style:
                                         context.textTheme.bodyLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
@@ -168,9 +165,7 @@ class _TimerPageState extends State<TimerPage> {
                                 ),
                               ),
                               Text(
-                                context.translate(
-                                  'timer_page.text_help_to_use_app',
-                                ),
+                                context.translate.timerPage.textHelpToUseApp,
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -207,9 +202,8 @@ class _TimerPageState extends State<TimerPage> {
                             visible: data > 0 && (state is StopTimerState),
                             child: MyElevatedButtonWidget(
                               label: Text(
-                                context.translate(
-                                  'timer_page.text_button_new_stop_watch',
-                                ),
+                                context
+                                    .translate.timerPage.textButtonNewStopwatch,
                               ),
                               onPressed: () {
                                 timerController.resetTimer();

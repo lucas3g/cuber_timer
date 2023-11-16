@@ -19,7 +19,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
         children: [
           Lottie.asset('assets/images/congrats.json', width: 200),
           Text(
-            'Você bateu o seu record, parabéns!!!',
+            context.translate.timerPage.textBeatRecord,
             textAlign: TextAlign.center,
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
           children: [
             Expanded(
               child: MyElevatedButtonWidget(
-                label: const Text('Thank you'),
+                label: Text(context.translate.timerPage.textButtonBeatRecord),
                 onPressed: () {
                   Navigator.of(context).pop('dialog');
                 },
