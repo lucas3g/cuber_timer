@@ -1,4 +1,5 @@
 import 'package:cuber_timer/app/core_module/services/local_database/schemas/record.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -6,32 +7,38 @@ import 'helpers/tables.dart';
 import 'local_database.dart';
 import 'params/local_database_params.dart';
 
-class IsarService implements ILocalDatabase {
+class IsarService implements ILocalDatabase, Disposable {
+  late Future<Isar> db;
+
+  IsarService() {
+    db = _init();
+  }
+
   Future<Isar> _init() async {
     final dir = await getApplicationDocumentsDirectory();
 
-    return await Isar.open(
-      [RecordEntitySchema],
-      directory: dir.path,
-    );
+    if (Isar.instanceNames.isEmpty) {
+      return await Isar.open([RecordEntitySchema],
+          inspector: true, directory: dir.path);
+    }
+
+    return Future.value(Isar.getInstance());
   }
 
   @override
   Future get({required GetDataParams params}) async {
     late dynamic result;
 
-    final isar = await _init();
+    final isar = await db;
 
     if (params.table == Tables.records) {
       if (params.filter != null) {
         // result =
         //     await isar.records.filter().placaContains(params.filter!).findFirst();
       } else {
-        result = await isar.recordEntitys.where().findAll();
+        result = await isar.recordEntitys.where().sortByTimer().findAll();
       }
     }
-
-    await isar.close();
 
     return result;
   }
@@ -41,7 +48,7 @@ class IsarService implements ILocalDatabase {
       {required UpdateOrInsertDataParams params}) async {
     late bool result = false;
 
-    final isar = await _init();
+    final isar = await db;
 
     await isar.writeTxn(() async {
       if (params.table == Tables.records) {
@@ -51,8 +58,6 @@ class IsarService implements ILocalDatabase {
       }
     });
 
-    await isar.close();
-
     return result;
   }
 
@@ -60,7 +65,7 @@ class IsarService implements ILocalDatabase {
   Future<bool> remove({required RemoveDataParams params}) async {
     late bool result = false;
 
-    final isar = await _init();
+    final isar = await db;
 
     await isar.writeTxn(() async {
       if (params.table == Tables.records) {
@@ -72,8 +77,13 @@ class IsarService implements ILocalDatabase {
       }
     });
 
-    await isar.close();
-
     return result;
+  }
+
+  @override
+  void dispose() async {
+    final isar = await db;
+
+    await isar.close();
   }
 }
