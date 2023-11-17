@@ -30,19 +30,26 @@ class _CardRecordWidgetState extends State<CardRecordWidget> {
 
   _deleteRecord() async {
     if (confirmDelete) {
-      return widget.recordController.deleteRecord(widget.recordEntity);
-    }
+      // Certifique-se de que o widget ainda está montado antes de chamar deleteRecord
+      if (mounted) {
+        widget.recordController.deleteRecord(widget.recordEntity);
+      }
+    } else {
+      // Confirme a exclusão
+      if (mounted) {
+        setState(() {
+          confirmDelete = true;
+        });
 
-    if (mounted) {
-      setState(() {
-        confirmDelete = true;
-      });
+        await Future.delayed(const Duration(seconds: 2));
 
-      await Future.delayed(const Duration(seconds: 2));
-
-      setState(() {
-        confirmDelete = false;
-      });
+        // Certifique-se de que o widget ainda está montado antes de chamar setState
+        if (mounted) {
+          setState(() {
+            confirmDelete = false;
+          });
+        }
+      }
     }
   }
 
