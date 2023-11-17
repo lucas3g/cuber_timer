@@ -31,7 +31,8 @@ abstract class RecordControllerBase with Store {
 
       final params = GetDataParams(table: Tables.records);
 
-      final result = localDatabase.get(params: params) as List<RecordEntity>;
+      final result =
+          await localDatabase.get(params: params) as List<RecordEntity>;
 
       final records = result
           .map(
@@ -60,6 +61,10 @@ abstract class RecordControllerBase with Store {
 
   @computed
   int get bestTime {
+    if (state.records.isEmpty) {
+      return -1;
+    }
+
     return state.records
         .reduce(
             (value, element) => value.timer < element.timer ? value : element)
@@ -68,6 +73,10 @@ abstract class RecordControllerBase with Store {
 
   @computed
   int get avgFive {
+    if (state.records.isEmpty) {
+      return -1;
+    }
+
     final lenghList = state.records.length < 5 ? state.records.length : 5;
 
     final sum = state.records
@@ -80,6 +89,10 @@ abstract class RecordControllerBase with Store {
 
   @computed
   int get avgTwelve {
+    if (state.records.isEmpty) {
+      return -1;
+    }
+
     final lenghList = state.records.length < 12 ? state.records.length : 12;
 
     final sum = state.records

@@ -2,6 +2,7 @@
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
+import 'package:cuber_timer/app/modules/home/presenter/widgets/card_record_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_circular_progress_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_snackbar.dart';
@@ -50,6 +51,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'Cube Timer',
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: ThemeModeController.appStore.changeThemeMode,
+      //       icon: Icon(
+      //         ThemeModeController.themeMode == ThemeMode.dark
+      //             ? Icons.light_mode
+      //             : Icons.dark_mode,
+      //       ),
+      //     )
+      //   ],
+      // ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -106,97 +122,42 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final record = records[index];
 
-                            final timer = StopWatchTimer.getDisplayTime(
-                              record.timer,
-                              hours: false,
-                            );
-
                             if (index == 0) {
-                              return ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(
-                                  '${index + 1} - $timer',
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.amber,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    widget.recordController
-                                        .deleteRecord(record);
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline_outlined,
-                                  ),
-                                ),
+                              return CardRecordWidget(
+                                recordController: widget.recordController,
+                                index: index,
+                                recordEntity: record,
+                                colorText: Colors.amber,
+                                fontSize: 20,
                               );
                             }
 
                             if (index == 1) {
-                              return ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(
-                                  '${index + 1} - $timer',
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    widget.recordController
-                                        .deleteRecord(record);
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline_outlined,
-                                  ),
-                                ),
+                              return CardRecordWidget(
+                                recordController: widget.recordController,
+                                index: index,
+                                recordEntity: record,
+                                colorText: Colors.green,
+                                fontSize: 18,
                               );
                             }
 
                             if (index == 2) {
-                              return ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(
-                                  '${index + 1} - $timer',
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    widget.recordController
-                                        .deleteRecord(record);
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline_outlined,
-                                  ),
-                                ),
+                              return CardRecordWidget(
+                                recordController: widget.recordController,
+                                index: index,
+                                recordEntity: record,
+                                colorText: Colors.blue,
+                                fontSize: 16,
                               );
                             }
 
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(
-                                '${index + 1} - $timer',
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  widget.recordController.deleteRecord(record);
-                                },
-                                icon: const Icon(
-                                  Icons.delete_outline_outlined,
-                                ),
-                              ),
+                            return CardRecordWidget(
+                              recordController: widget.recordController,
+                              index: index,
+                              recordEntity: record,
+                              colorText: context.myTheme.onBackground,
+                              fontSize: 14,
                             );
                           },
                           separatorBuilder: (context, index) =>
