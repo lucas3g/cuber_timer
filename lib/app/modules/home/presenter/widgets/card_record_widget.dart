@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/core_module/services/local_database/schemas/record.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
