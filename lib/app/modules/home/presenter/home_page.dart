@@ -69,18 +69,23 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  void _showInterstitialAd() {
+  void _showInterstitialAd() async {
     if (_interstitialAd == null) {
+      await Modular.to.pushNamed('./timer/');
+      await getAllRecords();
+
+      _createInterstitialAd();
+
       return;
     }
 
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (InterstitialAd ad) async {
-        ad.dispose();
-        _createInterstitialAd();
-
         await Modular.to.pushNamed('./timer/');
         await getAllRecords();
+
+        ad.dispose();
+        _createInterstitialAd();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
         ad.dispose();
@@ -89,6 +94,8 @@ class _HomePageState extends State<HomePage> {
     );
     _interstitialAd!.show();
     _interstitialAd = null;
+
+    _createInterstitialAd();
   }
 
   Future getAllRecords() async {
@@ -129,16 +136,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (!Platform.isWindows) ...[
-                isAdLoaded
-                    ? SizedBox(
-                        height: myBanner.size.height.toDouble(),
-                        width: myBanner.size.width.toDouble(),
-                        child: AdWidget(ad: myBanner),
-                      )
-                    : const SizedBox(),
-                const SizedBox(height: 10),
-              ],
               Observer(builder: (context) {
                 final state = widget.recordController.state;
 
@@ -166,6 +163,16 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (!Platform.isWindows) ...[
+                        isAdLoaded
+                            ? SizedBox(
+                                height: myBanner.size.height.toDouble(),
+                                width: myBanner.size.width.toDouble(),
+                                child: AdWidget(ad: myBanner),
+                              )
+                            : const SizedBox(),
+                        const SizedBox(height: 10),
+                      ],
                       Center(
                         child: Container(
                           decoration: BoxDecoration(
