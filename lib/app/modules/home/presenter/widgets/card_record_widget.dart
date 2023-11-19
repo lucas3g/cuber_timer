@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/core_module/services/local_database/schemas/record.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
@@ -30,19 +29,26 @@ class _CardRecordWidgetState extends State<CardRecordWidget> {
 
   _deleteRecord() async {
     if (confirmDelete) {
-      return widget.recordController.deleteRecord(widget.recordEntity);
-    }
+      // Certifique-se de que o widget ainda está montado antes de chamar deleteRecord
+      if (mounted) {
+        widget.recordController.deleteRecord(widget.recordEntity);
+      }
+    } else {
+      // Confirme a exclusão
+      if (mounted) {
+        setState(() {
+          confirmDelete = true;
+        });
 
-    if (mounted) {
-      setState(() {
-        confirmDelete = true;
-      });
+        await Future.delayed(const Duration(seconds: 2));
 
-      await Future.delayed(const Duration(seconds: 2));
-
-      setState(() {
-        confirmDelete = false;
-      });
+        // Certifique-se de que o widget ainda está montado antes de chamar setState
+        if (mounted) {
+          setState(() {
+            confirmDelete = false;
+          });
+        }
+      }
     }
   }
 

@@ -10,8 +10,7 @@ class HomeModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.addSingleton<RecordController>(
-        () => RecordController(localDatabase: i()));
+    i.addSingleton<RecordController>(RecordController.new);
   }
 
   @override

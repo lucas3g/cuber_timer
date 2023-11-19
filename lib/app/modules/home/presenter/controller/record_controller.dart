@@ -34,13 +34,8 @@ abstract class RecordControllerBase with Store {
       final result =
           await localDatabase.get(params: params) as List<RecordEntity>;
 
-      final records = result
-          .map(
-            (e) => RecordEntity(id: e.id, timer: e.timer),
-          )
-          .toList();
-
-      records.sort((a, b) => a.timer.compareTo(b.timer));
+      final records =
+          result.map((e) => RecordEntity(id: e.id, timer: e.timer)).toList();
 
       emit(state.success(records: records));
     } catch (e) {
