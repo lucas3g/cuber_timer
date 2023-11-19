@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^2.1.1
   isar_flutter_libs: ^3.1.0+1
   flutter_i18n: ^0.34.0
+  google_mobile_ads: ^3.1.0
 
 
 dev_dependencies:

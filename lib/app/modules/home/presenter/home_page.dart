@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
@@ -10,6 +12,7 @@ import 'package:cuber_timer/app/shared/components/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -25,6 +28,69 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late BannerAd myBanner;
+  bool isAdLoaded = false;
+
+  initBannerAd() async {
+    myBanner = BannerAd(
+      adUnitId: bannerID,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+
+    await myBanner.load();
+  }
+
+  InterstitialAd? _interstitialAd;
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: intersticialID,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            _interstitialAd = ad;
+            _interstitialAd!.setImmersiveMode(true);
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            _interstitialAd = null;
+            _createInterstitialAd();
+          },
+        ));
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd == null) {
+      return;
+    }
+
+    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+      onAdDismissedFullScreenContent: (InterstitialAd ad) async {
+        ad.dispose();
+        _createInterstitialAd();
+
+        await Modular.to.pushNamed('./timer/');
+        await getAllRecords();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        ad.dispose();
+        _createInterstitialAd();
+      },
+    );
+    _interstitialAd!.show();
+    _interstitialAd = null;
+  }
+
   Future getAllRecords() async {
     await widget.recordController.getAllRecords();
   }
@@ -32,6 +98,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    _createInterstitialAd();
+
+    if (!Platform.isWindows) {
+      initBannerAd();
+    }
 
     getAllRecords();
 
@@ -51,27 +123,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text(
-      //     'Cube Timer',
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: ThemeModeController.appStore.changeThemeMode,
-      //       icon: Icon(
-      //         ThemeModeController.themeMode == ThemeMode.dark
-      //             ? Icons.light_mode
-      //             : Icons.dark_mode,
-      //       ),
-      //     )
-      //   ],
-      // ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (!Platform.isWindows) ...[
+                isAdLoaded
+                    ? SizedBox(
+                        height: myBanner.size.height.toDouble(),
+                        width: myBanner.size.width.toDouble(),
+                        child: AdWidget(ad: myBanner),
+                      )
+                    : const SizedBox(),
+                const SizedBox(height: 10),
+              ],
               Observer(builder: (context) {
                 final state = widget.recordController.state;
 
@@ -265,8 +332,7 @@ class _HomePageState extends State<HomePage> {
                       width: context.screenWidth * .4,
                       label: Text(context.translate.homePage.buttonStart),
                       onPressed: () async {
-                        await Modular.to.pushNamed('./timer/');
-                        await getAllRecords();
+                        _showInterstitialAd();
                       },
                     ),
                   ],

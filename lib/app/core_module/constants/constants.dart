@@ -3,34 +3,8 @@ import 'dart:io';
 import 'package:cuber_timer/app/shared/translation/app_translation.dart';
 import 'package:flutter/material.dart';
 
-const baseUrl = String.fromEnvironment('BASE_URL');
-const cnpj = String.fromEnvironment('CNPJ');
-
-const pathNoNet = 'assets/images/noNet.json';
-
-const keyLocalStorageUser = 'userApp';
-const versionApp = 'Versão 1.0.0';
-
-const backgroundBlack = Color(0xFF202123);
-const labelPapagaio = Color(0xFF009342);
-const labelRed = Color(0xffCB5252);
-
-const urlRegister = 'AppCashBack/setJson/$cnpj/usuarios';
-const urlVerifyCPF = 'AppCashBack/getJson/$cnpj/usuarios';
-const urlLogin = 'AppCashBack/login/$cnpj';
-const urlPointsBalance = 'AppCashBack/getJson/$cnpj/pontos';
-const urlHistorics = 'AppCashBack/getJson/$cnpj/mov';
-const urlHistoricsPoints = 'AppCashBack/getJson/$cnpj/historico';
-const urlCompanies = 'AppCashBack/getJson/$cnpj/locais/locais';
-const urlOffers = 'AppCashBack/getJson/$cnpj/ofertas/ofertas';
-const urlNotifications = 'AppCashBack/getJsonNotificacoes/$cnpj/notificacoes';
-const urlForgotPassword = 'AppCashBack/EnviarEmail/$cnpj';
-const urlGetEmailUser = 'AppCashBack/getJson/$cnpj/usuarios';
-const urlImageUser = 'AppCashBack/getJsonImageUser/$cnpj/usuarios/';
-const urlUploadImageUser = 'Upload/uploadImageAppUser/$cnpj/usuarios';
-const urlRemoveImageUser = 'Upload/removeImageAppUser/$cnpj/usuarios/';
-const urlDeleteAccount = 'AppCashBack/excluirConta/$cnpj/';
-const urlGetClientID = 'AppCashBack/getJson/$cnpj/clientes/';
+const bannerID = 'ca-app-pub-1898798427054986/5130180395';
+const intersticialID = 'ca-app-pub-1898798427054986/4998867194';
 
 const double kPadding = 20;
 
