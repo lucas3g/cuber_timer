@@ -10,13 +10,21 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: context.myTheme.background,
-      title: const Center(child: Text('Woouu')),
       titleTextStyle: context.textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Center(
+            child: Text(
+              'Woouu',
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const Divider(),
           Lottie.asset('assets/images/congrats.json', width: 200),
           Text(
             context.translate.timerPage.textBeatRecord,
@@ -25,22 +33,21 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const Divider(),
+          Row(
+            children: [
+              Expanded(
+                child: MyElevatedButtonWidget(
+                  label: Text(context.translate.timerPage.textButtonBeatRecord),
+                  onPressed: () {
+                    Navigator.of(context).pop('dialog');
+                  },
+                ),
+              ),
+            ],
+          )
         ],
       ),
-      actions: [
-        Row(
-          children: [
-            Expanded(
-              child: MyElevatedButtonWidget(
-                label: Text(context.translate.timerPage.textButtonBeatRecord),
-                onPressed: () {
-                  Navigator.of(context).pop('dialog');
-                },
-              ),
-            ),
-          ],
-        )
-      ],
     );
   }
 }
