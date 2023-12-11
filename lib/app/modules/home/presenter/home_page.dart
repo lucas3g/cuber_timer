@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:cuber_timer/app/core_module/constants/constants.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +31,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late BannerAd myBanner;
   bool isAdLoaded = false;
+
+  RateMyApp rateMyApp = RateMyApp(
+    googlePlayIdentifier: 'com.maktubcompany.cubetimer',
+    preferencesPrefix: 'rateCubeTimer',
+    minDays: 1,
+    minLaunches: 2,
+    remindDays: 2,
+    remindLaunches: 1,
+  );
 
   initBannerAd() async {
     myBanner = BannerAd(
@@ -125,6 +135,47 @@ class _HomePageState extends State<HomePage> {
         );
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        await rateMyApp.init();
+        if (mounted && rateMyApp.shouldOpenDialog) {
+          rateMyApp.showStarRateDialog(
+            context,
+            title: 'Avalie o aplicativo',
+            message:
+                'Você gosta deste aplicativo? Então reserve um pouco do seu tempo para deixar uma avaliação:', // The dialog message.
+            actionsBuilder: (context, stars) {
+              return [
+                ElevatedButton(
+                  child: const Text('Enviar'),
+                  onPressed: () async {
+                    await rateMyApp.callEvent(
+                      RateMyAppEventType.rateButtonPressed,
+                    );
+
+                    Navigator.pop<RateMyAppDialogButton>(
+                      context,
+                      RateMyAppDialogButton.rate,
+                    );
+                  },
+                ),
+              ];
+            },
+            ignoreNativeDialog: Platform.isAndroid,
+            dialogStyle: const DialogStyle(
+              titleAlign: TextAlign.center,
+              messageAlign: TextAlign.center,
+              messagePadding: EdgeInsets.only(bottom: 20),
+            ),
+            starRatingOptions: const StarRatingOptions(),
+            onDismissed: () => rateMyApp.callEvent(
+              RateMyAppEventType.laterButtonPressed,
+            ),
+          );
+        }
+      },
+    );
   }
 
   @override
