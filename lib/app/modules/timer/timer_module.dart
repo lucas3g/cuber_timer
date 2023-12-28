@@ -11,7 +11,11 @@ class TimerModule extends Module {
   @override
   void binds(Injector i) {
     i.addSingleton<TimerController>(
-        () => TimerController(localDatabase: i(), recordController: i()));
+      () => TimerController(
+        localDatabase: i(),
+        recordController: i(),
+      ),
+    );
     i.addSingleton<CountDownController>(CountDownController.new);
   }
 
