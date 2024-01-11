@@ -212,7 +212,16 @@ class _TimerPageState extends State<TimerPage> {
                                 setState(() {});
                               },
                             ),
-                          )
+                          ),
+                          Visibility(
+                            visible: data > 0 && (state is StartTimerState),
+                            child: Center(
+                              child: Text(
+                                context.translate.timerPage.textHelpToStopTimer,
+                                style: context.textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
                         ],
                       );
                     }

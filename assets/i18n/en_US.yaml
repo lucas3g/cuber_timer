@@ -15,6 +15,7 @@ timer_page:
   title_appbar: Stopwatch
   title_scrambles: Scrambles - WCA
   text_help_to_use_app: Keep the screen pressed until the time marker changes to green and thus releases the stopwatch.
+  text_help_to_stop_timer: Press the screen to stop the timer.
   text_button_new_stop_watch: New Stopwatch
   text_beat_record: You beat your record, congratulations!!!
   text_button_beat_record: Thank you

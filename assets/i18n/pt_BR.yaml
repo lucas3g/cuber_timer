@@ -2,7 +2,7 @@ splash_page:
   title: 'Cube Timer'
   
 home_page:
-  button_start: Novo Conometro
+  button_start: Novo Cronômetro
   text_loading: Carregando...
   list_empty: Lista está vazia.
   title_list: Lista de Recordes
@@ -12,9 +12,10 @@ home_page:
   avg_12: MÉDIA 12
 
 timer_page:
-  title_appbar: Conometro
+  title_appbar: Cronômetro
   title_scrambles: Embaralhamentos - WCA
   text_help_to_use_app: Mantenha a tela pressionada até que o marcador de tempo mude para verde e assim libere o cronômetro.
-  text_button_new_stop_watch: Novo Conometro
+  text_help_to_stop_timer: Pressione a tela para parar o cronômetro.
+  text_button_new_stop_watch: Novo Cronômetro
   text_beat_record: Você bateu o seu record, parabéns!!!
   text_button_beat_record: Obrigado

@@ -13,6 +13,7 @@ class TimerPageTranslation {
   String get titleAppBar => translate('title_appbar');
   String get titleScrambles => translate('title_scrambles');
   String get textHelpToUseApp => translate('text_help_to_use_app');
+  String get textHelpToStopTimer => translate('text_help_to_stop_timer');
   String get textButtonNewStopwatch => translate('text_button_new_stop_watch');
   String get textBeatRecord => translate('text_beat_record');
   String get textButtonBeatRecord => translate('text_button_beat_record');
