@@ -136,46 +136,46 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        await rateMyApp.init();
-        if (mounted && rateMyApp.shouldOpenDialog) {
-          rateMyApp.showStarRateDialog(
-            context,
-            title: 'Avalie o aplicativo',
-            message:
-                'Você gosta deste aplicativo? Então reserve um pouco do seu tempo para deixar uma avaliação:', // The dialog message.
-            actionsBuilder: (context, stars) {
-              return [
-                ElevatedButton(
-                  child: const Text('Enviar'),
-                  onPressed: () async {
-                    await rateMyApp.callEvent(
-                      RateMyAppEventType.rateButtonPressed,
-                    );
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) async {
+    //     await rateMyApp.init();
+    //     if (mounted && rateMyApp.shouldOpenDialog) {
+    //       rateMyApp.showStarRateDialog(
+    //         context,
+    //         title: 'Avalie o aplicativo',
+    //         message:
+    //             'Você gosta deste aplicativo? Então reserve um pouco do seu tempo para deixar uma avaliação:', // The dialog message.
+    //         actionsBuilder: (context, stars) {
+    //           return [
+    //             ElevatedButton(
+    //               child: const Text('Enviar'),
+    //               onPressed: () async {
+    //                 await rateMyApp.callEvent(
+    //                   RateMyAppEventType.rateButtonPressed,
+    //                 );
 
-                    Navigator.pop<RateMyAppDialogButton>(
-                      context,
-                      RateMyAppDialogButton.rate,
-                    );
-                  },
-                ),
-              ];
-            },
-            ignoreNativeDialog: Platform.isAndroid,
-            dialogStyle: const DialogStyle(
-              titleAlign: TextAlign.center,
-              messageAlign: TextAlign.center,
-              messagePadding: EdgeInsets.only(bottom: 20),
-            ),
-            starRatingOptions: const StarRatingOptions(),
-            onDismissed: () => rateMyApp.callEvent(
-              RateMyAppEventType.laterButtonPressed,
-            ),
-          );
-        }
-      },
-    );
+    //                 Navigator.pop<RateMyAppDialogButton>(
+    //                   context,
+    //                   RateMyAppDialogButton.rate,
+    //                 );
+    //               },
+    //             ),
+    //           ];
+    //         },
+    //         ignoreNativeDialog: Platform.isAndroid,
+    //         dialogStyle: const DialogStyle(
+    //           titleAlign: TextAlign.center,
+    //           messageAlign: TextAlign.center,
+    //           messagePadding: EdgeInsets.only(bottom: 20),
+    //         ),
+    //         starRatingOptions: const StarRatingOptions(),
+    //         onDismissed: () => rateMyApp.callEvent(
+    //           RateMyAppEventType.laterButtonPressed,
+    //         ),
+    //       );
+    //     }
+    //   },
+    // );
   }
 
   @override
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                           decoration: BoxDecoration(
                             border: Border.symmetric(
                               horizontal: BorderSide(
-                                color: context.myTheme.onBackground,
+                                color: context.myTheme.onSurface,
                               ),
                             ),
                           ),
@@ -281,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                               recordController: widget.recordController,
                               index: index,
                               recordEntity: record,
-                              colorText: context.myTheme.onBackground,
+                              colorText: context.myTheme.onSurface,
                               fontSize: 14,
                             );
                           },
@@ -291,14 +291,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Divider(
-                        color: context.myTheme.onBackground,
+                        color: context.myTheme.onSurface,
                       ),
                       Center(
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.symmetric(
                               horizontal: BorderSide(
-                                color: context.myTheme.onBackground,
+                                color: context.myTheme.onSurface,
                               ),
                             ),
                           ),
@@ -371,7 +371,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Divider(
-                        color: context.myTheme.onBackground,
+                        color: context.myTheme.onSurface,
                       ),
                     ],
                   ),
