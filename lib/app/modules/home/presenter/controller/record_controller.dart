@@ -1,12 +1,14 @@
-import 'package:cuber_timer/app/core_module/services/local_database/helpers/tables.dart';
-import 'package:cuber_timer/app/core_module/services/local_database/local_database.dart';
-import 'package:cuber_timer/app/core_module/services/local_database/params/local_database_params.dart';
-import 'package:cuber_timer/app/core_module/services/local_database/schemas/record.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/helpers/tables.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/local_database.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/params/local_database_params.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
 part 'record_controller.g.dart';
 
+@Singleton()
 class RecordController = RecordControllerBase with _$RecordController;
 
 abstract class RecordControllerBase with Store {
@@ -26,8 +28,6 @@ abstract class RecordControllerBase with Store {
   Future getAllRecords() async {
     try {
       emit(state.loading());
-
-      await Future.delayed(const Duration(milliseconds: 1500));
 
       final params = GetDataParams(table: Tables.records);
 

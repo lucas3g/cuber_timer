@@ -1,5 +1,5 @@
-import 'package:cuber_timer/app/core_module/constants/constants.dart';
-import 'package:cuber_timer/app/core_module/services/local_database/schemas/record.dart';
+import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';

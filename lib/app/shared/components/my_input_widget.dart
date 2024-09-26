@@ -1,10 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cuber_timer/app/core_module/constants/constants.dart';
-import 'package:cuber_timer/app/core_module/services/theme_mode/theme_mode_controller.dart';
-import 'package:cuber_timer/app/shared/stores/app_store.dart';
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class MyInputWidget extends StatelessWidget {
   final FocusNode? focusNode;
@@ -62,14 +58,8 @@ class MyInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appStore = context.watch<AppStore>(
-      (store) => store.themeMode,
-    );
-
     Color returnBorderColor() {
-      return appStore.themeMode.value == ThemeMode.dark
-          ? context.myTheme.onBackground
-          : context.myTheme.background;
+      return context.myTheme.onSurface;
     }
 
     return TextFormField(
@@ -93,33 +83,21 @@ class MyInputWidget extends StatelessWidget {
       inputFormatters: inputFormaters,
       onFieldSubmitted: onFieldSubmitted,
       maxLength: maxLength,
-      style: TextStyle(
-          color: color ??
-              (ThemeModeController.themeMode == ThemeMode.dark
-                  ? context.myTheme.onBackground
-                  : context.myTheme.background)),
+      style: TextStyle(color: color ?? context.myTheme.onSurface),
       decoration: InputDecoration(
         errorStyle: context.textTheme.bodySmall?.copyWith(
-          color: color ??
-              (ThemeModeController.themeMode == ThemeMode.dark
-                  ? context.myTheme.onBackground
-                  : context.myTheme.background),
+          color: color ?? context.myTheme.onSurface,
         ),
         counterText: '',
         hintText: hintText,
         hintStyle: context.textTheme.bodyLarge?.copyWith(
           color: color?.withOpacity(0.7) ??
-              (ThemeModeController.themeMode == ThemeMode.dark
-                  ? context.myTheme.onBackground.withOpacity(0.7)
-                  : context.myTheme.background.withOpacity(0.7)),
+              context.myTheme.onSurface.withOpacity(0.7),
         ),
         label: Text(
           label,
           style: context.textTheme.bodyLarge?.copyWith(
-            color: color ??
-                (ThemeModeController.themeMode == ThemeMode.dark
-                    ? context.myTheme.onBackground
-                    : context.myTheme.background),
+            color: color ?? context.myTheme.onSurface,
           ),
         ),
         suffixIcon: suffixIcon,

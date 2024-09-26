@@ -26,10 +26,14 @@ mixin _$CountDownController on CountDownControllerBase, Store {
     return super.subFifty;
   }
 
+  bool _subFiftyIsInitialized = false;
+
   @override
   set subFifty(StreamSubscription<dynamic> value) {
-    _$subFiftyAtom.reportWrite(value, super.subFifty, () {
+    _$subFiftyAtom
+        .reportWrite(value, _subFiftyIsInitialized ? super.subFifty : null, () {
       super.subFifty = value;
+      _subFiftyIsInitialized = true;
     });
   }
 

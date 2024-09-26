@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:cuber_timer/app/core_module/constants/constants.dart';
+import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
@@ -8,7 +9,6 @@ import 'package:cuber_timer/app/modules/timer/presenter/widgets/alert_congrats_b
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -21,8 +21,8 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-  final timerController = Modular.get<TimerController>();
-  final countDownController = Modular.get<CountDownController>();
+  final timerController = getIt<TimerController>();
+  final countDownController = getIt<CountDownController>();
   final pageController = PageController();
   int pageIndex = 0;
 
