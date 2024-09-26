@@ -1,12 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 part 'count_down_controller.g.dart';
 
+@Injectable()
 class CountDownController = CountDownControllerBase with _$CountDownController;
 
 abstract class CountDownControllerBase with Store {

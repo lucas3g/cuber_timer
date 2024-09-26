@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
-import 'package:cuber_timer/app/core_module/constants/constants.dart';
+import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
+import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
 import 'package:cuber_timer/app/modules/home/presenter/widgets/card_record_widget.dart';
@@ -11,17 +13,13 @@ import 'package:cuber_timer/app/shared/components/my_snackbar.dart';
 import 'package:cuber_timer/app/shared/components/no_data_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
-import 'package:rate_my_app/rate_my_app.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class HomePage extends StatefulWidget {
-  final RecordController recordController;
   const HomePage({
     Key? key,
-    required this.recordController,
   }) : super(key: key);
 
   @override
@@ -29,17 +27,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final recordController = getIt<RecordController>();
+
   late BannerAd myBanner;
   bool isAdLoaded = false;
-
-  RateMyApp rateMyApp = RateMyApp(
-    googlePlayIdentifier: 'com.maktubcompany.cubetimer',
-    preferencesPrefix: 'rateCubeTimer',
-    minDays: 1,
-    minLaunches: 2,
-    remindDays: 2,
-    remindLaunches: 1,
-  );
 
   initBannerAd() async {
     myBanner = BannerAd(
@@ -71,17 +62,19 @@ class _HomePageState extends State<HomePage> {
           onAdLoaded: (InterstitialAd ad) {
             _interstitialAd = ad;
             _interstitialAd!.setImmersiveMode(true);
+            setState(() {});
           },
           onAdFailedToLoad: (LoadAdError error) {
             _interstitialAd = null;
             _createInterstitialAd();
+            setState(() {});
           },
         ));
   }
 
   void _showInterstitialAd() async {
     if (_interstitialAd == null) {
-      await Modular.to.pushNamed('./timer/');
+      await Navigator.pushNamed(context, NamedRoutes.timer.route);
       await getAllRecords();
 
       _createInterstitialAd();
@@ -91,7 +84,7 @@ class _HomePageState extends State<HomePage> {
 
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (InterstitialAd ad) async {
-        await Modular.to.pushNamed('./timer/');
+        await Navigator.pushNamed(context, NamedRoutes.timer.route);
         await getAllRecords();
 
         ad.dispose();
@@ -105,11 +98,13 @@ class _HomePageState extends State<HomePage> {
     _interstitialAd!.show();
     _interstitialAd = null;
 
+    setState(() {});
+
     _createInterstitialAd();
   }
 
   Future getAllRecords() async {
-    await widget.recordController.getAllRecords();
+    await recordController.getAllRecords();
   }
 
   @override
@@ -125,7 +120,7 @@ class _HomePageState extends State<HomePage> {
     getAllRecords();
 
     autorun((_) {
-      final state = widget.recordController.state;
+      final state = recordController.state;
 
       if (state is ErrorRecordState) {
         MySnackBar(
@@ -188,7 +183,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Observer(builder: (context) {
-                final state = widget.recordController.state;
+                final state = recordController.state;
 
                 if (state is! SuccessGetListRecordState) {
                   return Column(
@@ -249,40 +244,40 @@ class _HomePageState extends State<HomePage> {
 
                             if (index == 0) {
                               return CardRecordWidget(
-                                recordController: widget.recordController,
+                                recordController: recordController,
                                 index: index,
                                 recordEntity: record,
                                 colorText: Colors.amber,
-                                fontSize: 20,
+                                fontSize: 24,
                               );
                             }
 
                             if (index == 1) {
                               return CardRecordWidget(
-                                recordController: widget.recordController,
+                                recordController: recordController,
                                 index: index,
                                 recordEntity: record,
                                 colorText: Colors.green,
-                                fontSize: 18,
+                                fontSize: 22,
                               );
                             }
 
                             if (index == 2) {
                               return CardRecordWidget(
-                                recordController: widget.recordController,
+                                recordController: recordController,
                                 index: index,
                                 recordEntity: record,
                                 colorText: Colors.blue,
-                                fontSize: 16,
+                                fontSize: 20,
                               );
                             }
 
                             return CardRecordWidget(
-                              recordController: widget.recordController,
+                              recordController: recordController,
                               index: index,
                               recordEntity: record,
                               colorText: context.myTheme.onSurface,
-                              fontSize: 14,
+                              fontSize: 18,
                             );
                           },
                           separatorBuilder: (context, index) =>
@@ -325,7 +320,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Text(
                                 StopWatchTimer.getDisplayTime(
-                                  widget.recordController.bestTime,
+                                  recordController.bestTime,
                                   hours: false,
                                 ),
                                 style: context.textTheme.bodyMedium,
@@ -343,7 +338,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Text(
                                 StopWatchTimer.getDisplayTime(
-                                  widget.recordController.avgFive,
+                                  recordController.avgFive,
                                   hours: false,
                                 ),
                                 style: context.textTheme.bodyMedium,
@@ -361,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Text(
                                 StopWatchTimer.getDisplayTime(
-                                  widget.recordController.avgTwelve,
+                                  recordController.avgTwelve,
                                   hours: false,
                                 ),
                                 style: context.textTheme.bodyMedium,
@@ -379,7 +374,7 @@ class _HomePageState extends State<HomePage> {
               }),
               const SizedBox(height: 10),
               Observer(builder: (context) {
-                final state = widget.recordController.state;
+                final state = recordController.state;
                 if (state is! SuccessGetListRecordState) {
                   return const SizedBox();
                 }

@@ -1,4 +1,4 @@
-import 'package:cuber_timer/app/core_module/constants/constants.dart';
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -9,7 +9,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: context.myTheme.background,
+      backgroundColor: context.myTheme.surface,
       titleTextStyle: context.textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),

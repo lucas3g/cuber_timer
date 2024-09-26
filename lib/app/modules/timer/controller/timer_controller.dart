@@ -2,21 +2,22 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:cuber_timer/app/core_module/services/local_database/helpers/tables.dart';
-import 'package:cuber_timer/app/core_module/services/local_database/local_database.dart';
-import 'package:cuber_timer/app/core_module/services/local_database/params/local_database_params.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/helpers/tables.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/local_database.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/params/local_database_params.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 part 'timer_controller.g.dart';
 
+@Injectable()
 class TimerController = TimerControllerBase with _$TimerController;
 
-abstract class TimerControllerBase with Store implements Disposable {
+abstract class TimerControllerBase with Store {
   final ILocalDatabase localDatabase;
   final RecordController recordController;
 
@@ -62,13 +63,6 @@ abstract class TimerControllerBase with Store implements Disposable {
 
   @observable
   Timer colorChangeTimer = Timer(const Duration(milliseconds: 500), () {});
-
-  @override
-  void dispose() {
-    colorChangeTimer.cancel();
-
-    dispose();
-  }
 
   @action
   TimerStates emit(TimerStates newState) {

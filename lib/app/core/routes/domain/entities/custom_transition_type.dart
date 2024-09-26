@@ -1,0 +1,4 @@
+enum CustomTransitionType {
+  slide,
+  fade,
+}

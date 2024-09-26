@@ -1,12 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
+import 'package:cuber_timer/app/core/routes/app_routes.dart';
+import 'package:cuber_timer/app/core/routes/domain/entities/custom_transition.dart';
+import 'package:cuber_timer/app/core/routes/domain/entities/custom_transition_type.dart';
 import 'package:cuber_timer/app/shared/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-import 'shared/stores/app_store.dart';
 import 'utils/global_context.dart';
 
 class AppWidget extends StatefulWidget {
@@ -19,23 +21,15 @@ class AppWidget extends StatefulWidget {
 class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
-    Modular.setNavigatorKey(GlobalContext.navigatorKey);
-
-    Modular.setObservers([
-      BotToastNavigatorObserver(),
-    ]);
-
-    final appStore = context.watch<AppStore>(
-      (store) => store.themeMode,
-    );
-
-    return MaterialApp.router(
-      title: 'Cube Time',
+    return MaterialApp(
+      title: 'Cube Timer',
       debugShowCheckedModeBanner: false,
-      themeMode: appStore.themeMode.value,
+      navigatorKey: GlobalContext.navigatorKey,
       theme: lightThemeApp,
       darkTheme: darkThemeApp,
-      routerConfig: Modular.routerConfig,
+      navigatorObservers: [
+        BotToastNavigatorObserver(),
+      ],
       builder: (context, child) {
         BotToastInit()(context, child);
         FlutterI18n.rootAppBuilder();
@@ -57,7 +51,17 @@ class _AppWidgetState extends State<AppWidget> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
-      //locale: , //Deixar nulo ai o flutter pega o locale do sistema
+      initialRoute: NamedRoutes.splash.route,
+      onGenerateRoute: CustomNavigator(
+        generateAnimation: _generateAnimation,
+      ).onGenerateRoute,
+    );
+  }
+
+  CustomTransition _generateAnimation(RouteSettings settings) {
+    return CustomTransition(
+      transitionType: CustomTransitionType.fade,
+      duration: const Duration(milliseconds: 200),
     );
   }
 }

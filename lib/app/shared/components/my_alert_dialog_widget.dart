@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core_module/constants/constants.dart';
+import '../../core/constants/constants.dart';
 
 class MyAlertDialogWidget extends StatefulWidget {
   final String title;
