@@ -74,7 +74,7 @@ mixin _$CountDownController on CountDownControllerBase, Store {
   }
 
   @override
-  StreamSubscription<dynamic> _listenFiftySecondRemains() {
+  StreamSubscription<int> _listenFiftySecondRemains() {
     final _$actionInfo = _$CountDownControllerBaseActionController.startAction(
         name: 'CountDownControllerBase._listenFiftySecondRemains');
     try {

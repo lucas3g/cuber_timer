@@ -41,8 +41,10 @@ abstract class CountDownControllerBase with Store {
   }
 
   @action
-  StreamSubscription _listenFiftySecondRemains() {
+  StreamSubscription<int> _listenFiftySecondRemains() {
     return countDownTimer.secondTime.listen((time) {
+      print('tempo $time');
+
       if (time == 0) {
         stopTimerCountDown();
         timerController.toggleTimer();

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
+import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
 import 'package:cuber_timer/app/modules/home/presenter/widgets/card_record_widget.dart';
@@ -28,6 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final recordController = getIt<RecordController>();
+  final ConfigController configController = getIt<ConfigController>();
 
   late BannerAd myBanner;
   bool isAdLoaded = false;
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showInterstitialAd() async {
-    if (_interstitialAd == null) {
+    if (_interstitialAd == null || configController.isAdRemoved) {
       await Navigator.pushNamed(context, NamedRoutes.timer.route);
       await getAllRecords();
 
@@ -107,9 +109,15 @@ class _HomePageState extends State<HomePage> {
     await recordController.getAllRecords();
   }
 
+  Future checkAdRemovalStatus() async {
+    await configController.checkAdRemovalStatus();
+  }
+
   @override
   void initState() {
     super.initState();
+
+    checkAdRemovalStatus();
 
     _createInterstitialAd();
 
@@ -209,7 +217,8 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (!Platform.isWindows) ...[
+                      if (!Platform.isWindows &&
+                          !configController.isAdRemoved) ...[
                         isAdLoaded
                             ? SizedBox(
                                 height: myBanner.size.height.toDouble(),
@@ -219,22 +228,34 @@ class _HomePageState extends State<HomePage> {
                             : const SizedBox(),
                         const SizedBox(height: 10),
                       ],
-                      Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.symmetric(
-                              horizontal: BorderSide(
-                                color: context.myTheme.onSurface,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.symmetric(
+                                horizontal: BorderSide(
+                                  color: context.myTheme.onSurface,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              context.translate.homePage.titleList,
+                              style: context.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          child: Text(
-                            context.translate.homePage.titleList,
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                NamedRoutes.config.route,
+                              );
+                            },
+                            icon: const Icon(Icons.settings),
                           ),
-                        ),
+                        ],
                       ),
                       const SizedBox(height: 10),
                       Expanded(

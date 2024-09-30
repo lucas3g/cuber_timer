@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
+import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
@@ -23,6 +24,7 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> {
   final timerController = getIt<TimerController>();
   final countDownController = getIt<CountDownController>();
+  final ConfigController configController = getIt<ConfigController>();
   final pageController = PageController();
   int pageIndex = 0;
 
@@ -115,7 +117,7 @@ class _TimerPageState extends State<TimerPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (!Platform.isWindows) ...[
+                if (!Platform.isWindows && !configController.isAdRemoved) ...[
                   isAdLoaded
                       ? SizedBox(
                           height: myBanner.size.height.toDouble(),
