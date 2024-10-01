@@ -1,76 +1,73 @@
 import 'dart:async';
 
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/modules/config/presenter/services/in_app_purcashe_service.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: IInAppPurchaseService)
 class InAppPurchaseServiceImp implements IInAppPurchaseService {
-  final _adRemovalProductId = 'ad_removal';
+  final _purchaseStatusController = StreamController<String>.broadcast();
 
   @override
-  Future<bool> buyAdRemoval() async {
+  Stream<String> get purchaseStatusStream => _purchaseStatusController.stream;
+
+  @override
+  Future<void> buyAdRemoval() async {
     final bool available = await InAppPurchase.instance.isAvailable();
 
     if (!available) {
-      throw Exception('Loja não disponível');
+      _purchaseStatusController.add('Loja não disponível');
+      return;
     }
 
-    Set<String> productIds = <String>{_adRemovalProductId};
+    Set<String> productIds = <String>{adRemovalProductId};
     final ProductDetailsResponse response =
         await InAppPurchase.instance.queryProductDetails(productIds);
 
     if (response.notFoundIDs.isNotEmpty) {
-      throw Exception('Erro ao buscar produto');
+      _purchaseStatusController.add('Produto não encontrado');
+      return;
     }
 
     final List<ProductDetails> products = response.productDetails;
 
     if (products.isNotEmpty) {
       final ProductDetails productDetails = products.first;
-
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: productDetails);
 
-      return await InAppPurchase.instance
+      // Inicia o processo de compra
+      final bool result = await InAppPurchase.instance
           .buyNonConsumable(purchaseParam: purchaseParam);
-    }
 
-    return false;
-  }
+      if (!result) {
+        _purchaseStatusController.add('Erro ao iniciar compra');
+        return;
+      }
 
-  @override
-  Future<bool> checkAdRemovalStatus() async {
-    final Completer<bool> completer = Completer<bool>();
-
-    try {
-      // Restaura as compras
-      await InAppPurchase.instance.restorePurchases();
-
-      // Escuta o stream de atualizações de compras
-      final Stream<List<PurchaseDetails>> purchaseUpdates =
-          InAppPurchase.instance.purchaseStream;
-
-      // Aguarda a primeira atualização de compras
-      purchaseUpdates.listen((purchaseDetailsList) {
-        // Verifica se a compra de remoção de anúncios está na lista
+      // Escuta o stream de compras para atualizar status em tempo real
+      InAppPurchase.instance.purchaseStream.listen((purchaseDetailsList) {
         for (var purchase in purchaseDetailsList) {
-          if (purchase.status == PurchaseStatus.purchased ||
-              purchase.status == PurchaseStatus.restored) {
-            if (purchase.productID == _adRemovalProductId) {
-              completer.complete(true);
+          if (purchase.productID == adRemovalProductId) {
+            if (purchase.status == PurchaseStatus.purchased) {
+              _purchaseStatusController.add('Compra concluída com sucesso');
+              return;
+            } else if (purchase.status == PurchaseStatus.error) {
+              _purchaseStatusController.add('Erro na compra');
               return;
             }
           }
+          if (purchase.status == PurchaseStatus.canceled) {
+            _purchaseStatusController.add('Compra cancelada');
+            return;
+          }
         }
-        // Completa com false se não encontrou a compra
-        completer.complete(false);
+      }, onError: (error) {
+        _purchaseStatusController.add('Erro desconhecido: $error');
       });
-
-      // Retorna o resultado da verificação
-      return await completer.future;
-    } catch (e) {
-      return false; // Em caso de erro, retorna false
+    } else {
+      _purchaseStatusController.add('Produto não encontrado');
     }
   }
 }

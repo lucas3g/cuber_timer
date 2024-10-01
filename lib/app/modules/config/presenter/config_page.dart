@@ -3,6 +3,7 @@ import 'package:cuber_timer/app/modules/config/presenter/controller/config_contr
 import 'package:cuber_timer/app/modules/config/presenter/controller/config_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
@@ -15,49 +16,116 @@ class _ConfigPageState extends State<ConfigPage> {
   final ConfigController configController = getIt<ConfigController>();
 
   @override
+  void initState() {
+    super.initState();
+
+    autorun((_) async {
+      if (configController.state is AdRemovalCanceledState ||
+          configController.state is AdRemovalFailureState) {
+        await Future.delayed(const Duration(seconds: 1));
+        configController.state = ConfigInitialState();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configurações'),
       ),
-      body: Observer(
-        builder: (_) {
-          final state = configController.state;
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Observer(
+          builder: (_) {
+            final state = configController.state;
 
-          if (state is AdRemovalSuccessState) {
-            return _buildConfigOptions(context, configController.isAdRemoved);
-          }
+            // Loading State
+            if (state is AdRemovalInProgressState) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('Processando sua compra, por favor aguarde...')
+                  ],
+                ),
+              );
+            }
 
-          if (state is AdRemovalFailureState) {
-            return Center(
-              child: Text(state.errorMessage),
-            );
-          }
+            // Success State
+            if (state is AdRemovalSuccessState) {
+              return _buildConfigOptions(
+                context,
+                configController.isAdRemoved,
+                'Anúncios removidos com sucesso!',
+              );
+            }
 
-          return _buildConfigOptions(context, configController.isAdRemoved);
-        },
+            // Error State
+            if (state is AdRemovalFailureState) {
+              return _buildErrorMessage(context, state.errorMessage);
+            }
+
+            // Canceled State
+            if (state is AdRemovalCanceledState) {
+              return _buildErrorMessage(
+                  context, 'Compra cancelada. Tente novamente.');
+            }
+
+            // Default (Initial) State
+            return _buildConfigOptions(
+                context, configController.isAdRemoved, '');
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildConfigOptions(BuildContext context, bool adsRemoved) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+  // Função para construir as opções de configuração
+  Widget _buildConfigOptions(
+      BuildContext context, bool adsRemoved, String message) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (message.isNotEmpty) ...[
+          Text(
+            message,
+            style: const TextStyle(color: Colors.green, fontSize: 16),
+          ),
+          const SizedBox(height: 16),
+        ],
+        ListTile(
+          title: const Text('Remover Anúncios'),
+          subtitle: Text(adsRemoved ? 'Anúncios removidos' : 'Anúncios ativos'),
+          trailing: adsRemoved
+              ? const Icon(Icons.check_circle, color: Colors.green)
+              : ElevatedButton(
+                  onPressed: configController.state is AdRemovalInProgressState
+                      ? null // Desabilita o botão se estiver processando
+                      : () async {
+                          await configController.removeAds();
+                        },
+                  child: const Text('Remover'),
+                ),
+        ),
+      ],
+    );
+  }
+
+  // Função para exibir mensagens de erro
+  Widget _buildErrorMessage(BuildContext context, String errorMessage) {
+    return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ListTile(
-            title: const Text('Remover Anúncios'),
-            subtitle:
-                Text(adsRemoved ? 'Anúncios removidos' : 'Anúncios ativos'),
-            trailing: adsRemoved
-                ? const Icon(Icons.check_circle, color: Colors.green)
-                : ElevatedButton(
-                    onPressed: () async {
-                      await configController.removeAds();
-                    },
-                    child: const Text('Remover'),
-                  ),
+          const Icon(Icons.error, color: Colors.red, size: 40),
+          const SizedBox(height: 16),
+          Text(
+            errorMessage,
+            style: const TextStyle(fontSize: 16, color: Colors.red),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

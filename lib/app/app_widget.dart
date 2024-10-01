@@ -27,6 +27,7 @@ class _AppWidgetState extends State<AppWidget> {
       navigatorKey: GlobalContext.navigatorKey,
       theme: lightThemeApp,
       darkTheme: darkThemeApp,
+      themeMode: ThemeMode.dark,
       navigatorObservers: [
         BotToastNavigatorObserver(),
       ],

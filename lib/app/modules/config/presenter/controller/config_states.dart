@@ -2,9 +2,23 @@ abstract class ConfigStates {}
 
 class ConfigInitialState extends ConfigStates {}
 
-class AdRemovalInProgressState extends ConfigStates {}
+class AdRemovalInProgressState extends ConfigStates {
+  final String message;
 
-class AdRemovalSuccessState extends ConfigStates {}
+  AdRemovalInProgressState({this.message = 'Removendo anúncios...'});
+}
+
+class AdRemovalSuccessState extends ConfigStates {
+  final String message;
+
+  AdRemovalSuccessState({this.message = 'Anúncios removidos com sucesso!'});
+}
+
+class AdRemovalCanceledState extends ConfigStates {
+  final String message;
+
+  AdRemovalCanceledState({this.message = 'Remoção de anúncios cancelada'});
+}
 
 class AdRemovalFailureState extends ConfigStates {
   final String errorMessage;

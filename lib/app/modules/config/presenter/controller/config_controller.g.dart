@@ -49,16 +49,6 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     return _$removeAdsAsyncAction.run(() => super.removeAds());
   }
 
-  late final _$checkAdRemovalStatusAsyncAction = AsyncAction(
-      '_ConfigControllerBase.checkAdRemovalStatus',
-      context: context);
-
-  @override
-  Future<void> checkAdRemovalStatus() {
-    return _$checkAdRemovalStatusAsyncAction
-        .run(() => super.checkAdRemovalStatus());
-  }
-
   @override
   String toString() {
     return '''

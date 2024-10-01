@@ -22,37 +22,25 @@ abstract class _ConfigControllerBase with Store {
 
   @action
   Future<void> removeAds() async {
-    state = AdRemovalInProgressState();
-
     try {
-      final result = await inAppPurchaseService.buyAdRemoval();
+      state = AdRemovalInProgressState();
 
-      if (result) {
-        state = AdRemovalSuccessState();
-        isAdRemoved = true;
-      } else {
-        state = AdRemovalFailureState("Falha ao remover anúncios.");
-        isAdRemoved = false;
-      }
-    } on Exception catch (error) {
-      state = AdRemovalFailureState(error.toString());
-      isAdRemoved = false;
-    }
-  }
+      // Chama o método de compra e escuta o status via stream
+      inAppPurchaseService.purchaseStatusStream.listen((status) {
+        if (status == 'Compra concluída com sucesso') {
+          state = AdRemovalSuccessState();
+          isAdRemoved = true;
+        } else if (status == 'Compra cancelada') {
+          state = AdRemovalCanceledState();
+          isAdRemoved = false;
+        } else if (status.contains('Erro')) {
+          state = AdRemovalFailureState(status);
+          isAdRemoved = false;
+        }
+      });
 
-  // Função para verificar se os anúncios foram removidos anteriormente
-  @action
-  Future<void> checkAdRemovalStatus() async {
-    try {
-      final result = await inAppPurchaseService.checkAdRemovalStatus();
-
-      if (result) {
-        state = AdRemovalSuccessState();
-        isAdRemoved = true;
-      } else {
-        state = ConfigInitialState();
-        isAdRemoved = false;
-      }
+      // Inicia o processo de compra
+      await inAppPurchaseService.buyAdRemoval();
     } catch (error) {
       state = AdRemovalFailureState(error.toString());
       isAdRemoved = false;

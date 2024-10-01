@@ -1,4 +1,7 @@
+import 'dart:async';
+
 abstract class IInAppPurchaseService {
-  Future<bool> buyAdRemoval();
-  Future<bool> checkAdRemovalStatus();
+  Future<void> buyAdRemoval();
+
+  Stream<String> get purchaseStatusStream;
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 const bannerID = 'ca-app-pub-1898798427054986/5130180395';
 const intersticialID = 'ca-app-pub-1898798427054986/4998867194';
+const adRemovalProductId = 'ad_removal';
 
 const double kPadding = 20;
 

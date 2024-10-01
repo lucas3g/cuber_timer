@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cuber_timer/app/core/constants/constants.dart';
@@ -109,15 +110,9 @@ class _HomePageState extends State<HomePage> {
     await recordController.getAllRecords();
   }
 
-  Future checkAdRemovalStatus() async {
-    await configController.checkAdRemovalStatus();
-  }
-
   @override
   void initState() {
     super.initState();
-
-    checkAdRemovalStatus();
 
     _createInterstitialAd();
 
