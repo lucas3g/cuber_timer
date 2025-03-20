@@ -48,6 +48,10 @@ abstract class TimerControllerBase with Store {
         "B L2 R2 D2 F2 D F2 R2 D2 U R2 F' R D' L2 B' L U' R U'",
         "D L' B2 R2 L' B' U' R D' F2 U2 F L2 D2 B D2 F' L2 B' D2",
         "D' R F' B2 D2 R U B' R2 L2 B2 R2 B R2 D2 R2 F L U",
+        "D2 R2 L2 F R2 U' B F2 D' B2 D' R2 D2 F2 D' L2 D' L2 B2 R'",
+        "L' B2 L2 B2 D2 F2 L' D2 L' F L2 D' F U' B L2 D2 F L",
+        "R2 F' L2 F L2 F' R2 F' R2 F' D2 U2 L' B' D' L' F' U B' U' R",
+        "U L R2 B' L2 B' F2 D2 F2 L2 D2 L B2 D' L' B2 D2 L F"
       ];
 
   @computed

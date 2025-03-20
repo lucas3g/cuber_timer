@@ -204,6 +204,11 @@ class _TimerPageState extends State<TimerPage> {
                                             ),
                                           ),
                                         ),
+                                        Text(
+                                          context.translate.timerPage
+                                              .textHowToChangeScramble,
+                                          style: context.textTheme.bodySmall,
+                                        ),
                                       ],
                                     ),
                                     Text(

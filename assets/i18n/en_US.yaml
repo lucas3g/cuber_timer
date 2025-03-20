@@ -19,3 +19,4 @@ timer_page:
   text_button_new_stop_watch: New Stopwatch
   text_beat_record: You beat your record, congratulations!!!
   text_button_beat_record: Thank you
+  text_description_how_to_change_scrambles: To change the scrambles, drag left or right.

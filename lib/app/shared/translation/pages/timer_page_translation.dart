@@ -17,4 +17,5 @@ class TimerPageTranslation {
   String get textButtonNewStopwatch => translate('text_button_new_stop_watch');
   String get textBeatRecord => translate('text_beat_record');
   String get textButtonBeatRecord => translate('text_button_beat_record');
+  String get textHowToChangeScramble => translate('text_description_how_to_change_scrambles');
 }

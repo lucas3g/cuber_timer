@@ -1,0 +1,2 @@
+C:/Users/Lucas/Desktop/cuber_timer/android/app/.cxx/Debug/595n5m2f/x86/CMakeFiles/edit_cache.dir
+C:/Users/Lucas/Desktop/cuber_timer/android/app/.cxx/Debug/595n5m2f/x86/CMakeFiles/rebuild_cache.dir
