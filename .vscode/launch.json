@@ -8,19 +8,28 @@
       "name": "cuber_timer (debug mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "debug"
+      "flutterMode": "debug",
+      "env": {
+        "FLUTTER_ROOT": "${workspaceFolder}/.fvm/flutter_sdk"
+      }
     },
     {
       "name": "cuber_timer (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "env": {
+        "FLUTTER_ROOT": "${workspaceFolder}/.fvm/flutter_sdk"
+      }
     },
     {
       "name": "cuber_timer (release mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "env": {
+        "FLUTTER_ROOT": "${workspaceFolder}/.fvm/flutter_sdk"
+      }
     }
   ]
 }

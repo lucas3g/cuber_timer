@@ -38,9 +38,6 @@ class CustomPageRouteBuilder extends PageRouteBuilder<Widget> {
                   opacity: animation,
                   child: child,
                 );
-
-              default:
-                return child;
             }
           },
         );
