@@ -6,7 +6,12 @@ part 'record.g.dart';
 class RecordEntity {
   Id? id = Isar.autoIncrement;
   int timer;
-  String group;
+  String group = 'Old Records';
+  DateTime createdAt = DateTime.now();
 
-  RecordEntity({this.id, required this.timer, required this.group});
+  RecordEntity(
+      {this.id,
+      required this.timer,
+      required this.group,
+      required this.createdAt});
 }

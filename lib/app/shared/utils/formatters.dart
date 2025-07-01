@@ -1,3 +1,4 @@
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -93,6 +94,17 @@ extension DiaMesAnoTexto on String {
 extension AnoMesDia on DateTime {
   String anoMesDiaDB() {
     final format = DateFormat('yyyy/MM/dd');
+    return format.format(this);
+  }
+}
+
+extension FormatDateTime on DateTime {
+  String formatDateTime(BuildContext context) {
+    final format = DateFormat(
+      context.translate.homePage.formatDateTime,
+      context.translate.homePage.tagDateTime,
+    );
+
     return format.format(this);
   }
 }

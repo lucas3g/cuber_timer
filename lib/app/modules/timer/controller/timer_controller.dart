@@ -92,10 +92,6 @@ abstract class TimerControllerBase with Store {
     emit(StopTimerState());
     timer.onStopTimer();
 
-    await saveTimerLocalDatabase();
-
-    await recordController.getAllRecords();
-
     final bestTimer = recordController.bestTime(group);
 
     if (bestTimer > 0) {
@@ -105,6 +101,10 @@ abstract class TimerControllerBase with Store {
         emit(StopTimerState());
       }
     }
+
+    await saveTimerLocalDatabase();
+
+    await recordController.getAllRecords();
   }
 
   Future saveTimerLocalDatabase() async {

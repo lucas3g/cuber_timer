@@ -18,4 +18,6 @@ class HomePageTranslation {
   String get best => translate('best');
   String get avg5 => translate('avg_5');
   String get avg12 => translate('avg_12');
+  String get formatDateTime => translate('formatDateTime');
+  String get tagDateTime => translate('tagDateTime');
 }

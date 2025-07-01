@@ -20,8 +20,10 @@ class IsarService implements ILocalDatabase {
 
     if (params.table == Tables.records) {
       if (params.filter != null) {
-        // result =
-        //     await isar.records.filter().placaContains(params.filter!).findFirst();
+        result = await isar.recordEntitys
+            .filter()
+            .groupContains(params.filter!)
+            .findAll();
       } else {
         result = await isar.recordEntitys.where().sortByTimer().findAll();
       }
@@ -40,7 +42,10 @@ class IsarService implements ILocalDatabase {
     await isar.writeTxn(() async {
       if (params.table == Tables.records) {
         final record = RecordEntity(
-            timer: params.data['timer'], group: params.data['group']);
+          timer: params.data['timer'],
+          group: params.data['group'],
+          createdAt: DateTime.now(),
+        );
 
         result = await isar.recordEntitys.put(record) > 0;
       }

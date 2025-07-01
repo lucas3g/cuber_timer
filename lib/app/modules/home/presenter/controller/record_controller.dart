@@ -35,7 +35,14 @@ abstract class RecordControllerBase with Store {
           await localDatabase.get(params: params) as List<RecordEntity>;
 
       final records = result
-          .map((e) => RecordEntity(id: e.id, timer: e.timer, group: e.group))
+          .map(
+            (e) => RecordEntity(
+              id: e.id,
+              timer: e.timer,
+              group: e.group,
+              createdAt: e.createdAt,
+            ),
+          )
           .toList();
 
       emit(state.success(records: records));
@@ -132,5 +139,35 @@ abstract class RecordControllerBase with Store {
         .reduce((value, element) => value + element);
 
     return (sum ~/ lenghList);
+  }
+
+  @action
+  Future<void> getAllRecordsByGroup(String group) async {
+    try {
+      emit(state.loading());
+
+      final params = GetDataParams(
+        table: Tables.records,
+        filter: group,
+      );
+
+      final result =
+          await localDatabase.get(params: params) as List<RecordEntity>;
+
+      final records = result
+          .map(
+            (e) => RecordEntity(
+              id: e.id,
+              timer: e.timer,
+              group: e.group,
+              createdAt: e.createdAt,
+            ),
+          )
+          .toList();
+
+      emit(state.success(records: records));
+    } catch (e) {
+      emit(state.error('Error when trying to load the highscore list'));
+    }
   }
 }

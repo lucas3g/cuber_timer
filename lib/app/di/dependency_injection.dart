@@ -20,6 +20,8 @@ Future<void> configureDependencies() async {
   await _initIsar();
 
   await getIt.init();
+
+  await _checkRecordsWithoutGroupAndSetGroupDefault();
 }
 
 @module
@@ -39,4 +41,22 @@ Future<void> _initIsar() async {
     ],
     directory: dir.path,
   );
+}
+
+Future<void> _checkRecordsWithoutGroupAndSetGroupDefault() async {
+  final isar = getIt<Isar>();
+
+  final records =
+      await isar.recordEntitys.where().filter().groupIsEmpty().findAll();
+
+  if (records.isNotEmpty) {
+    for (final record in records) {
+      record.group = 'Old Records';
+      record.createdAt = DateTime.now();
+
+      await isar.writeTxn(() async {
+        await isar.recordEntitys.put(record);
+      });
+    }
+  }
 }

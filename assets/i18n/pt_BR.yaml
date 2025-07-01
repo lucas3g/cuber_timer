@@ -10,6 +10,8 @@ home_page:
   best: MELHOR
   avg_5: MÉDIA 5
   avg_12: MÉDIA 12
+  formatDateTime: "dd 'de' MMMM 'de' yyyy "as" 'hh:mm:ss a"
+  tagDateTime: pt_br
 
 timer_page:
   title_appbar: Cronômetro

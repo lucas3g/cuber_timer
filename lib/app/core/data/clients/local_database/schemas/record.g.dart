@@ -17,13 +17,18 @@ const RecordEntitySchema = CollectionSchema(
   name: r'RecordEntity',
   id: 6472922730841492343,
   properties: {
-    r'group': PropertySchema(
+    r'createdAt': PropertySchema(
       id: 0,
+      name: r'createdAt',
+      type: IsarType.dateTime,
+    ),
+    r'group': PropertySchema(
+      id: 1,
       name: r'group',
       type: IsarType.string,
     ),
     r'timer': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'timer',
       type: IsarType.long,
     )
@@ -58,8 +63,9 @@ void _recordEntitySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.group);
-  writer.writeLong(offsets[1], object.timer);
+  writer.writeDateTime(offsets[0], object.createdAt);
+  writer.writeString(offsets[1], object.group);
+  writer.writeLong(offsets[2], object.timer);
 }
 
 RecordEntity _recordEntityDeserialize(
@@ -69,9 +75,10 @@ RecordEntity _recordEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = RecordEntity(
-    group: reader.readString(offsets[0]),
+    createdAt: reader.readDateTime(offsets[0]),
+    group: reader.readString(offsets[1]),
     id: id,
-    timer: reader.readLong(offsets[1]),
+    timer: reader.readLong(offsets[2]),
   );
   return object;
 }
@@ -84,8 +91,10 @@ P _recordEntityDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
+      return (reader.readString(offset)) as P;
+    case 2:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -186,6 +195,62 @@ extension RecordEntityQueryWhere
 
 extension RecordEntityQueryFilter
     on QueryBuilder<RecordEntity, RecordEntity, QFilterCondition> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      createdAtEqualTo(DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      createdAtGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      createdAtLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      createdAtBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -453,6 +518,18 @@ extension RecordEntityQueryLinks
 
 extension RecordEntityQuerySortBy
     on QueryBuilder<RecordEntity, RecordEntity, QSortBy> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByGroup() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'group', Sort.asc);
@@ -480,6 +557,18 @@ extension RecordEntityQuerySortBy
 
 extension RecordEntityQuerySortThenBy
     on QueryBuilder<RecordEntity, RecordEntity, QSortThenBy> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByGroup() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'group', Sort.asc);
@@ -519,6 +608,12 @@ extension RecordEntityQuerySortThenBy
 
 extension RecordEntityQueryWhereDistinct
     on QueryBuilder<RecordEntity, RecordEntity, QDistinct> {
+  QueryBuilder<RecordEntity, RecordEntity, QDistinct> distinctByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdAt');
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QDistinct> distinctByGroup(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -538,6 +633,12 @@ extension RecordEntityQueryProperty
   QueryBuilder<RecordEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<RecordEntity, DateTime, QQueryOperations> createdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdAt');
     });
   }
 

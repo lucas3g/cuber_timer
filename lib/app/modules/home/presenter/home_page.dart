@@ -20,6 +20,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -304,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                                       return Column(
                                         children: [
                                           Expanded(
-                                            child: ListView.separated(
+                                            child: SuperListView.separated(
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                 horizontal: 4,
@@ -327,6 +328,46 @@ class _HomePageState extends State<HomePage> {
                                                   20.0,
                                                   18.0,
                                                 ].elementAt(index.clamp(0, 3));
+
+                                                if (index == 4) {
+                                                  return Column(
+                                                    children: [
+                                                      CardRecordWidget(
+                                                        recordController:
+                                                            recordController,
+                                                        index: index,
+                                                        recordEntity: record,
+                                                        colorText: color,
+                                                        fontSize: fontSize,
+                                                      ),
+                                                      Visibility(
+                                                        visible:
+                                                            groupItems.length ==
+                                                                5,
+                                                        child: ElevatedButton(
+                                                          onPressed: () async {
+                                                            await Navigator
+                                                                .pushNamed(
+                                                              context,
+                                                              NamedRoutes
+                                                                  .allRecordsByGroup
+                                                                  .route,
+                                                              arguments: {
+                                                                'group':
+                                                                    selectedGroup,
+                                                              },
+                                                            );
+
+                                                            await getFiveRecordsByGroup();
+                                                          },
+                                                          child: const Text(
+                                                            'Mostrar mais Records',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }
 
                                                 return CardRecordWidget(
                                                   recordController:
@@ -398,7 +439,7 @@ class _HomePageState extends State<HomePage> {
                                       );
                                     }).toList(),
                                   ),
-                                )
+                                ),
                               ],
                             );
                           }),
@@ -427,7 +468,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 15),
                     if (!Platform.isWindows &&
                         !configController.isAdRemoved) ...[
-                      if (isBottomAdLoaded)
+                      if (isBottomAdLoaded && state.records.isNotEmpty)
                         SizedBox(
                           height: myBottmBanner.size.height.toDouble(),
                           width: myBottmBanner.size.width.toDouble(),

@@ -1,3 +1,4 @@
+import 'package:cuber_timer/app/modules/all_records_by_group/presenter/all_records_by_group_page.dart';
 import 'package:cuber_timer/app/modules/config/presenter/config_page.dart';
 import 'package:cuber_timer/app/modules/timer/presenter/timer_page.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class CustomNavigator {
       NamedRoutes.home.route: (BuildContext context) => const HomePage(),
       NamedRoutes.timer.route: (BuildContext context) => const TimerPage(),
       NamedRoutes.config.route: (BuildContext context) => const ConfigPage(),
+      NamedRoutes.allRecordsByGroup.route: (BuildContext context) =>
+          const AllRecordsByGroupPage(),
     };
 
     final WidgetBuilder? builder = appRoutes[settings.name];

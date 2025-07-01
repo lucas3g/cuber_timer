@@ -10,6 +10,8 @@ home_page:
   best: BEST
   avg_5: AVG 5
   avg_12: AVG 12
+  formatDateTime: "MMMM dd, yyyy 'at' h:mm:ss a"
+  tagDateTime: en_us
 
 timer_page:
   title_appbar: Stopwatch
