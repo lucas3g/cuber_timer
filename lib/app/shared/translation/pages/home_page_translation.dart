@@ -20,4 +20,5 @@ class HomePageTranslation {
   String get avg12 => translate('avg_12');
   String get formatDateTime => translate('formatDateTime');
   String get tagDateTime => translate('tagDateTime');
+  String get buttonMoreRecords => translate('buttonMoreRecords');
 }

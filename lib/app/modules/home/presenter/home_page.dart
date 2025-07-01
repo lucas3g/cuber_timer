@@ -360,8 +360,11 @@ class _HomePageState extends State<HomePage> {
 
                                                             await getFiveRecordsByGroup();
                                                           },
-                                                          child: const Text(
-                                                            'Mostrar mais Records',
+                                                          child: Text(
+                                                            context
+                                                                .translate
+                                                                .homePage
+                                                                .buttonMoreRecords,
                                                           ),
                                                         ),
                                                       ),

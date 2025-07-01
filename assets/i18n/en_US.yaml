@@ -12,6 +12,7 @@ home_page:
   avg_12: AVG 12
   formatDateTime: "MMMM dd, yyyy 'at' h:mm:ss a"
   tagDateTime: en_us
+  buttonMoreRecords: More Records
 
 timer_page:
   title_appbar: Stopwatch
@@ -23,3 +24,4 @@ timer_page:
   text_button_beat_record: Thank you
   text_description_how_to_change_scrambles: To change the scrambles, drag left or right.
   text_description_label_group: Model
+  title_appbar_more_records: More Records By Model

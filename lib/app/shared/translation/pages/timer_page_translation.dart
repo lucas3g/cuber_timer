@@ -21,4 +21,5 @@ class TimerPageTranslation {
       translate('text_description_how_to_change_scrambles');
   String get textDescriptionLabelGroup =>
       translate('text_description_label_group');
+  String get titleAppBarMoreRecords => translate('title_appbar_more_records');
 }

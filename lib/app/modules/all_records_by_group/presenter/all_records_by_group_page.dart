@@ -1,3 +1,4 @@
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
@@ -45,7 +46,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
         title: Text(
           groupArg == null
               ? 'Carregando grupo...'
-              : 'Records por Grupo $groupArg',
+              : '${context.translate.timerPage.titleAppBarMoreRecords} $groupArg',
         ),
       ),
       body: Padding(

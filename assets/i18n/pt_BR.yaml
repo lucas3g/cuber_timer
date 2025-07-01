@@ -12,6 +12,7 @@ home_page:
   avg_12: MÉDIA 12
   formatDateTime: "dd 'de' MMMM 'de' yyyy "as" 'hh:mm:ss a"
   tagDateTime: pt_br
+  buttonMoreRecords: Mais Recordes
 
 timer_page:
   title_appbar: Cronômetro
@@ -23,3 +24,4 @@ timer_page:
   text_button_beat_record: Obrigado
   text_description_how_to_change_scrambles: Para alterar os embaralhamentos, arraste para esquerda ou direita.
   text_description_label_group: Modelo
+  title_appbar_more_records: Mais Recordes Por Modelo
