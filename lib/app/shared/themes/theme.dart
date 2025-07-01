@@ -10,9 +10,9 @@ final lightThemeApp = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: lightColorSchemePapagaio.onPrimaryContainer,
     centerTitle: true,
-    foregroundColor: lightColorSchemePapagaio.background,
+    foregroundColor: lightColorSchemePapagaio.surface,
     iconTheme: IconThemeData(
-      color: lightColorSchemePapagaio.background,
+      color: lightColorSchemePapagaio.surface,
     ),
   ),
   dialogTheme: const DialogTheme(
@@ -21,10 +21,10 @@ final lightThemeApp = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: MaterialStateProperty.resolveWith(
-        (states) => lightColorSchemePapagaio.background,
+      foregroundColor: WidgetStateProperty.resolveWith(
+        (states) => lightColorSchemePapagaio.surface,
       ),
-      backgroundColor: MaterialStateProperty.resolveWith(
+      backgroundColor: WidgetStateProperty.resolveWith(
         (states) => lightColorSchemePapagaio.onPrimaryContainer,
       ),
     ),
@@ -46,10 +46,10 @@ final darkThemeApp = ThemeData(
   scaffoldBackgroundColor: darkColorSchemePapagaio.scrim,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: MaterialStateProperty.resolveWith(
-        (states) => darkColorSchemePapagaio.onBackground,
+      foregroundColor: WidgetStateProperty.resolveWith(
+        (states) => darkColorSchemePapagaio.onSurface,
       ),
-      backgroundColor: MaterialStateProperty.resolveWith(
+      backgroundColor: WidgetStateProperty.resolveWith(
         (states) => darkColorSchemePapagaio.onPrimary,
       ),
     ),

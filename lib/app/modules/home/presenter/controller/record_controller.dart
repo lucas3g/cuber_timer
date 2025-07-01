@@ -34,10 +34,43 @@ abstract class RecordControllerBase with Store {
       final result =
           await localDatabase.get(params: params) as List<RecordEntity>;
 
-      final records =
-          result.map((e) => RecordEntity(id: e.id, timer: e.timer)).toList();
+      final records = result
+          .map((e) => RecordEntity(id: e.id, timer: e.timer, group: e.group))
+          .toList();
 
       emit(state.success(records: records));
+    } catch (e) {
+      emit(state.error('Error when trying to load the highscore list'));
+    }
+  }
+
+  @action
+  Future getFiveRecordsByGroup() async {
+    try {
+      emit(state.loading());
+
+      final params = GetDataParams(table: Tables.records);
+
+      final result =
+          await localDatabase.get(params: params) as List<RecordEntity>;
+
+      // Cria um Map para agrupar os registros por grupo
+      final Map<String, List<RecordEntity>> grouped = {};
+
+      for (final record in result) {
+        grouped.putIfAbsent(record.group, () => []).add(record);
+      }
+
+      // Filtra os 5 melhores por grupo
+      final List<RecordEntity> filteredRecords = [];
+
+      grouped.forEach((group, groupRecords) {
+        final sorted = [...groupRecords]
+          ..sort((a, b) => a.timer.compareTo(b.timer));
+        filteredRecords.addAll(sorted.take(5));
+      });
+
+      emit(state.success(records: filteredRecords));
     } catch (e) {
       emit(state.error('Error when trying to load the highscore list'));
     }
@@ -54,20 +87,21 @@ abstract class RecordControllerBase with Store {
     emit(state.success());
   }
 
-  @computed
-  int get bestTime {
-    if (state.records.isEmpty) {
+  @action
+  int bestTime(String group) {
+    if (state.records.where((e) => e.group == group).isEmpty) {
       return -1;
     }
 
     return state.records
+        .where((e) => e.group == group)
         .reduce(
             (value, element) => value.timer < element.timer ? value : element)
         .timer;
   }
 
-  @computed
-  int get avgFive {
+  @action
+  int avgFive(String group) {
     if (state.records.isEmpty) {
       return -1;
     }
@@ -75,6 +109,7 @@ abstract class RecordControllerBase with Store {
     final lenghList = state.records.length < 5 ? state.records.length : 5;
 
     final sum = state.records
+        .where((e) => e.group == group)
         .take(lenghList)
         .map((e) => e.timer)
         .reduce((value, element) => value + element);
@@ -82,8 +117,8 @@ abstract class RecordControllerBase with Store {
     return (sum ~/ lenghList);
   }
 
-  @computed
-  int get avgTwelve {
+  @action
+  int avgTwelve(String group) {
     if (state.records.isEmpty) {
       return -1;
     }
@@ -91,6 +126,7 @@ abstract class RecordControllerBase with Store {
     final lenghList = state.records.length < 12 ? state.records.length : 12;
 
     final sum = state.records
+        .where((e) => e.group == group)
         .take(lenghList)
         .map((e) => e.timer)
         .reduce((value, element) => value + element);

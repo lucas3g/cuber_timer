@@ -63,6 +63,22 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
+  late final _$groupAtom =
+      Atom(name: 'TimerControllerBase.group', context: context);
+
+  @override
+  String get group {
+    _$groupAtom.reportRead();
+    return super.group;
+  }
+
+  @override
+  set group(String value) {
+    _$groupAtom.reportWrite(value, super.group, () {
+      super.group = value;
+    });
+  }
+
   late final _$colorChangeTimerAtom =
       Atom(name: 'TimerControllerBase.colorChangeTimer', context: context);
 
@@ -161,6 +177,7 @@ mixin _$TimerController on TimerControllerBase, Store {
     return '''
 state: ${state},
 textColor: ${textColor},
+group: ${group},
 colorChangeTimer: ${colorChangeTimer},
 listScrambles: ${listScrambles},
 randomScramble: ${randomScramble},

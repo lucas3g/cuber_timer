@@ -32,6 +32,9 @@ abstract class TimerControllerBase with Store {
   @observable
   Color textColor = Colors.white;
 
+  @observable
+  String group = "3x3";
+
   @computed
   List<String> get listScrambles => [
         "R2 F D2 F2 L F2 B' U B2 R F2 R F2 R U2 F2 U2 L2 B2 U'",
@@ -89,7 +92,11 @@ abstract class TimerControllerBase with Store {
     emit(StopTimerState());
     timer.onStopTimer();
 
-    final bestTimer = recordController.bestTime;
+    await saveTimerLocalDatabase();
+
+    await recordController.getAllRecords();
+
+    final bestTimer = recordController.bestTime(group);
 
     if (bestTimer > 0) {
       if (timer.rawTime.value < bestTimer) {
@@ -98,13 +105,12 @@ abstract class TimerControllerBase with Store {
         emit(StopTimerState());
       }
     }
-
-    await saveTimerLocalDatabase();
   }
 
   Future saveTimerLocalDatabase() async {
     final params = UpdateOrInsertDataParams(
-        table: Tables.records, data: {'timer': timer.rawTime.value});
+        table: Tables.records,
+        data: {'timer': timer.rawTime.value, 'group': group});
 
     await localDatabase.updateOrInsert(params: params);
   }

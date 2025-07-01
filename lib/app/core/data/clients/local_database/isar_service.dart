@@ -39,7 +39,8 @@ class IsarService implements ILocalDatabase {
 
     await isar.writeTxn(() async {
       if (params.table == Tables.records) {
-        final record = RecordEntity(timer: params.data['timer']);
+        final record = RecordEntity(
+            timer: params.data['timer'], group: params.data['group']);
 
         result = await isar.recordEntitys.put(record) > 0;
       }

@@ -8,6 +8,7 @@ import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:cuber_timer/app/modules/timer/presenter/widgets/alert_congrats_beat_record_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
+import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -208,6 +209,63 @@ class _TimerPageState extends State<TimerPage> {
                                           context.translate.timerPage
                                               .textHowToChangeScramble,
                                           style: context.textTheme.bodySmall,
+                                        ),
+                                        const Divider(),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              context.translate.timerPage
+                                                  .textDescriptionLabelGroup,
+                                              style: context.textTheme.bodyLarge
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: Colors.grey[400]!,
+                                                ),
+                                              ),
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                child: DropdownButton(
+                                                  items: CubeTypesList.types
+                                                      .map((e) {
+                                                    return DropdownMenuItem(
+                                                      value: e,
+                                                      child: Text(
+                                                        e,
+                                                        style: context.textTheme
+                                                            .bodyLarge,
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (value) {
+                                                    if (value != null) {
+                                                      setState(() {
+                                                        timerController.group =
+                                                            value;
+                                                      });
+                                                    }
+                                                  },
+                                                  value: timerController.group,
+                                                  icon: const Icon(
+                                                    Icons.arrow_drop_down,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

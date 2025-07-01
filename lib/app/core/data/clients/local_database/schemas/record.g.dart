@@ -17,8 +17,13 @@ const RecordEntitySchema = CollectionSchema(
   name: r'RecordEntity',
   id: 6472922730841492343,
   properties: {
-    r'timer': PropertySchema(
+    r'group': PropertySchema(
       id: 0,
+      name: r'group',
+      type: IsarType.string,
+    ),
+    r'timer': PropertySchema(
+      id: 1,
       name: r'timer',
       type: IsarType.long,
     )
@@ -43,6 +48,7 @@ int _recordEntityEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.group.length * 3;
   return bytesCount;
 }
 
@@ -52,7 +58,8 @@ void _recordEntitySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.timer);
+  writer.writeString(offsets[0], object.group);
+  writer.writeLong(offsets[1], object.timer);
 }
 
 RecordEntity _recordEntityDeserialize(
@@ -62,8 +69,9 @@ RecordEntity _recordEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = RecordEntity(
+    group: reader.readString(offsets[0]),
     id: id,
-    timer: reader.readLong(offsets[0]),
+    timer: reader.readLong(offsets[1]),
   );
   return object;
 }
@@ -76,6 +84,8 @@ P _recordEntityDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readString(offset)) as P;
+    case 1:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -176,6 +186,140 @@ extension RecordEntityQueryWhere
 
 extension RecordEntityQueryFilter
     on QueryBuilder<RecordEntity, RecordEntity, QFilterCondition> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      groupGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'group',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      groupStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> groupMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'group',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      groupIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'group',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition>
+      groupIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'group',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -309,6 +453,18 @@ extension RecordEntityQueryLinks
 
 extension RecordEntityQuerySortBy
     on QueryBuilder<RecordEntity, RecordEntity, QSortBy> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByGroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByGroupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.desc);
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> sortByTimer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'timer', Sort.asc);
@@ -324,6 +480,18 @@ extension RecordEntityQuerySortBy
 
 extension RecordEntityQuerySortThenBy
     on QueryBuilder<RecordEntity, RecordEntity, QSortThenBy> {
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByGroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenByGroupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.desc);
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -351,6 +519,13 @@ extension RecordEntityQuerySortThenBy
 
 extension RecordEntityQueryWhereDistinct
     on QueryBuilder<RecordEntity, RecordEntity, QDistinct> {
+  QueryBuilder<RecordEntity, RecordEntity, QDistinct> distinctByGroup(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'group', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<RecordEntity, RecordEntity, QDistinct> distinctByTimer() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'timer');
@@ -363,6 +538,12 @@ extension RecordEntityQueryProperty
   QueryBuilder<RecordEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<RecordEntity, String, QQueryOperations> groupProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'group');
     });
   }
 

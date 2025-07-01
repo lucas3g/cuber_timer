@@ -6,6 +6,7 @@ part 'record.g.dart';
 class RecordEntity {
   Id? id = Isar.autoIncrement;
   int timer;
+  String group;
 
-  RecordEntity({this.id, required this.timer});
+  RecordEntity({this.id, required this.timer, required this.group});
 }

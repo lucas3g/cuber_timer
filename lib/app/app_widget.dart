@@ -9,7 +9,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'utils/global_context.dart';
+import 'shared/utils/global_context.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({Key? key}) : super(key: key);
