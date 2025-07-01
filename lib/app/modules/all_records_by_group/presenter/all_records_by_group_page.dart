@@ -44,9 +44,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          groupArg == null
-              ? 'Carregando grupo...'
-              : '${context.translate.timerPage.titleAppBarMoreRecords} $groupArg',
+          context.translate.timerPage.titleAppBarMoreRecords,
         ),
       ),
       body: Padding(
@@ -67,36 +65,54 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
               final records = state.records;
 
               if (records.isEmpty) {
-                return const Center(child: Text('Nenhum registro encontrado.'));
+                return Center(
+                  child: Text(context.translate.homePage.listEmpty),
+                );
               }
 
-              return SuperListView.builder(
-                itemCount: records.length,
-                itemBuilder: (context, index) {
-                  final record = records[index];
+              return Column(
+                children: [
+                  Text(
+                    groupArg == null
+                        ? context.translate.timerPage.textGroupByModelLoading
+                        : '${context.translate.timerPage.textGroupByModel}: $groupArg',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Divider(),
+                  Expanded(
+                    child: SuperListView.builder(
+                      itemCount: records.length,
+                      itemBuilder: (context, index) {
+                        final record = records[index];
 
-                  final color = [
-                    Colors.amber,
-                    Colors.green,
-                    Colors.blue,
-                    Colors.red,
-                  ].elementAt(index.clamp(0, 3));
+                        final color = [
+                          Colors.amber,
+                          Colors.green,
+                          Colors.blue,
+                          Colors.red,
+                        ].elementAt(index.clamp(0, 3));
 
-                  final fontSize = [
-                    24.0,
-                    22.0,
-                    20.0,
-                    18.0,
-                  ].elementAt(index.clamp(0, 3));
+                        final fontSize = [
+                          24.0,
+                          22.0,
+                          20.0,
+                          18.0,
+                        ].elementAt(index.clamp(0, 3));
 
-                  return CardRecordWidget(
-                    recordController: recordController,
-                    index: index,
-                    recordEntity: record,
-                    colorText: color,
-                    fontSize: fontSize,
-                  );
-                },
+                        return CardRecordWidget(
+                          recordController: recordController,
+                          index: index,
+                          recordEntity: record,
+                          colorText: color,
+                          fontSize: fontSize,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             }
 

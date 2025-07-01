@@ -22,4 +22,6 @@ class TimerPageTranslation {
   String get textDescriptionLabelGroup =>
       translate('text_description_label_group');
   String get titleAppBarMoreRecords => translate('title_appbar_more_records');
+  String get textGroupByModel => translate('textGroupByModel');
+  String get textGroupByModelLoading => translate('textGroupByModelLoading');
 }
