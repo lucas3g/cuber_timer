@@ -48,9 +48,11 @@ class _TimerPageState extends State<TimerPage> {
       },
     );
 
-    if (!Platform.isWindows) {
-      initBannerAd();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!Platform.isWindows) {
+        await initBannerAd();
+      }
+    });
   }
 
   late BannerAd myBanner;
@@ -58,7 +60,7 @@ class _TimerPageState extends State<TimerPage> {
 
   initBannerAd() async {
     myBanner = BannerAd(
-      adUnitId: bannerID,
+      adUnitId: bannerTimerPage,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -74,6 +76,13 @@ class _TimerPageState extends State<TimerPage> {
     );
 
     await myBanner.load();
+  }
+
+  @override
+  void dispose() {
+    myBanner.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -120,13 +129,17 @@ class _TimerPageState extends State<TimerPage> {
               children: [
                 if (!Platform.isWindows && !configController.isAdRemoved) ...[
                   isAdLoaded
-                      ? SizedBox(
-                          height: myBanner.size.height.toDouble(),
-                          width: myBanner.size.width.toDouble(),
-                          child: AdWidget(ad: myBanner),
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: myBanner.size.height.toDouble(),
+                              width: myBanner.size.width.toDouble(),
+                              child: AdWidget(ad: myBanner),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
                         )
                       : const SizedBox(),
-                  const SizedBox(height: 10),
                 ],
                 Expanded(
                   child: Column(
@@ -147,97 +160,121 @@ class _TimerPageState extends State<TimerPage> {
                                   children: [
                                     Column(
                                       children: [
-                                        Text(
-                                          context.translate.timerPage
-                                              .titleScrambles,
-                                          style: context.textTheme.bodyLarge
-                                              ?.copyWith(
-                                            fontWeight: FontWeight.bold,
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                            horizontal: 12,
                                           ),
-                                        ),
-                                        Ink(
-                                          child: InkWell(
-                                            onTap: () async {
-                                              if (pageIndex <
-                                                  timerController
-                                                      .listScrambles.length) {
-                                                await pageController.nextPage(
-                                                  duration: const Duration(
-                                                      seconds: 1),
-                                                  curve: Curves.ease,
-                                                );
-
-                                                pageIndex++;
-                                              } else {
-                                                await pageController
-                                                    .previousPage(
-                                                  duration: const Duration(
-                                                      seconds: 1),
-                                                  curve: Curves.ease,
-                                                );
-
-                                                if (pageController.page == 0) {
-                                                  pageIndex = 0;
-                                                }
-                                              }
-                                            },
-                                            child: SizedBox(
-                                              height: 60,
-                                              width: context.screenWidth,
-                                              child: PageView(
-                                                controller: pageController,
-                                                children: timerController
-                                                    .listScrambles
-                                                    .map(
-                                                      (e) => Text(
-                                                        e,
-                                                        style: context
-                                                            .textTheme.bodyLarge
-                                                            ?.copyWith(
-                                                          fontSize: 20,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.justify,
-                                                      ),
-                                                    )
-                                                    .toList(),
-                                              ),
-                                            ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF151818),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                        ),
-                                        Text(
-                                          context.translate.timerPage
-                                              .textHowToChangeScramble,
-                                          style: context.textTheme.bodySmall,
-                                        ),
-                                        const Divider(),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              context.translate.timerPage
-                                                  .textDescriptionLabelGroup,
-                                              style: context.textTheme.bodyLarge
-                                                  ?.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                border: Border.all(
-                                                  color: Colors.grey[400]!,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                context.translate.timerPage
+                                                    .titleScrambles,
+                                                style: context
+                                                    .textTheme.bodyLarge
+                                                    ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              child:
-                                                  DropdownButtonHideUnderline(
+                                              Ink(
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    if (pageIndex <
+                                                        timerController
+                                                            .listScrambles
+                                                            .length) {
+                                                      await pageController
+                                                          .nextPage(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 1),
+                                                        curve: Curves.ease,
+                                                      );
+
+                                                      pageIndex++;
+                                                    } else {
+                                                      await pageController
+                                                          .previousPage(
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 1),
+                                                        curve: Curves.ease,
+                                                      );
+
+                                                      if (pageController.page ==
+                                                          0) {
+                                                        pageIndex = 0;
+                                                      }
+                                                    }
+                                                  },
+                                                  child: SizedBox(
+                                                    height: 60,
+                                                    width: context.screenWidth,
+                                                    child: PageView(
+                                                      controller:
+                                                          pageController,
+                                                      children: timerController
+                                                          .listScrambles
+                                                          .map(
+                                                            (e) => Text(
+                                                              e,
+                                                              style: context
+                                                                  .textTheme
+                                                                  .bodyLarge
+                                                                  ?.copyWith(
+                                                                fontSize: 20,
+                                                              ),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .justify,
+                                                            ),
+                                                          )
+                                                          .toList(),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                context.translate.timerPage
+                                                    .textHowToChangeScramble,
+                                                style:
+                                                    context.textTheme.bodySmall,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                            horizontal: 12,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF151818),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                context.translate.timerPage
+                                                    .textDescriptionLabelGroup,
+                                                style: context
+                                                    .textTheme.bodyLarge
+                                                    ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              DropdownButtonHideUnderline(
                                                 child: DropdownButton(
+                                                  alignment: Alignment.center,
                                                   items: CubeTypesList.types
                                                       .map((e) {
                                                     return DropdownMenuItem(
@@ -264,8 +301,8 @@ class _TimerPageState extends State<TimerPage> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

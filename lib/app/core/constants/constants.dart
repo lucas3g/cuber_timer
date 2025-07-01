@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cuber_timer/app/shared/translation/app_translation.dart';
 import 'package:flutter/material.dart';
 
-const bannerID = 'ca-app-pub-1898798427054986/5130180395';
+const bannerTopID = 'ca-app-pub-1898798427054986/5130180395';
+const bannerBottomID = 'ca-app-pub-1898798427054986/2075237603';
+const bannerTimerPage = 'ca-app-pub-1898798427054986/2399489477';
 const intersticialID = 'ca-app-pub-1898798427054986/4998867194';
 const adRemovalProductId = 'ad_removal';
 

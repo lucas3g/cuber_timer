@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
 
   late BannerAd myBanner;
   late BannerAd myBottmBanner;
-  bool isAdLoaded = false;
+  bool isTopAdLoaded = false;
+  bool isBottomAdLoaded = false;
 
   InterstitialAd? _interstitialAd;
 
@@ -65,13 +66,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  @override
+  void dispose() {
+    myBanner.dispose();
+    myBottmBanner.dispose();
+    _interstitialAd?.dispose();
+
+    super.dispose();
+  }
+
   Future<void> initBannerAd() async {
+    isTopAdLoaded = false;
+    setState(() {});
+
     myBanner = BannerAd(
-      adUnitId: bannerID,
+      adUnitId: bannerTopID,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (ad) => setState(() => isAdLoaded = true),
+        onAdLoaded: (ad) => setState(() => isTopAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
@@ -80,12 +93,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> initBottomBannerAd() async {
+    isBottomAdLoaded = false;
+    setState(() {});
     myBottmBanner = BannerAd(
-      adUnitId: bannerID,
+      adUnitId: bannerBottomID,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (ad) => setState(() => isAdLoaded = true),
+        onAdLoaded: (ad) => setState(() => isBottomAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
@@ -103,7 +118,7 @@ class _HomePageState extends State<HomePage> {
           _interstitialAd!.setImmersiveMode(true);
           setState(() {});
         },
-        onAdFailedToLoad: (_) async {
+        onAdFailedToLoad: (_) {
           _interstitialAd = null;
           _createInterstitialAd();
           setState(() {});
@@ -116,6 +131,10 @@ class _HomePageState extends State<HomePage> {
     if (_interstitialAd == null || configController.isAdRemoved) {
       await Navigator.pushNamed(context, NamedRoutes.timer.route);
       await getFiveRecordsByGroup();
+      if (!Platform.isWindows) {
+        initBannerAd();
+        initBottomBannerAd();
+      }
       _createInterstitialAd();
       return;
     }
@@ -123,7 +142,12 @@ class _HomePageState extends State<HomePage> {
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) async {
         await Navigator.pushNamed(context, NamedRoutes.timer.route);
+
         await getFiveRecordsByGroup();
+        if (!Platform.isWindows) {
+          initBannerAd();
+          initBottomBannerAd();
+        }
         ad.dispose();
 
         _createInterstitialAd();
@@ -199,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       if (!Platform.isWindows &&
                           !configController.isAdRemoved) ...[
-                        if (isAdLoaded)
+                        if (isTopAdLoaded)
                           SizedBox(
                             height: myBanner.size.height.toDouble(),
                             width: myBanner.size.width.toDouble(),
@@ -231,7 +255,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
                       Expanded(
                         child: DefaultTabController(
                           length: sortedGroupedRecords.length,
@@ -385,7 +408,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               Observer(builder: (context) {
                 final state = recordController.state;
 
@@ -401,10 +424,10 @@ class _HomePageState extends State<HomePage> {
                       label: Text(context.translate.homePage.buttonStart),
                       onPressed: _showInterstitialAd,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     if (!Platform.isWindows &&
                         !configController.isAdRemoved) ...[
-                      if (isAdLoaded)
+                      if (isBottomAdLoaded)
                         SizedBox(
                           height: myBottmBanner.size.height.toDouble(),
                           width: myBottmBanner.size.width.toDouble(),

@@ -65,5 +65,5 @@ const darkColorSchemePapagaio = ColorScheme(
   shadow: Color(0xFF000000),
   surfaceTint: Color(0xFF68DE83),
   outlineVariant: Color(0xFF414941),
-  scrim: Color(0xFF202123),
+  scrim: Color(0xFF0E1113),
 );

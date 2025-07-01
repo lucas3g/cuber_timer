@@ -89,7 +89,7 @@ abstract class RecordControllerBase with Store {
 
   @action
   int bestTime(String group) {
-    if (state.records.where((e) => e.group == group).isEmpty) {
+    if (state.records.where((e) => e.group.contains(group)).isEmpty) {
       return -1;
     }
 
@@ -102,7 +102,7 @@ abstract class RecordControllerBase with Store {
 
   @action
   int avgFive(String group) {
-    if (state.records.isEmpty) {
+    if (state.records.where((e) => e.group.contains(group)).isEmpty) {
       return -1;
     }
 
@@ -119,7 +119,7 @@ abstract class RecordControllerBase with Store {
 
   @action
   int avgTwelve(String group) {
-    if (state.records.isEmpty) {
+    if (state.records.where((e) => e.group.contains(group)).isEmpty) {
       return -1;
     }
 
