@@ -16,6 +16,10 @@ abstract class RecordStates {
   ErrorRecordState error(String message) {
     return ErrorRecordState(records: records, message: message);
   }
+
+  SuccessDeleteRecordState successDelete() {
+    return SuccessDeleteRecordState(records: records);
+  }
 }
 
 class InitialRecordState extends RecordStates {
@@ -28,6 +32,10 @@ class LoadingListRecordState extends RecordStates {
 
 class SuccessGetListRecordState extends RecordStates {
   SuccessGetListRecordState({required super.records});
+}
+
+class SuccessDeleteRecordState extends RecordStates {
+  SuccessDeleteRecordState({required super.records});
 }
 
 class ErrorRecordState extends RecordStates {

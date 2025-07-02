@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
 
     getFiveRecordsByGroup();
 
-    autorun((_) {
+    autorun((_) async {
       final state = recordController.state;
       if (state is ErrorRecordState) {
         MySnackBar(
@@ -63,6 +63,10 @@ class _HomePageState extends State<HomePage> {
           message: state.message,
           type: TypeSnack.error,
         );
+      }
+
+      if (state is SuccessDeleteRecordState) {
+        await getFiveRecordsByGroup();
       }
     });
   }
@@ -180,7 +184,8 @@ class _HomePageState extends State<HomePage> {
             children: [
               Observer(builder: (context) {
                 final state = recordController.state;
-                if (state is! SuccessGetListRecordState) {
+                if (state is! SuccessGetListRecordState &&
+                    state is! SuccessDeleteRecordState) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -456,7 +461,8 @@ class _HomePageState extends State<HomePage> {
               Observer(builder: (context) {
                 final state = recordController.state;
 
-                if (state is! SuccessGetListRecordState) {
+                if (state is! SuccessGetListRecordState &&
+                    state is! SuccessDeleteRecordState) {
                   return const SizedBox();
                 }
 
