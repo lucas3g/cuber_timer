@@ -24,4 +24,8 @@ class TimerPageTranslation {
   String get titleAppBarMoreRecords => translate('title_appbar_more_records');
   String get textGroupByModel => translate('textGroupByModel');
   String get textGroupByModelLoading => translate('textGroupByModelLoading');
+  String get textButtonListScrambles => translate('textButtonListScrambles');
+  String get titleAppbarScramblesList => translate('titleAppbarScramblesList');
+  String get textDescriptionScrambleSelected =>
+      translate('textDescriptionScrambleSelected');
 }

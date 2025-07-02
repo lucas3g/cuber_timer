@@ -27,3 +27,6 @@ timer_page:
   title_appbar_more_records: Mais Recordes Por Modelo
   textGroupByModel: Modelo
   textGroupByModelLoading: Carregando modelos...
+  textButtonListScrambles: Clique aqui para ver a lista de embaralhamentos
+  titleAppbarScramblesList: Lista de Embaralhamentos
+  textDescriptionScrambleSelected: Clique em um embaralhamento para destacá-lo

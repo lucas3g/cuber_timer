@@ -162,6 +162,7 @@ class _TimerPageState extends State<TimerPage> {
                                     Column(
                                       children: [
                                         Container(
+                                          width: context.screenWidth,
                                           padding: const EdgeInsets.symmetric(
                                             vertical: 8,
                                             horizontal: 12,
@@ -191,37 +192,24 @@ class _TimerPageState extends State<TimerPage> {
                                                           ListScramblesPage(
                                                         pageController:
                                                             pageController,
-                                                        pages: timerController
-                                                            .listScrambles
-                                                            .map<Widget>(
-                                                              (String scramble) =>
-                                                                  Text(
-                                                                scramble,
-                                                                style: context
-                                                                    .textTheme
-                                                                    .bodyLarge
-                                                                    ?.copyWith(
-                                                                  fontSize: 20,
-                                                                ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .justify,
-                                                              ),
-                                                            )
-                                                            .toList(),
+                                                        scrambles:
+                                                            timerController
+                                                                .listScrambles,
                                                       ),
                                                     ),
                                                   );
                                                 },
-                                                child:
-                                                    const Text('Clique aqui'),
+                                                child: Text(context
+                                                    .translate
+                                                    .timerPage
+                                                    .textButtonListScrambles),
                                               ),
-                                              Text(
-                                                context.translate.timerPage
-                                                    .textHowToChangeScramble,
-                                                style:
-                                                    context.textTheme.bodySmall,
-                                              ),
+                                              // Text(
+                                              //   context.translate.timerPage
+                                              //       .textHowToChangeScramble,
+                                              //   style:
+                                              //       context.textTheme.bodySmall,
+                                              // ),
                                             ],
                                           ),
                                         ),

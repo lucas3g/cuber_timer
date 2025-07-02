@@ -27,3 +27,6 @@ timer_page:
   title_appbar_more_records: More Records By Model
   textGroupByModel: Model
   textGroupByModelLoading: Loading models...
+  textButtonListScrambles: Click here to see the scrambles list
+  titleAppbarScramblesList: Scrambles List
+  textDescriptionScrambleSelected: Click on a scramble to highlight it
