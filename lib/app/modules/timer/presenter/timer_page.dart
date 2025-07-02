@@ -7,6 +7,7 @@ import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.d
 import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:cuber_timer/app/modules/timer/presenter/widgets/alert_congrats_beat_record_widget.dart';
+import 'package:cuber_timer/app/modules/timer/presenter/widgets/list_scrambles_page.dart';
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:flutter/material.dart';
@@ -181,63 +182,39 @@ class _TimerPageState extends State<TimerPage> {
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              Ink(
-                                                child: InkWell(
-                                                  onTap: () async {
-                                                    if (pageIndex <
-                                                        timerController
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          ListScramblesPage(
+                                                        pageController:
+                                                            pageController,
+                                                        pages: timerController
                                                             .listScrambles
-                                                            .length) {
-                                                      await pageController
-                                                          .nextPage(
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 1),
-                                                        curve: Curves.ease,
-                                                      );
-
-                                                      pageIndex++;
-                                                    } else {
-                                                      await pageController
-                                                          .previousPage(
-                                                        duration:
-                                                            const Duration(
-                                                                seconds: 1),
-                                                        curve: Curves.ease,
-                                                      );
-
-                                                      if (pageController.page ==
-                                                          0) {
-                                                        pageIndex = 0;
-                                                      }
-                                                    }
-                                                  },
-                                                  child: SizedBox(
-                                                    height: 60,
-                                                    width: context.screenWidth,
-                                                    child: PageView(
-                                                      controller:
-                                                          pageController,
-                                                      children: timerController
-                                                          .listScrambles
-                                                          .map(
-                                                            (e) => Text(
-                                                              e,
-                                                              style: context
-                                                                  .textTheme
-                                                                  .bodyLarge
-                                                                  ?.copyWith(
-                                                                fontSize: 20,
+                                                            .map<Widget>(
+                                                              (String scramble) =>
+                                                                  Text(
+                                                                scramble,
+                                                                style: context
+                                                                    .textTheme
+                                                                    .bodyLarge
+                                                                    ?.copyWith(
+                                                                  fontSize: 20,
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .justify,
                                                               ),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .justify,
-                                                            ),
-                                                          )
-                                                          .toList(),
+                                                            )
+                                                            .toList(),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
+                                                  );
+                                                },
+                                                child:
+                                                    const Text('Clique aqui'),
                                               ),
                                               Text(
                                                 context.translate.timerPage
