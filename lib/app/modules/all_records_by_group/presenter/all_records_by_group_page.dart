@@ -188,8 +188,8 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
               );
             }
 
-            return const Center(
-              child: Text('Estado desconhecido.'),
+            return Center(
+              child: Text(context.translate.homePage.listEmpty),
             );
           },
         ),

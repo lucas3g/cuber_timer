@@ -44,6 +44,8 @@ class _HomePageState extends State<HomePage> {
 
   late Map<String, List<RecordEntity>> sortedGroupedRecords;
 
+  TabController? tabController;
+
   @override
   void initState() {
     super.initState();
@@ -194,14 +196,15 @@ class _HomePageState extends State<HomePage> {
             children: [
               Observer(builder: (context) {
                 final state = recordController.state;
-                if (state is! SuccessGetListRecordState &&
-                    state is! SuccessDeleteRecordState) {
+                if (state is! SuccessGetListRecordState) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const MyCircularProgressWidget(),
-                      Text(context.translate.homePage.textLoading,
-                          style: context.textTheme.bodyLarge),
+                      Text(
+                        context.translate.homePage.textLoading,
+                        style: context.textTheme.bodyLarge,
+                      ),
                     ],
                   );
                 }
@@ -210,7 +213,8 @@ class _HomePageState extends State<HomePage> {
 
                 if (records.isEmpty) {
                   return NoDataWidget(
-                      text: context.translate.homePage.listEmpty);
+                    text: context.translate.homePage.listEmpty,
+                  );
                 }
 
                 final groupedRecords = <String, List<RecordEntity>>{};
@@ -471,8 +475,7 @@ class _HomePageState extends State<HomePage> {
               Observer(builder: (context) {
                 final state = recordController.state;
 
-                if (state is! SuccessGetListRecordState &&
-                    state is! SuccessDeleteRecordState) {
+                if (state is! SuccessGetListRecordState) {
                   return const SizedBox();
                 }
 
