@@ -42,6 +42,8 @@ class _HomePageState extends State<HomePage> {
 
   InterstitialAd? _interstitialAd;
 
+  late Map<String, List<RecordEntity>> sortedGroupedRecords;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +59,7 @@ class _HomePageState extends State<HomePage> {
 
     autorun((_) async {
       final state = recordController.state;
+
       if (state is ErrorRecordState) {
         MySnackBar(
           title: 'Opss...',
@@ -65,8 +68,15 @@ class _HomePageState extends State<HomePage> {
         );
       }
 
-      if (state is SuccessDeleteRecordState) {
-        await getFiveRecordsByGroup();
+      if (state is SuccessGetListRecordState) {
+        if (state.records.isNotEmpty) {
+          if (selectedTabIndex > 0) {
+            selectedTabIndex = selectedTabIndex - 1;
+
+            selectedGroup =
+                sortedGroupedRecords.keys.elementAt(selectedTabIndex);
+          }
+        }
       }
     });
   }
@@ -219,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                     return indexA.compareTo(indexB);
                   });
 
-                final sortedGroupedRecords = {
+                sortedGroupedRecords = {
                   for (var key in sortedGroupKeys) key: groupedRecords[key]!,
                 };
 

@@ -91,7 +91,7 @@ abstract class RecordControllerBase with Store {
 
     state.records.remove(record);
 
-    emit(state.successDelete());
+    emit(state.success());
   }
 
   @action
