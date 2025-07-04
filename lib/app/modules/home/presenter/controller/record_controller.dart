@@ -91,7 +91,14 @@ abstract class RecordControllerBase with Store {
 
     state.records.remove(record);
 
-    emit(state.success());
+    final groupExists = state.records.any((e) => e.group == record.group);
+
+    if (!groupExists) {
+      emit(state.successDelete(record.group));
+      return;
+    }
+
+    emit(state.successDelete(''));
   }
 
   @action

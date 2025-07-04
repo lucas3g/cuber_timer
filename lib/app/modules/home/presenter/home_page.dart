@@ -29,10 +29,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final recordController = getIt<RecordController>();
   final configController = getIt<ConfigController>();
-  int selectedTabIndex = 0;
+
+  int _currentTabIndex = 0;
+
   String selectedGroup = '3x3';
 
   late BannerAd myBanner;
@@ -44,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   late Map<String, List<RecordEntity>> sortedGroupedRecords;
 
-  TabController? tabController;
+  TabController? _tabController;
 
   @override
   void initState() {
@@ -72,19 +74,118 @@ class _HomePageState extends State<HomePage> {
 
       if (state is SuccessGetListRecordState) {
         if (state.records.isNotEmpty) {
-          if (selectedTabIndex > 0) {
-            selectedTabIndex = selectedTabIndex - 1;
+          _updateTabController(state.records);
+        }
+      }
 
-            selectedGroup =
-                sortedGroupedRecords.keys.elementAt(selectedTabIndex);
-          }
+      if (state is SuccessDeleteRecordState) {
+        if (state.groupDelete.isNotEmpty) {
+          removeTab(state.groupDelete);
         }
       }
     });
   }
 
+  void _updateTabController(List<RecordEntity> records) {
+    // Processar e agrupar records
+    final groupedRecords = <String, List<RecordEntity>>{};
+
+    for (var record in records) {
+      groupedRecords.putIfAbsent(record.group, () => []).add(record);
+    }
+
+    final sortedGroupKeys = groupedRecords.keys.toList()
+      ..sort((a, b) {
+        final indexA = CubeTypesList.types.indexOf(a);
+        final indexB = CubeTypesList.types.indexOf(b);
+        return indexA.compareTo(indexB);
+      });
+
+    sortedGroupedRecords = {
+      for (var key in sortedGroupKeys) key: groupedRecords[key]!,
+    };
+
+    final newTabCount = sortedGroupedRecords.length;
+
+    // Verificar se houve mudança no número de tabs
+    if (newTabCount > 0) {
+      _recreateTabController(newTabCount);
+    }
+  }
+
+  void _recreateTabController(int newLength) {
+    // Salvar o índice atual antes de dispor o controller
+    final currentIndex = _tabController?.index ?? 0;
+
+    // Remover listener e dispor controller anterior
+    _tabController?.removeListener(_onTabChanged);
+
+    if (newLength > 0) {
+      // Garantir que o índice seja válido para o novo length
+      _currentTabIndex = currentIndex.clamp(0, newLength - 1);
+
+      // Criar novo controller
+      _tabController = TabController(
+        length: newLength,
+        vsync: this,
+        initialIndex: _currentTabIndex,
+      );
+
+      // Adicionar listener
+      _tabController?.addListener(_onTabChanged);
+
+      // Atualizar o grupo selecionado
+      if (sortedGroupedRecords.isNotEmpty) {
+        selectedGroup = sortedGroupedRecords.keys.elementAt(_currentTabIndex);
+      }
+
+      // Forçar rebuild
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  void _onTabChanged() {
+    if (_tabController == null || !_tabController!.indexIsChanging) return;
+
+    final newIndex = _tabController!.index;
+
+    // Verificar se o índice é válido
+    if (newIndex >= 0 && newIndex < sortedGroupedRecords.length) {
+      setState(() {
+        _currentTabIndex = newIndex;
+        selectedGroup = sortedGroupedRecords.keys.elementAt(newIndex);
+      });
+    }
+  }
+
+  // Método para remover uma tab específica (exemplo)
+  void removeTab(String groupToRemove) {
+    if (sortedGroupedRecords.containsKey(groupToRemove)) {
+      final removedIndex =
+          sortedGroupedRecords.keys.toList().indexOf(groupToRemove);
+
+      // Ajustar o índice atual se necessário
+      if (_currentTabIndex >= removedIndex && _currentTabIndex > 0) {
+        _currentTabIndex--;
+      }
+
+      // Remover o grupo
+      sortedGroupedRecords.remove(groupToRemove);
+
+      _updateTabController(
+        sortedGroupedRecords.values.expand((e) => e).toList(),
+      );
+    }
+  }
+
   @override
   void dispose() {
+    _tabController?.removeListener(_onTabChanged);
+    _tabController?.dispose();
+
+    // Dispose outros recursos...
     myBanner.dispose();
     myBottmBanner.dispose();
     _interstitialAd?.dispose();
@@ -146,7 +247,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _showInterstitialAd() async {
     if (_interstitialAd == null || configController.isAdRemoved) {
-      await Navigator.pushNamed(context, NamedRoutes.timer.route);
+      await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
       await getFiveRecordsByGroup();
       if (!Platform.isWindows) {
         initBannerAd();
@@ -158,7 +259,7 @@ class _HomePageState extends State<HomePage> {
 
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) async {
-        await Navigator.pushNamed(context, NamedRoutes.timer.route);
+        await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
 
         await getFiveRecordsByGroup();
         if (!Platform.isWindows) {
@@ -195,8 +296,16 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Observer(builder: (context) {
+                if (_tabController == null || sortedGroupedRecords.isEmpty) {
+                  return NoDataWidget(
+                    text: context.translate.homePage.listEmpty,
+                  );
+                }
+
                 final state = recordController.state;
-                if (state is! SuccessGetListRecordState) {
+
+                if (state is! SuccessGetListRecordState &&
+                    state is! SuccessDeleteRecordState) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -217,30 +326,11 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
 
-                final groupedRecords = <String, List<RecordEntity>>{};
-
-                for (var record in records) {
-                  groupedRecords
-                      .putIfAbsent(record.group, () => [])
-                      .add(record);
-                }
-
-                // Ordena as chaves com base na ordem da lista CubeTypesList.types
-                final sortedGroupKeys = groupedRecords.keys.toList()
-                  ..sort((a, b) {
-                    final indexA = CubeTypesList.types.indexOf(a);
-                    final indexB = CubeTypesList.types.indexOf(b);
-                    return indexA.compareTo(indexB);
-                  });
-
-                sortedGroupedRecords = {
-                  for (var key in sortedGroupKeys) key: groupedRecords[key]!,
-                };
-
                 return Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Banners...
                       if (!Platform.isWindows &&
                           !configController.isAdRemoved) ...[
                         if (isTopAdLoaded)
@@ -251,6 +341,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         const SizedBox(height: 10),
                       ],
+
+                      // Header
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -275,236 +367,211 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
+
+                      // TabBar e TabBarView
                       Expanded(
-                        child: DefaultTabController(
-                          length: sortedGroupedRecords.length,
-                          child: Builder(builder: (context) {
-                            final controller = DefaultTabController.of(context);
-
-                            controller.addListener(() {
-                              if (!controller.indexIsChanging) {
-                                setState(() {
-                                  selectedTabIndex = controller.index;
-                                  selectedGroup = sortedGroupedRecords.keys
-                                      .elementAt(selectedTabIndex);
-                                });
-                              }
-                            });
-
-                            return Column(
-                              children: [
-                                TabBar(
-                                  isScrollable: true,
-                                  labelColor: Colors.white,
-                                  unselectedLabelColor:
-                                      context.myTheme.onSurface,
-                                  tabAlignment: TabAlignment.start,
-                                  indicatorColor: context.myTheme.primary,
-                                  tabs: sortedGroupedRecords.keys
-                                      .map(
-                                        (group) => Tab(
-                                          child: Text(
-                                            group,
-                                            style: context.textTheme.bodyLarge
-                                                ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                                const SizedBox(height: 10),
-                                Expanded(
-                                  child: TabBarView(
-                                    children: sortedGroupedRecords.entries
-                                        .map((entry) {
-                                      final groupItems = entry.value;
-
-                                      return Column(
-                                        children: [
-                                          Expanded(
-                                            child: SuperListView.separated(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 4,
-                                              ),
-                                              itemCount: groupItems.length,
-                                              itemBuilder: (context, index) {
-                                                final record =
-                                                    groupItems[index];
-
-                                                final color = [
-                                                  Colors.amber,
-                                                  Colors.green,
-                                                  Colors.blue,
-                                                  Colors.red,
-                                                ].elementAt(index.clamp(0, 3));
-
-                                                final fontSize = [
-                                                  24.0,
-                                                  22.0,
-                                                  20.0,
-                                                  18.0,
-                                                ].elementAt(index.clamp(0, 3));
-
-                                                if (index == 4) {
-                                                  return Column(
-                                                    children: [
-                                                      CardRecordWidget(
-                                                        recordController:
-                                                            recordController,
-                                                        index: index,
-                                                        recordEntity: record,
-                                                        colorText: color,
-                                                        fontSize: fontSize,
-                                                      ),
-                                                      Visibility(
-                                                        visible:
-                                                            groupItems.length ==
-                                                                5,
-                                                        child: ElevatedButton(
-                                                          onPressed: () async {
-                                                            await Navigator
-                                                                .pushNamed(
-                                                              context,
-                                                              NamedRoutes
-                                                                  .allRecordsByGroup
-                                                                  .route,
-                                                              arguments: {
-                                                                'group':
-                                                                    selectedGroup,
-                                                              },
-                                                            );
-
-                                                            await getFiveRecordsByGroup();
-                                                          },
-                                                          child: Text(
-                                                            context
-                                                                .translate
-                                                                .homePage
-                                                                .buttonMoreRecords,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-
-                                                return CardRecordWidget(
-                                                  recordController:
-                                                      recordController,
-                                                  index: index,
-                                                  recordEntity: record,
-                                                  colorText: color,
-                                                  fontSize: fontSize,
-                                                );
-                                              },
-                                              separatorBuilder: (_, __) =>
-                                                  const SizedBox(height: 10),
-                                            ),
-                                          ),
-                                          Divider(
-                                            color: context.myTheme.onSurface,
-                                          ),
-                                          Center(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                border: Border.symmetric(
-                                                  horizontal: BorderSide(
-                                                    color: context
-                                                        .myTheme.onSurface,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                context.translate.homePage
-                                                    .titleAvg,
-                                                style: context
-                                                    .textTheme.bodyLarge
-                                                    ?.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              _buildAvgColumn(
-                                                context.translate.homePage.best,
-                                                recordController
-                                                    .bestTime(selectedGroup),
-                                                Colors.amber,
-                                              ),
-                                              _buildAvgColumn(
-                                                context.translate.homePage.avg5,
-                                                recordController
-                                                    .avgFive(selectedGroup),
-                                                Colors.green,
-                                              ),
-                                              _buildAvgColumn(
-                                                context
-                                                    .translate.homePage.avg12,
-                                                recordController
-                                                    .avgTwelve(selectedGroup),
-                                                Colors.blue,
-                                              ),
-                                            ],
-                                          ),
-                                          Divider(
-                                            color: context.myTheme.onSurface,
-                                          ),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                        ),
+                        child: _buildTabSection(),
                       ),
                     ],
                   ),
                 );
               }),
-              const SizedBox(height: 5),
-              Observer(builder: (context) {
-                final state = recordController.state;
 
-                if (state is! SuccessGetListRecordState) {
-                  return const SizedBox();
-                }
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    MyElevatedButtonWidget(
-                      width: context.screenWidth * .4,
-                      label: Text(context.translate.homePage.buttonStart),
-                      onPressed: _showInterstitialAd,
-                    ),
-                    const SizedBox(height: 15),
-                    if (!Platform.isWindows &&
-                        !configController.isAdRemoved) ...[
-                      if (isBottomAdLoaded && state.records.isNotEmpty)
-                        SizedBox(
-                          height: myBottmBanner.size.height.toDouble(),
-                          width: myBottmBanner.size.width.toDouble(),
-                          child: AdWidget(ad: myBottmBanner),
-                        ),
-                    ],
-                  ],
-                );
-              }),
+              // Botão Start e banner inferior
+              _buildBottomSection(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildTabSection() {
+    return Column(
+      children: [
+        TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          labelColor: Colors.white,
+          unselectedLabelColor: context.myTheme.onSurface,
+          tabAlignment: TabAlignment.start,
+          indicatorColor: context.myTheme.primary,
+          tabs: sortedGroupedRecords.keys
+              .map(
+                (group) => Tab(
+                  child: Text(
+                    group,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: sortedGroupedRecords.entries
+                .map((entry) => _buildTabContent(entry))
+                .toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTabContent(MapEntry<String, List<RecordEntity>> entry) {
+    final groupItems = entry.value;
+
+    return Column(
+      children: [
+        Expanded(
+          child: SuperListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            itemCount: groupItems.length,
+            itemBuilder: (context, index) {
+              final record = groupItems[index];
+
+              final color = [
+                Colors.amber,
+                Colors.green,
+                Colors.blue,
+                Colors.red,
+              ].elementAt(index.clamp(0, 3));
+
+              final fontSize = [
+                24.0,
+                22.0,
+                20.0,
+                18.0,
+              ].elementAt(index.clamp(0, 3));
+
+              if (index == 4) {
+                return Column(
+                  children: [
+                    CardRecordWidget(
+                      recordController: recordController,
+                      index: index,
+                      recordEntity: record,
+                      colorText: color,
+                      fontSize: fontSize,
+                    ),
+                    Visibility(
+                      visible: groupItems.length == 5,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await Navigator.pushNamed(
+                            context,
+                            NamedRoutes.allRecordsByGroup.route,
+                            arguments: {'group': selectedGroup},
+                          );
+                          await getFiveRecordsByGroup();
+                        },
+                        child: Text(
+                          context.translate.homePage.buttonMoreRecords,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+
+              return CardRecordWidget(
+                recordController: recordController,
+                index: index,
+                recordEntity: record,
+                colorText: color,
+                fontSize: fontSize,
+              );
+            },
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+          ),
+        ),
+
+        // Seção de médias
+        _buildAverageSection(),
+      ],
+    );
+  }
+
+  Widget _buildAverageSection() {
+    return Column(
+      children: [
+        Divider(color: context.myTheme.onSurface),
+        Center(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.symmetric(
+                horizontal: BorderSide(
+                  color: context.myTheme.onSurface,
+                ),
+              ),
+            ),
+            child: Text(
+              context.translate.homePage.titleAvg,
+              style: context.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildAvgColumn(
+              context.translate.homePage.best,
+              recordController.bestTime(selectedGroup),
+              Colors.amber,
+            ),
+            _buildAvgColumn(
+              context.translate.homePage.avg5,
+              recordController.avgFive(selectedGroup),
+              Colors.green,
+            ),
+            _buildAvgColumn(
+              context.translate.homePage.avg12,
+              recordController.avgTwelve(selectedGroup),
+              Colors.blue,
+            ),
+          ],
+        ),
+        Divider(color: context.myTheme.onSurface),
+      ],
+    );
+  }
+
+  Widget _buildBottomSection() {
+    return Observer(builder: (context) {
+      final state = recordController.state;
+
+      if (state is! SuccessGetListRecordState &&
+          state is! SuccessDeleteRecordState) {
+        return const SizedBox();
+      }
+
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MyElevatedButtonWidget(
+            width: context.screenWidth * .4,
+            label: Text(context.translate.homePage.buttonStart),
+            onPressed: _showInterstitialAd,
+          ),
+          const SizedBox(height: 15),
+          if (!Platform.isWindows && !configController.isAdRemoved) ...[
+            if (isBottomAdLoaded && state.records.isNotEmpty)
+              SizedBox(
+                height: myBottmBanner.size.height.toDouble(),
+                width: myBottmBanner.size.width.toDouble(),
+                child: AdWidget(ad: myBottmBanner),
+              ),
+          ],
+        ],
+      );
+    });
   }
 
   Widget _buildAvgColumn(String label, int time, Color color) {

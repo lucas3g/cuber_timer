@@ -20,7 +20,8 @@ class _SplashPageState extends State<SplashPage> {
     await Future.delayed(const Duration(seconds: 1));
 
     if (mounted) {
-      await Navigator.pushNamed(context, NamedRoutes.home.route);
+      await Navigator.pushNamedAndRemoveUntil(
+          context, NamedRoutes.home.route, (route) => false);
     }
   }
 

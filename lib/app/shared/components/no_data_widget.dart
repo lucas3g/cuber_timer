@@ -26,6 +26,9 @@ class NoDataWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );

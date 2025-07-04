@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.dart';
@@ -91,6 +92,15 @@ class _TimerPageState extends State<TimerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.translate.timerPage.titleAppBar),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              NamedRoutes.home.route,
+              (route) => false,
+            );
+          },
+        ),
       ),
       body: Observer(builder: (context) {
         final state = timerController.state;

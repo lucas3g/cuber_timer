@@ -17,8 +17,8 @@ abstract class RecordStates {
     return ErrorRecordState(records: records, message: message);
   }
 
-  SuccessDeleteRecordState successDelete() {
-    return SuccessDeleteRecordState(records: records);
+  SuccessDeleteRecordState successDelete(String groupDelete) {
+    return SuccessDeleteRecordState(records: records, groupDelete: groupDelete);
   }
 }
 
@@ -35,7 +35,9 @@ class SuccessGetListRecordState extends RecordStates {
 }
 
 class SuccessDeleteRecordState extends RecordStates {
-  SuccessDeleteRecordState({required super.records});
+  final String groupDelete;
+
+  SuccessDeleteRecordState({required super.records, required this.groupDelete});
 }
 
 class ErrorRecordState extends RecordStates {
