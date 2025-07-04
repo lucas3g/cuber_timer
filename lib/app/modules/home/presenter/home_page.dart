@@ -52,11 +52,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _createInterstitialAd();
-
     if (!Platform.isWindows) {
       initBannerAd();
       initBottomBannerAd();
+      _createInterstitialAd();
     }
 
     getFiveRecordsByGroup();
