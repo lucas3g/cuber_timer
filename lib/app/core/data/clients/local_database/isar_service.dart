@@ -23,6 +23,7 @@ class IsarService implements ILocalDatabase {
         result = await isar.recordEntitys
             .filter()
             .groupContains(params.filter!)
+            .sortByTimer()
             .findAll();
       } else {
         result = await isar.recordEntitys.where().sortByTimer().findAll();

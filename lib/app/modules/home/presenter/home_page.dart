@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void _onTabChanged() {
-    if (_tabController == null || !_tabController!.indexIsChanging) return;
+    if (_tabController == null) return;
 
     final newIndex = _tabController!.index;
 
