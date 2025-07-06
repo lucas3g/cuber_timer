@@ -46,8 +46,11 @@ Future<void> _initIsar() async {
 Future<void> _checkRecordsWithoutGroupAndSetGroupDefault() async {
   final isar = getIt<Isar>();
 
-  final records =
-      await isar.recordEntitys.where().filter().groupIsEmpty().findAll();
+  final records = await isar.recordEntitys
+      .where()
+      .filter()
+      .createdAtLessThan(DateTime(2010))
+      .findAll();
 
   if (records.isNotEmpty) {
     for (final record in records) {
