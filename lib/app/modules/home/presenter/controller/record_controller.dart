@@ -89,9 +89,12 @@ abstract class RecordControllerBase with Store {
 
     await localDatabase.remove(params: params);
 
-    state.records.remove(record);
+    final updatedRecords = List<RecordEntity>.from(state.records)
+      ..remove(record);
 
-    final groupExists = state.records.any((e) => e.group == record.group);
+    emit(state.success(records: updatedRecords));
+
+    final groupExists = updatedRecords.any((e) => e.group == record.group);
 
     if (!groupExists) {
       emit(state.successDelete(record.group));
