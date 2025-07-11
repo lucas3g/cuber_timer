@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/modules/config/presenter/services/in_app_purcashe_service.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/constants/constants.dart';
+import 'in_app_purcashe_service.dart';
 
 @Injectable(as: IInAppPurchaseService)
 class InAppPurchaseServiceImp implements IInAppPurchaseService {

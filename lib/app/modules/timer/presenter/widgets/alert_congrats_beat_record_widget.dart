@@ -1,7 +1,8 @@
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../../core/constants/constants.dart';
+import '../../../../shared/components/my_elevated_button_widget.dart';
 
 class AlertCongratsBeatRecordWidget extends StatelessWidget {
   const AlertCongratsBeatRecordWidget({super.key});

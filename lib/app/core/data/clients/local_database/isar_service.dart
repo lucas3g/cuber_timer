@@ -1,10 +1,10 @@
-import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 
 import 'helpers/tables.dart';
 import 'local_database.dart';
 import 'params/local_database_params.dart';
+import 'schemas/record.dart';
 
 @Injectable(as: ILocalDatabase)
 class IsarService implements ILocalDatabase {

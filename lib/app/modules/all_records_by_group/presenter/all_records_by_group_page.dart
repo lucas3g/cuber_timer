@@ -1,15 +1,16 @@
 import 'dart:io';
 
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/di/dependency_injection.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
-import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
-import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
-import 'package:cuber_timer/app/modules/home/presenter/widgets/card_record_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
+
+import '../../../core/constants/constants.dart';
+import '../../../di/dependency_injection.dart';
+import '../../config/presenter/controller/config_controller.dart';
+import '../../home/presenter/controller/record_controller.dart';
+import '../../home/presenter/controller/record_states.dart';
+import '../../home/presenter/widgets/card_record_widget.dart';
 
 class AllRecordsByGroupPage extends StatefulWidget {
   const AllRecordsByGroupPage({super.key});

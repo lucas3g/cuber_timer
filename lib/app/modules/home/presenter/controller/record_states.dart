@@ -1,4 +1,4 @@
-import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
+import '../../../../core/data/clients/local_database/schemas/record.dart';
 
 abstract class RecordStates {
   final List<RecordEntity> records;

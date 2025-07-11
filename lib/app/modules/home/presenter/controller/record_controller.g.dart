@@ -51,6 +51,16 @@ mixin _$RecordController on RecordControllerBase, Store {
     return _$deleteRecordAsyncAction.run(() => super.deleteRecord(record));
   }
 
+  late final _$getAllRecordsByGroupAsyncAction = AsyncAction(
+      'RecordControllerBase.getAllRecordsByGroup',
+      context: context);
+
+  @override
+  Future<void> getAllRecordsByGroup(String group) {
+    return _$getAllRecordsByGroupAsyncAction
+        .run(() => super.getAllRecordsByGroup(group));
+  }
+
   late final _$RecordControllerBaseActionController =
       ActionController(name: 'RecordControllerBase', context: context);
 

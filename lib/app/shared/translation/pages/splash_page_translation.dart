@@ -1,5 +1,6 @@
-import 'package:cuber_timer/app/shared/translation/helper/i18_helper.dart';
 import 'package:flutter/material.dart';
+
+import '../helper/i18_helper.dart';
 
 class SplashPageTranslation {
   final BuildContext context;

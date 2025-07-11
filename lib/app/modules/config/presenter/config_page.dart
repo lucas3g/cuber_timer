@@ -1,9 +1,10 @@
-import 'package:cuber_timer/app/di/dependency_injection.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../di/dependency_injection.dart';
+import 'controller/config_controller.dart';
+import 'controller/config_states.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});

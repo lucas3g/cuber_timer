@@ -1,5 +1,6 @@
-import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/constants/constants.dart';
 
 class MyElevatedButtonWidget extends StatefulWidget {
   final Widget label;

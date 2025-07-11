@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:cuber_timer/app/shared/translation/app_translation.dart';
 import 'package:flutter/material.dart';
+
+import '../../shared/translation/app_translation.dart';
 
 const bannerTopID = 'ca-app-pub-1898798427054986/5130180395';
 const bannerBottomID = 'ca-app-pub-1898798427054986/2075237603';

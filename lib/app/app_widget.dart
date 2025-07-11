@@ -1,14 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
-import 'package:cuber_timer/app/core/routes/app_routes.dart';
-import 'package:cuber_timer/app/core/routes/domain/entities/custom_transition.dart';
-import 'package:cuber_timer/app/core/routes/domain/entities/custom_transition_type.dart';
-import 'package:cuber_timer/app/shared/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'core/domain/entities/named_routes.dart';
+import 'core/routes/app_routes.dart';
+import 'core/routes/domain/entities/custom_transition.dart';
+import 'core/routes/domain/entities/custom_transition_type.dart';
+import 'shared/themes/theme.dart';
 import 'shared/utils/global_context.dart';
 
 class AppWidget extends StatefulWidget {

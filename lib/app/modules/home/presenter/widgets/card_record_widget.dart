@@ -1,9 +1,10 @@
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
-import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
-import 'package:cuber_timer/app/shared/utils/formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+
+import '../../../../core/constants/constants.dart';
+import '../../../../core/data/clients/local_database/schemas/record.dart';
+import '../../../../shared/utils/formatters.dart';
+import '../controller/record_controller.dart';
 
 class CardRecordWidget extends StatefulWidget {
   final RecordController recordController;

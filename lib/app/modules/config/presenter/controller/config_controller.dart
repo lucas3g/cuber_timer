@@ -1,7 +1,7 @@
-import 'package:cuber_timer/app/modules/config/presenter/services/in_app_purcashe_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
+import '../services/in_app_purcashe_service.dart';
 import 'config_states.dart';
 
 part 'config_controller.g.dart'; // Código gerado pelo MobX

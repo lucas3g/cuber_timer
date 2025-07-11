@@ -80,6 +80,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       if (state is SuccessDeleteRecordState) {
         if (state.groupDelete.isNotEmpty) {
           removeTab(state.groupDelete);
+        } else {
+          // Se não houver grupo para remover, atualiza a lista
+          _updateTabController(state.records);
         }
       }
     });

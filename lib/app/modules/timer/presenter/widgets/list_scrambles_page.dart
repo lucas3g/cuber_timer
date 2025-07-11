@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/di/dependency_injection.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
-import 'package:cuber_timer/app/modules/timer/presenter/widgets/card_scramble_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
+
+import '../../../../core/constants/constants.dart';
+import '../../../../di/dependency_injection.dart';
+import '../../../config/presenter/controller/config_controller.dart';
+import 'card_scramble_widget.dart';
 
 class ListScramblesPage extends StatefulWidget {
   final PageController pageController;

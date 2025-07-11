@@ -1,10 +1,11 @@
-import 'package:cuber_timer/app/core/data/clients/local_database/helpers/tables.dart';
-import 'package:cuber_timer/app/core/data/clients/local_database/local_database.dart';
-import 'package:cuber_timer/app/core/data/clients/local_database/params/local_database_params.dart';
-import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
-import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../../core/data/clients/local_database/helpers/tables.dart';
+import '../../../../core/data/clients/local_database/local_database.dart';
+import '../../../../core/data/clients/local_database/params/local_database_params.dart';
+import '../../../../core/data/clients/local_database/schemas/record.dart';
+import 'record_states.dart';
 
 part 'record_controller.g.dart';
 

@@ -1,21 +1,22 @@
 import 'dart:io';
 
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
-import 'package:cuber_timer/app/di/dependency_injection.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
-import 'package:cuber_timer/app/modules/timer/controller/count_down_controller.dart';
-import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
-import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
-import 'package:cuber_timer/app/modules/timer/presenter/widgets/alert_congrats_beat_record_widget.dart';
-import 'package:cuber_timer/app/modules/timer/presenter/widgets/list_scrambles_page.dart';
-import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
-import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+
+import '../../../core/constants/constants.dart';
+import '../../../core/domain/entities/named_routes.dart';
+import '../../../di/dependency_injection.dart';
+import '../../../shared/components/my_elevated_button_widget.dart';
+import '../../../shared/utils/cube_types_list.dart';
+import '../../config/presenter/controller/config_controller.dart';
+import '../controller/count_down_controller.dart';
+import '../controller/timer_controller.dart';
+import '../controller/timer_states.dart';
+import 'widgets/alert_congrats_beat_record_widget.dart';
+import 'widgets/list_scrambles_page.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});

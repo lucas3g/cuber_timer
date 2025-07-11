@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:cuber_timer/app/modules/timer/controller/timer_controller.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+
+import 'timer_controller.dart';
 
 part 'count_down_controller.g.dart';
 

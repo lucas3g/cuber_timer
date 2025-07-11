@@ -1,10 +1,10 @@
-import 'package:cuber_timer/app/modules/all_records_by_group/presenter/all_records_by_group_page.dart';
-import 'package:cuber_timer/app/modules/config/presenter/config_page.dart';
-import 'package:cuber_timer/app/modules/timer/presenter/timer_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../modules/all_records_by_group/presenter/all_records_by_group_page.dart';
+import '../../modules/config/presenter/config_page.dart';
 import '../../modules/home/presenter/home_page.dart';
 import '../../modules/splash/presenter/splash_page.dart';
+import '../../modules/timer/presenter/timer_page.dart';
 import '../domain/entities/named_routes.dart';
 import 'domain/entities/custom_transition.dart';
 import 'presenter/custom_page_builder.dart';

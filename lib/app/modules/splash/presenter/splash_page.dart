@@ -1,10 +1,11 @@
-import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
-import 'package:cuber_timer/app/di/dependency_injection.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
-import 'package:cuber_timer/app/shared/components/my_circular_progress_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+
+import '../../../core/constants/constants.dart';
+import '../../../core/domain/entities/named_routes.dart';
+import '../../../di/dependency_injection.dart';
+import '../../../shared/components/my_circular_progress_widget.dart';
+import '../../config/presenter/controller/config_controller.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
