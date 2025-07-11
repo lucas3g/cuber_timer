@@ -6,6 +6,7 @@ import 'package:cuber_timer/app/di/dependency_injection.config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +23,7 @@ Future<void> configureDependencies() async {
   await getIt.init();
 
   await _checkRecordsWithoutGroupAndSetGroupDefault();
+  await _insertDebugRecords();
 }
 
 @module
@@ -56,6 +58,30 @@ Future<void> _checkRecordsWithoutGroupAndSetGroupDefault() async {
     for (final record in records) {
       record.group = 'Old Records';
       record.createdAt = DateTime.now();
+
+      await isar.writeTxn(() async {
+        await isar.recordEntitys.put(record);
+      });
+    }
+  }
+}
+
+Future<void> _insertDebugRecords() async {
+  if (!kDebugMode) return;
+
+  final isar = getIt<Isar>();
+
+  final existing = await isar.recordEntitys.where().findAll();
+
+  if (existing.isEmpty) {
+    const sampleTimers = <int>[1000, 2000, 3000];
+
+    for (final time in sampleTimers) {
+      final record = RecordEntity(
+        timer: time,
+        group: 'Old Records',
+        createdAt: DateTime.now(),
+      );
 
       await isar.writeTxn(() async {
         await isar.recordEntitys.put(record);
