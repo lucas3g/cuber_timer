@@ -106,10 +106,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     final newTabCount = sortedGroupedRecords.length;
 
-    // Verificar se houve mudança no número de tabs
-    if (newTabCount > 0) {
-      _recreateTabController(newTabCount);
-    }
+    // Atualiza o TabController independente da quantidade de tabs
+    _recreateTabController(newTabCount);
   }
 
   void _recreateTabController(int newLength) {
@@ -118,6 +116,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     // Remover listener e dispor controller anterior
     _tabController?.removeListener(_onTabChanged);
+    _tabController?.dispose();
 
     if (newLength > 0) {
       // Garantir que o índice seja válido para o novo length
@@ -137,11 +136,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       if (sortedGroupedRecords.isNotEmpty) {
         selectedGroup = sortedGroupedRecords.keys.elementAt(_currentTabIndex);
       }
+    } else {
+      _tabController = null;
+    }
 
-      // Forçar rebuild
-      if (mounted) {
-        setState(() {});
-      }
+    // Forçar rebuild
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -176,6 +177,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       _updateTabController(
         sortedGroupedRecords.values.expand((e) => e).toList(),
       );
+
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
