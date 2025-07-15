@@ -24,10 +24,11 @@ import '../modules/config/presenter/services/in_app_purcashe_service.dart'
     as _i3;
 import '../modules/config/presenter/services/in_app_purcashe_service_imp.dart'
     as _i4;
-import '../modules/home/presenter/controller/record_controller.dart' as _i12;
-import '../modules/timer/controller/count_down_controller.dart' as _i14;
-import '../modules/timer/controller/timer_controller.dart' as _i13;
-import 'dependency_injection.dart' as _i15;
+import '../modules/home/presenter/controller/record_controller.dart' as _i13;
+import '../modules/timer/controller/count_down_controller.dart' as _i15;
+import '../modules/timer/controller/timer_controller.dart' as _i14;
+import '../shared/services/app_review_service.dart' as _i12;
+import 'dependency_injection.dart' as _i16;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -51,16 +52,19 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i9.ConfigController>(
         () => _i9.ConfigController(gh<_i3.IInAppPurchaseService>()));
     gh.factory<_i10.ILocalDatabase>(() => _i11.IsarService(gh<_i7.Isar>()));
-    gh.singleton<_i12.RecordController>(
-        () => _i12.RecordController(localDatabase: gh<_i10.ILocalDatabase>()));
-    gh.factory<_i13.TimerController>(() => _i13.TimerController(
+    gh.factory<_i12.IAppReviewService>(
+        () => _i12.AppReviewService(gh<_i5.ILocalStorage>()));
+    gh.singleton<_i13.RecordController>(
+        () => _i13.RecordController(localDatabase: gh<_i10.ILocalDatabase>()));
+    gh.factory<_i14.TimerController>(() => _i14.TimerController(
           localDatabase: gh<_i10.ILocalDatabase>(),
-          recordController: gh<_i12.RecordController>(),
+          recordController: gh<_i13.RecordController>(),
+          appReviewService: gh<_i12.IAppReviewService>(),
         ));
-    gh.factory<_i14.CountDownController>(() =>
-        _i14.CountDownController(timerController: gh<_i13.TimerController>()));
+    gh.factory<_i15.CountDownController>(() =>
+        _i15.CountDownController(timerController: gh<_i14.TimerController>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i15.RegisterModule {}
+class _$RegisterModule extends _i16.RegisterModule {}
