@@ -7,8 +7,8 @@ import 'package:cuber_timer/app/core/data/clients/local_database/local_database.
 import 'package:cuber_timer/app/core/data/clients/local_database/params/local_database_params.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
-import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:cuber_timer/app/shared/services/app_review_service.dart';
+import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
@@ -84,13 +84,14 @@ abstract class TimerControllerBase with Store {
         emit(BeatRecordTimerState());
         await Future.delayed(const Duration(microseconds: 100));
         emit(StopTimerState());
-        await appReviewService.registerBeatRecord();
       }
     }
 
     await saveTimerLocalDatabase();
 
     await recordController.getAllRecords();
+
+    await appReviewService.askReviewApp();
   }
 
   Future saveTimerLocalDatabase() async {
