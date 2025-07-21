@@ -9,6 +9,14 @@ part of 'config_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ConfigController on _ConfigControllerBase, Store {
+  Computed<bool>? _$adsDisabledComputed;
+
+  @override
+  bool get adsDisabled =>
+      (_$adsDisabledComputed ??= Computed<bool>(() => super.adsDisabled,
+              name: '_ConfigControllerBase.adsDisabled'))
+          .value;
+
   late final _$stateAtom =
       Atom(name: '_ConfigControllerBase.state', context: context);
 
@@ -65,12 +73,6 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     return _$checkAdFreeStatusAsyncAction.run(() => super.checkAdFreeStatus());
   }
 
-  late final _$adsDisabledComputed =
-      Computed<bool>(() => super.adsDisabled, name: '_ConfigControllerBase.adsDisabled');
-
-  @override
-  bool get adsDisabled => _$adsDisabledComputed.value;
-
   late final _$removeAdsAsyncAction =
       AsyncAction('_ConfigControllerBase.removeAds', context: context);
 
@@ -84,7 +86,7 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     return '''
 state: ${state},
 isAdRemoved: ${isAdRemoved},
-isRewardActive: ${isRewardActive}
+isRewardActive: ${isRewardActive},
 adsDisabled: ${adsDisabled}
     ''';
   }
