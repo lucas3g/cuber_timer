@@ -13,8 +13,7 @@ abstract class IAppReviewService {
 @Injectable(as: IAppReviewService)
 class AppReviewService implements IAppReviewService {
   static const String _counterKey = 'REVIEW_COUNTER';
-  static const String _rewardExpirationKey =
-      StorageKeys.adFreeExpiration;
+  static const String _rewardExpirationKey = StorageKeys.adFreeExpiration;
 
   final ILocalStorage localStorage;
   final InAppReview _inAppReview = InAppReview.instance;
