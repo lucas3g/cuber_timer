@@ -77,7 +77,7 @@ class _ListScramblesPageState extends State<ListScramblesPage> {
       body: Column(
         children: [
           const SizedBox(height: 10),
-          if (!Platform.isWindows && !configController.isAdRemoved) ...[
+          if (!Platform.isWindows && !configController.adsDisabled) ...[
             isAdLoaded
                 ? Column(
                     children: [

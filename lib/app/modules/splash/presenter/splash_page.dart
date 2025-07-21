@@ -51,6 +51,8 @@ class _SplashPageState extends State<SplashPage> {
       configController.isAdRemoved = false;
     });
 
+    configController.checkAdFreeStatus();
+
     _init();
   }
 

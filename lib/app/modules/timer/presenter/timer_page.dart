@@ -139,7 +139,7 @@ class _TimerPageState extends State<TimerPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (!Platform.isWindows && !configController.isAdRemoved) ...[
+                if (!Platform.isWindows && !configController.adsDisabled) ...[
                   isAdLoaded
                       ? Column(
                           children: [

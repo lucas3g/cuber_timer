@@ -127,7 +127,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
 
               return Column(
                 children: [
-                  if (!Platform.isWindows && !configController.isAdRemoved) ...[
+                  if (!Platform.isWindows && !configController.adsDisabled) ...[
                     if (isAdLoaded)
                       SizedBox(
                         height: myBanner.size.height.toDouble(),
@@ -177,7 +177,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
                     ),
                   ),
                   const Divider(),
-                  if (!Platform.isWindows && !configController.isAdRemoved) ...[
+                  if (!Platform.isWindows && !configController.adsDisabled) ...[
                     if (isAdLoadedBottom)
                       SizedBox(
                         height: myBannerBottom.size.height.toDouble(),
