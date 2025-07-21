@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
 import '../services/in_app_purcashe_service.dart';
+import '../../../shared/services/app_review_service.dart';
 import 'config_states.dart';
 
 part 'config_controller.g.dart'; // Código gerado pelo MobX
@@ -11,14 +12,26 @@ class ConfigController = _ConfigControllerBase with _$ConfigController;
 
 abstract class _ConfigControllerBase with Store {
   final IInAppPurchaseService inAppPurchaseService;
+  final IAppReviewService appReviewService;
 
-  _ConfigControllerBase(this.inAppPurchaseService);
+  _ConfigControllerBase(this.inAppPurchaseService, this.appReviewService);
 
   @observable
   ConfigStates state = ConfigInitialState();
 
   @observable
   bool isAdRemoved = false;
+
+  @observable
+  bool isRewardActive = false;
+
+  @computed
+  bool get adsDisabled => isAdRemoved || isRewardActive;
+
+  @action
+  Future<void> checkAdFreeStatus() async {
+    isRewardActive = await appReviewService.isRewardActive();
+  }
 
   @action
   Future<void> removeAds() async {

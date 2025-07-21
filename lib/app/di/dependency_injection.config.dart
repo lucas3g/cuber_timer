@@ -49,8 +49,11 @@ extension GetItInjectableX on _i1.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.singleton<_i9.ConfigController>(
-        () => _i9.ConfigController(gh<_i3.IInAppPurchaseService>()));
+    gh.singleton<_i9.ConfigController>(() =>
+        _i9.ConfigController(
+          gh<_i3.IInAppPurchaseService>(),
+          gh<_i10.IAppReviewService>(),
+        ));
     gh.factory<_i10.IAppReviewService>(
         () => _i10.AppReviewService(gh<_i5.ILocalStorage>()));
     gh.factory<_i11.ILocalDatabase>(() => _i12.IsarService(gh<_i7.Isar>()));

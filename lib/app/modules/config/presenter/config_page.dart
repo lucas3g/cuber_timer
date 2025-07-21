@@ -59,7 +59,7 @@ class _ConfigPageState extends State<ConfigPage> {
             if (state is AdRemovalSuccessState) {
               return _buildConfigOptions(
                 context,
-                configController.isAdRemoved,
+                configController.adsDisabled,
                 'Anúncios removidos com sucesso!',
               );
             }
@@ -77,7 +77,7 @@ class _ConfigPageState extends State<ConfigPage> {
 
             // Default (Initial) State
             return _buildConfigOptions(
-                context, configController.isAdRemoved, '');
+                context, configController.adsDisabled, '');
           },
         ),
       ),
@@ -86,7 +86,7 @@ class _ConfigPageState extends State<ConfigPage> {
 
   // Função para construir as opções de configuração
   Widget _buildConfigOptions(
-      BuildContext context, bool adsRemoved, String message) {
+      BuildContext context, bool adsDisabled, String message) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -99,8 +99,9 @@ class _ConfigPageState extends State<ConfigPage> {
         ],
         ListTile(
           title: const Text('Remover Anúncios'),
-          subtitle: Text(adsRemoved ? 'Anúncios removidos' : 'Anúncios ativos'),
-          trailing: adsRemoved
+          subtitle: Text(
+              adsDisabled ? 'Anúncios removidos' : 'Anúncios ativos'),
+          trailing: adsDisabled
               ? const Icon(Icons.check_circle, color: Colors.green)
               : ElevatedButton(
                   onPressed: configController.state is AdRemovalInProgressState

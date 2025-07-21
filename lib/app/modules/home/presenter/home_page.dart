@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<void> _showInterstitialAd() async {
-    if (_interstitialAd == null || configController.isAdRemoved) {
+    if (_interstitialAd == null || configController.adsDisabled) {
       await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
       await getFiveRecordsByGroup();
       if (!Platform.isWindows) {
@@ -339,7 +339,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     children: [
                       // Banners...
                       if (!Platform.isWindows &&
-                          !configController.isAdRemoved) ...[
+                          !configController.adsDisabled) ...[
                         if (isTopAdLoaded)
                           SizedBox(
                             height: myBanner.size.height.toDouble(),
@@ -568,7 +568,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             onPressed: _showInterstitialAd,
           ),
           const SizedBox(height: 15),
-          if (!Platform.isWindows && !configController.isAdRemoved) ...[
+          if (!Platform.isWindows && !configController.adsDisabled) ...[
             if (isBottomAdLoaded && state.records.isNotEmpty)
               SizedBox(
                 height: myBottmBanner.size.height.toDouble(),

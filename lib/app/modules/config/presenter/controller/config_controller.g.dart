@@ -41,6 +41,36 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     });
   }
 
+  late final _$isRewardActiveAtom =
+      Atom(name: '_ConfigControllerBase.isRewardActive', context: context);
+
+  @override
+  bool get isRewardActive {
+    _$isRewardActiveAtom.reportRead();
+    return super.isRewardActive;
+  }
+
+  @override
+  set isRewardActive(bool value) {
+    _$isRewardActiveAtom.reportWrite(value, super.isRewardActive, () {
+      super.isRewardActive = value;
+    });
+  }
+
+  late final _$checkAdFreeStatusAsyncAction =
+      AsyncAction('_ConfigControllerBase.checkAdFreeStatus', context: context);
+
+  @override
+  Future<void> checkAdFreeStatus() {
+    return _$checkAdFreeStatusAsyncAction.run(() => super.checkAdFreeStatus());
+  }
+
+  late final _$adsDisabledComputed =
+      Computed<bool>(() => super.adsDisabled, name: '_ConfigControllerBase.adsDisabled');
+
+  @override
+  bool get adsDisabled => _$adsDisabledComputed.value;
+
   late final _$removeAdsAsyncAction =
       AsyncAction('_ConfigControllerBase.removeAds', context: context);
 
@@ -53,7 +83,9 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
   String toString() {
     return '''
 state: ${state},
-isAdRemoved: ${isAdRemoved}
+isAdRemoved: ${isAdRemoved},
+isRewardActive: ${isRewardActive}
+adsDisabled: ${adsDisabled}
     ''';
   }
 }
