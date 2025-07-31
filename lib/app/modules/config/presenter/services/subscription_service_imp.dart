@@ -7,12 +7,15 @@ import 'subscription_service.dart';
 class SubscriptionServiceImp implements ISubscriptionService {
   @override
   Future<List<String>> getUserSubscriptions() async {
-    final available = await InAppPurchase.instance.isAvailable();
+    final iap = InAppPurchase.instance;
+
+    final available = await iap.isAvailable();
     if (!available) return [];
 
-    await InAppPurchase.instance.restorePurchases();
+    await iap.restorePurchases();
 
-    final response = await InAppPurchase.instance.restorePurchases();
+    final response = await iap.queryPastPurchases();
+
     final activeSubscriptions = <String>[];
     for (final purchase in response.pastPurchases) {
       if (purchase.status == PurchaseStatus.purchased ||
@@ -20,6 +23,7 @@ class SubscriptionServiceImp implements ISubscriptionService {
         activeSubscriptions.add(purchase.productID);
       }
     }
+
     return activeSubscriptions;
   }
 }
