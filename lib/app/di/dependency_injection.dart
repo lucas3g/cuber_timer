@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../modules/config/presenter/services/purchase_service.dart';
 
 import '../core/data/clients/local_database/schemas/record.dart';
 import 'dependency_injection.config.dart';
@@ -25,6 +26,8 @@ Future<void> configureDependencies() async {
   await _initIsar();
 
   await getIt.init();
+
+  await getIt<PurchaseService>().init();
 
   await _checkRecordsWithoutGroupAndSetGroupDefault();
   await _insertDebugRecords();
