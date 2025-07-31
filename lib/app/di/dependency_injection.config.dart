@@ -16,17 +16,18 @@ import 'package:shared_preferences/shared_preferences.dart' as _i8;
 import '../core/data/clients/local_database/isar_service.dart' as _i11;
 import '../core/data/clients/local_database/local_database.dart' as _i10;
 import '../core/data/clients/shared_preferences/local_storage_interface.dart'
-    as _i5;
+    as _i3;
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
-    as _i6;
+    as _i4;
 import '../modules/config/presenter/controller/config_controller.dart' as _i14;
-import '../modules/config/presenter/services/subscription_service.dart' as _i16;
-import '../modules/config/presenter/services/subscription_service_imp.dart' as _i17;
+import '../modules/config/presenter/services/subscription_service.dart' as _i5;
+import '../modules/config/presenter/services/subscription_service_imp.dart'
+    as _i6;
 import '../modules/home/presenter/controller/record_controller.dart' as _i12;
 import '../modules/timer/controller/count_down_controller.dart' as _i15;
 import '../modules/timer/controller/timer_controller.dart' as _i13;
 import '../shared/services/app_review_service.dart' as _i9;
-import 'dependency_injection.dart' as _i18;
+import 'dependency_injection.dart' as _i16;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -40,15 +41,15 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.factory<_i16.ISubscriptionService>(() => _i17.SubscriptionServiceImp());
-    gh.factory<_i5.ILocalStorage>(() => _i6.SharedPreferencesService());
+    gh.factory<_i3.ILocalStorage>(() => _i4.SharedPreferencesService());
+    gh.factory<_i5.ISubscriptionService>(() => _i6.SubscriptionServiceImp());
     gh.factory<_i7.Isar>(() => registerModule.isar);
     await gh.factoryAsync<_i8.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
     );
     gh.factory<_i9.IAppReviewService>(
-        () => _i9.AppReviewService(gh<_i5.ILocalStorage>()));
+        () => _i9.AppReviewService(gh<_i3.ILocalStorage>()));
     gh.factory<_i10.ILocalDatabase>(() => _i11.IsarService(gh<_i7.Isar>()));
     gh.singleton<_i12.RecordController>(
         () => _i12.RecordController(localDatabase: gh<_i10.ILocalDatabase>()));
@@ -58,7 +59,7 @@ extension GetItInjectableX on _i1.GetIt {
           appReviewService: gh<_i9.IAppReviewService>(),
         ));
     gh.singleton<_i14.ConfigController>(() => _i14.ConfigController(
-          gh<_i16.ISubscriptionService>(),
+          gh<_i5.ISubscriptionService>(),
           gh<_i9.IAppReviewService>(),
         ));
     gh.factory<_i15.CountDownController>(() =>
@@ -67,4 +68,4 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$RegisterModule extends _i18.RegisterModule {}
+class _$RegisterModule extends _i16.RegisterModule {}

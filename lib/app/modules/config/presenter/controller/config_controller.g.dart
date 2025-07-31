@@ -85,7 +85,7 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
   @override
   String toString() {
     return '''
-  state: ${state},
+state: ${state},
 isPremium: ${isPremium},
 isRewardActive: ${isRewardActive},
 adsDisabled: ${adsDisabled}

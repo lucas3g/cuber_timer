@@ -2,8 +2,8 @@ import 'package:cuber_timer/app/shared/services/app_review_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../../core/constants/constants.dart';
 import '../services/subscription_service.dart';
-import '../../../core/constants/constants.dart';
 import 'config_states.dart';
 
 part 'config_controller.g.dart'; // Código gerado pelo MobX

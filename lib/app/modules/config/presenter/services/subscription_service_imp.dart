@@ -1,7 +1,6 @@
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/constants/constants.dart';
 import 'subscription_service.dart';
 
 @Injectable(as: ISubscriptionService)
@@ -13,7 +12,7 @@ class SubscriptionServiceImp implements ISubscriptionService {
 
     await InAppPurchase.instance.restorePurchases();
 
-    final response = await InAppPurchase.instance.queryPastPurchases();
+    final response = await InAppPurchase.instance.restorePurchases();
     final activeSubscriptions = <String>[];
     for (final purchase in response.pastPurchases) {
       if (purchase.status == PurchaseStatus.purchased ||
