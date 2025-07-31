@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../../core/domain/entities/subscription_plan.dart';
+
 import '../../../di/dependency_injection.dart';
 import 'controller/config_controller.dart';
 
@@ -41,9 +43,27 @@ class _ConfigPageState extends State<ConfigPage> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-              _buildPlanCard('Plano Semanal', '200,00', onTap: () {}),
-              _buildPlanCard('Plano Mensal', '350,00', onTap: () {}),
-              _buildPlanCard('Plano Anual', '500,00', onTap: () {}),
+              _buildPlanCard(
+                'Plano Semanal',
+                configController
+                    .priceFor(SubscriptionPlan.weekly),
+                onTap: () =>
+                    configController.buyPlan(SubscriptionPlan.weekly),
+              ),
+              _buildPlanCard(
+                'Plano Mensal',
+                configController
+                    .priceFor(SubscriptionPlan.monthly),
+                onTap: () =>
+                    configController.buyPlan(SubscriptionPlan.monthly),
+              ),
+              _buildPlanCard(
+                'Plano Anual',
+                configController
+                    .priceFor(SubscriptionPlan.annual),
+                onTap: () =>
+                    configController.buyPlan(SubscriptionPlan.annual),
+              ),
             ],
           ),
         ),
@@ -51,7 +71,8 @@ class _ConfigPageState extends State<ConfigPage> {
     );
   }
 
-  Widget _buildPlanCard(String title, String price, {required VoidCallback onTap}) {
+  Widget _buildPlanCard(String title, String price,
+      {required VoidCallback onTap}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
@@ -59,7 +80,7 @@ class _ConfigPageState extends State<ConfigPage> {
           title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text('R\$ $price de 350,00'),
+        subtitle: Text('R\$ $price'),
         trailing: ElevatedButton(
           onPressed: onTap,
           child: const Text('Assinar'),

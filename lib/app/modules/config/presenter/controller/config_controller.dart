@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/constants/constants.dart';
-import '../services/subscription_service.dart';
+import '../../../../core/domain/entities/subscription_plan.dart';
 import 'config_states.dart';
 
 part 'config_controller.g.dart'; // Código gerado pelo MobX
@@ -13,10 +13,10 @@ part 'config_controller.g.dart'; // Código gerado pelo MobX
 class ConfigController = _ConfigControllerBase with _$ConfigController;
 
 abstract class _ConfigControllerBase with Store {
-  final PurchaseService subscriptionService;
+  final PurchaseService purchaseService;
   final IAppReviewService appReviewService;
 
-  _ConfigControllerBase(this.subscriptionService, this.appReviewService);
+  _ConfigControllerBase(this.purchaseService, this.appReviewService);
 
   @observable
   ConfigStates state = ConfigInitialState();
@@ -30,6 +30,10 @@ abstract class _ConfigControllerBase with Store {
   @computed
   bool get adsDisabled => isPremium || isRewardActive;
 
+  String priceFor(SubscriptionPlan plan) => purchaseService.priceFor(plan);
+
+  Future<void> buyPlan(SubscriptionPlan plan) => purchaseService.buy(plan);
+
   @action
   Future<void> checkAdFreeStatus() async {
     isRewardActive = await appReviewService.isRewardActive();
@@ -37,9 +41,7 @@ abstract class _ConfigControllerBase with Store {
 
   @action
   Future<void> fetchSubscriptions() async {
-    final subs = await subscriptionService.getUserSubscriptions();
-    isPremium = subs.contains(weeklyPlanId) ||
-        subs.contains(monthlyPlanId) ||
-        subs.contains(annualPlanId);
+    await purchaseService.init();
+    isPremium = purchaseService.isPremium;
   }
 }

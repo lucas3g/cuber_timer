@@ -20,9 +20,7 @@ import '../core/data/clients/shared_preferences/local_storage_interface.dart'
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
     as _i4;
 import '../modules/config/presenter/controller/config_controller.dart' as _i14;
-import '../modules/config/presenter/services/subscription_service.dart' as _i5;
-import '../modules/config/presenter/services/subscription_service_imp.dart'
-    as _i6;
+import '../modules/config/presenter/services/purchase_service.dart' as _i5;
 import '../modules/home/presenter/controller/record_controller.dart' as _i12;
 import '../modules/timer/controller/count_down_controller.dart' as _i15;
 import '../modules/timer/controller/timer_controller.dart' as _i13;
@@ -42,7 +40,7 @@ extension GetItInjectableX on _i1.GetIt {
     );
     final registerModule = _$RegisterModule();
     gh.factory<_i3.ILocalStorage>(() => _i4.SharedPreferencesService());
-    gh.factory<_i5.ISubscriptionService>(() => _i6.SubscriptionServiceImp());
+    gh.singleton<_i5.PurchaseService>(() => _i5.PurchaseService());
     gh.factory<_i7.Isar>(() => registerModule.isar);
     await gh.factoryAsync<_i8.SharedPreferences>(
       () => registerModule.prefs,
@@ -59,7 +57,7 @@ extension GetItInjectableX on _i1.GetIt {
           appReviewService: gh<_i9.IAppReviewService>(),
         ));
     gh.singleton<_i14.ConfigController>(() => _i14.ConfigController(
-          gh<_i5.ISubscriptionService>(),
+          gh<_i5.PurchaseService>(),
           gh<_i9.IAppReviewService>(),
         ));
     gh.factory<_i15.CountDownController>(() =>
