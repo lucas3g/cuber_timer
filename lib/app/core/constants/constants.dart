@@ -11,7 +11,9 @@ const intersticialID = 'ca-app-pub-1898798427054986/4998867194';
 const bannerIDAllRecords = 'ca-app-pub-1898798427054986/2492942529';
 const bannerIDAllRecordsBottom = 'ca-app-pub-1898798427054986/5498379813';
 const bannerdIdListScrambles = 'ca-app-pub-1898798427054986/2882775019';
-const adRemovalProductId = 'ad_removal';
+const weeklyPlanId = 'weekly_plan';
+const monthlyPlanId = 'monthly_plan';
+const annualPlanId = 'annual_plan';
 
 const double kPadding = 20;
 
