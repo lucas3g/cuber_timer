@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +20,8 @@ final GetIt getIt = GetIt.instance;
   asExtension: true,
 )
 Future<void> configureDependencies() async {
+  _initAppGlobal();
+
   await _initIsar();
 
   await getIt.init();
@@ -93,4 +96,12 @@ Future<void> _insertDebugRecords() async {
       });
     }
   }
+}
+
+void _initAppGlobal() {
+  AppGlobal();
+
+  // if (kDebugMode) {
+  //   AppGlobal.instance.setPlan(SubscriptionPlan.annual);
+  // }
 }

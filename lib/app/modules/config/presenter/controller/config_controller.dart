@@ -1,3 +1,4 @@
+import 'package:cuber_timer/app/modules/config/presenter/services/purchase_service.dart';
 import 'package:cuber_timer/app/shared/services/app_review_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
@@ -12,7 +13,7 @@ part 'config_controller.g.dart'; // Código gerado pelo MobX
 class ConfigController = _ConfigControllerBase with _$ConfigController;
 
 abstract class _ConfigControllerBase with Store {
-  final ISubscriptionService subscriptionService;
+  final PurchaseService subscriptionService;
   final IAppReviewService appReviewService;
 
   _ConfigControllerBase(this.subscriptionService, this.appReviewService);
