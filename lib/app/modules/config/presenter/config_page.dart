@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../core/domain/entities/subscription_plan.dart';
-
 import '../../../di/dependency_injection.dart';
 import 'controller/config_controller.dart';
 
@@ -45,24 +44,18 @@ class _ConfigPageState extends State<ConfigPage> {
                 ),
               _buildPlanCard(
                 'Plano Semanal',
-                configController
-                    .priceFor(SubscriptionPlan.weekly),
-                onTap: () =>
-                    configController.buyPlan(SubscriptionPlan.weekly),
+                configController.priceFor(SubscriptionPlan.weekly),
+                onTap: () => configController.buyPlan(SubscriptionPlan.weekly),
               ),
               _buildPlanCard(
                 'Plano Mensal',
-                configController
-                    .priceFor(SubscriptionPlan.monthly),
-                onTap: () =>
-                    configController.buyPlan(SubscriptionPlan.monthly),
+                configController.priceFor(SubscriptionPlan.monthly),
+                onTap: () => configController.buyPlan(SubscriptionPlan.monthly),
               ),
               _buildPlanCard(
                 'Plano Anual',
-                configController
-                    .priceFor(SubscriptionPlan.annual),
-                onTap: () =>
-                    configController.buyPlan(SubscriptionPlan.annual),
+                configController.priceFor(SubscriptionPlan.annual),
+                onTap: () => configController.buyPlan(SubscriptionPlan.annual),
               ),
             ],
           ),
@@ -80,7 +73,7 @@ class _ConfigPageState extends State<ConfigPage> {
           title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text('R\$ $price'),
+        subtitle: Text(price),
         trailing: ElevatedButton(
           onPressed: onTap,
           child: const Text('Assinar'),
