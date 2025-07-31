@@ -3,7 +3,6 @@ import 'package:cuber_timer/app/shared/services/app_review_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../../core/constants/constants.dart';
 import '../../../../core/domain/entities/subscription_plan.dart';
 import 'config_states.dart';
 
