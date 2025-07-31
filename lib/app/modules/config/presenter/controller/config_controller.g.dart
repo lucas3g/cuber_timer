@@ -33,19 +33,19 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     });
   }
 
-  late final _$isAdRemovedAtom =
-      Atom(name: '_ConfigControllerBase.isAdRemoved', context: context);
+  late final _$isPremiumAtom =
+      Atom(name: '_ConfigControllerBase.isPremium', context: context);
 
   @override
-  bool get isAdRemoved {
-    _$isAdRemovedAtom.reportRead();
-    return super.isAdRemoved;
+  bool get isPremium {
+    _$isPremiumAtom.reportRead();
+    return super.isPremium;
   }
 
   @override
-  set isAdRemoved(bool value) {
-    _$isAdRemovedAtom.reportWrite(value, super.isAdRemoved, () {
-      super.isAdRemoved = value;
+  set isPremium(bool value) {
+    _$isPremiumAtom.reportWrite(value, super.isPremium, () {
+      super.isPremium = value;
     });
   }
 
@@ -73,19 +73,20 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     return _$checkAdFreeStatusAsyncAction.run(() => super.checkAdFreeStatus());
   }
 
-  late final _$removeAdsAsyncAction =
-      AsyncAction('_ConfigControllerBase.removeAds', context: context);
+  late final _$fetchSubscriptionsAsyncAction =
+      AsyncAction('_ConfigControllerBase.fetchSubscriptions', context: context);
 
   @override
-  Future<void> removeAds() {
-    return _$removeAdsAsyncAction.run(() => super.removeAds());
+  Future<void> fetchSubscriptions() {
+    return _$fetchSubscriptionsAsyncAction
+        .run(() => super.fetchSubscriptions());
   }
 
   @override
   String toString() {
     return '''
-state: ${state},
-isAdRemoved: ${isAdRemoved},
+  state: ${state},
+isPremium: ${isPremium},
 isRewardActive: ${isRewardActive},
 adsDisabled: ${adsDisabled}
     ''';

@@ -20,15 +20,13 @@ import '../core/data/clients/shared_preferences/local_storage_interface.dart'
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
     as _i6;
 import '../modules/config/presenter/controller/config_controller.dart' as _i14;
-import '../modules/config/presenter/services/in_app_purcashe_service.dart'
-    as _i3;
-import '../modules/config/presenter/services/in_app_purcashe_service_imp.dart'
-    as _i4;
+import '../modules/config/presenter/services/subscription_service.dart' as _i16;
+import '../modules/config/presenter/services/subscription_service_imp.dart' as _i17;
 import '../modules/home/presenter/controller/record_controller.dart' as _i12;
 import '../modules/timer/controller/count_down_controller.dart' as _i15;
 import '../modules/timer/controller/timer_controller.dart' as _i13;
 import '../shared/services/app_review_service.dart' as _i9;
-import 'dependency_injection.dart' as _i16;
+import 'dependency_injection.dart' as _i18;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -42,7 +40,7 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.factory<_i3.IInAppPurchaseService>(() => _i4.InAppPurchaseServiceImp());
+    gh.factory<_i16.ISubscriptionService>(() => _i17.SubscriptionServiceImp());
     gh.factory<_i5.ILocalStorage>(() => _i6.SharedPreferencesService());
     gh.factory<_i7.Isar>(() => registerModule.isar);
     await gh.factoryAsync<_i8.SharedPreferences>(
@@ -60,7 +58,7 @@ extension GetItInjectableX on _i1.GetIt {
           appReviewService: gh<_i9.IAppReviewService>(),
         ));
     gh.singleton<_i14.ConfigController>(() => _i14.ConfigController(
-          gh<_i3.IInAppPurchaseService>(),
+          gh<_i16.ISubscriptionService>(),
           gh<_i9.IAppReviewService>(),
         ));
     gh.factory<_i15.CountDownController>(() =>
@@ -69,4 +67,4 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$RegisterModule extends _i16.RegisterModule {}
+class _$RegisterModule extends _i18.RegisterModule {}
