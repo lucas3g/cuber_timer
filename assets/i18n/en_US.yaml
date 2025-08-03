@@ -10,7 +10,7 @@ home_page:
   best: BEST
   avg_5: AVG 5
   avg_12: AVG 12
-  formatDateTime: "MMMM dd, yyyy 'at' h:mm:ss a"
+  formatDateTime: "MMMM dd, yyyy 'at' hh:mm:ss"
   tagDateTime: en_us
   buttonMoreRecords: More Records
   error_title: Oops...
