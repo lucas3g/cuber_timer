@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../../../../shared/services/ad_service.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -25,28 +26,20 @@ class ListScramblesPage extends StatefulWidget {
 
 class _ListScramblesPageState extends State<ListScramblesPage> {
   final ConfigController configController = getIt<ConfigController>();
+  final IAdService adService = getIt<IAdService>();
 
   late BannerAd myBanner;
   bool isAdLoaded = false;
 
-  initBannerAd() async {
-    myBanner = BannerAd(
-      adUnitId: bannerdIdListScrambles,
-      size: AdSize.banner,
-      request: const AdRequest(),
+  Future<void> _loadBanner() async {
+    myBanner = await adService.loadBanner(
+      androidAdId: bannerdIdListScrambles,
+      iosAdId: bannerdIdListScramblesIOS,
       listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
+        onAdLoaded: (ad) => setState(() => isAdLoaded = true),
+        onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
-
-    await myBanner.load();
   }
 
   @override
@@ -55,7 +48,7 @@ class _ListScramblesPageState extends State<ListScramblesPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!Platform.isWindows) {
-        await initBannerAd();
+        await _loadBanner();
       }
     });
   }

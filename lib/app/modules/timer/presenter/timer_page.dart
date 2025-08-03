@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../../../shared/services/ad_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -29,6 +30,7 @@ class _TimerPageState extends State<TimerPage> {
   final timerController = getIt<TimerController>();
   final countDownController = getIt<CountDownController>();
   final ConfigController configController = getIt<ConfigController>();
+  final IAdService adService = getIt<IAdService>();
   final pageController = PageController();
   int pageIndex = 0;
 
@@ -53,7 +55,7 @@ class _TimerPageState extends State<TimerPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!Platform.isWindows) {
-        await initBannerAd();
+        await _loadBanner();
       }
     });
   }
@@ -61,24 +63,15 @@ class _TimerPageState extends State<TimerPage> {
   late BannerAd myBanner;
   bool isAdLoaded = false;
 
-  initBannerAd() async {
-    myBanner = BannerAd(
-      adUnitId: bannerTimerPage,
-      size: AdSize.banner,
-      request: const AdRequest(),
+  Future<void> _loadBanner() async {
+    myBanner = await adService.loadBanner(
+      androidAdId: bannerTimerPage,
+      iosAdId: bannerTimerPageIdiOS,
       listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
+        onAdLoaded: (ad) => setState(() => isAdLoaded = true),
+        onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
-
-    await myBanner.load();
   }
 
   @override

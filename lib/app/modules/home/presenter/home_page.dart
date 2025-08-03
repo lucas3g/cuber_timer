@@ -18,6 +18,7 @@ import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../../../shared/services/ad_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
@@ -32,6 +33,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final recordController = getIt<RecordController>();
   final configController = getIt<ConfigController>();
+  final IAdService adService = getIt<IAdService>();
 
   int _currentTabIndex = 0;
 
@@ -42,8 +44,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isTopAdLoaded = false;
   bool isBottomAdLoaded = false;
 
-  InterstitialAd? _interstitialAd;
-
   late Map<String, List<RecordEntity>> sortedGroupedRecords;
 
   TabController? _tabController;
@@ -53,9 +53,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
 
     if (!Platform.isWindows) {
-      initBannerAd();
-      initBottomBannerAd();
-      _createInterstitialAd();
+      _loadAds();
     }
 
     getFiveRecordsByGroup();
@@ -195,101 +193,58 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     // Dispose outros recursos...
     myBanner.dispose();
     myBottmBanner.dispose();
-    _interstitialAd?.dispose();
 
     super.dispose();
   }
 
-  Future<void> initBannerAd() async {
+
+  Future<void> _loadAds() async {
     isTopAdLoaded = false;
+    isBottomAdLoaded = false;
     setState(() {});
 
-    myBanner = BannerAd(
-      adUnitId: bannerTopID,
-      size: AdSize.banner,
-      request: const AdRequest(),
+    myBanner = await adService.loadBanner(
+      androidAdId: bannerTopID,
+      iosAdId: bannerTopIdiOS,
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => isTopAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
 
-    await myBanner.load();
-  }
-
-  Future<void> initBottomBannerAd() async {
-    isBottomAdLoaded = false;
-    setState(() {});
-    myBottmBanner = BannerAd(
-      adUnitId: bannerBottomID,
-      size: AdSize.banner,
-      request: const AdRequest(),
+    myBottmBanner = await adService.loadBanner(
+      androidAdId: bannerBottomID,
+      iosAdId: bannerBottomIdiOS,
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => isBottomAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
 
-    await myBottmBanner.load();
-  }
-
-  void _createInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: intersticialID,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          _interstitialAd = ad;
-          _interstitialAd!.setImmersiveMode(true);
-          setState(() {});
-        },
-        onAdFailedToLoad: (_) {
-          _interstitialAd = null;
-          _createInterstitialAd();
-          setState(() {});
-        },
-      ),
+    await adService.loadInterstitial(
+      androidAdId: intersticialID,
+      iosAdId: intersticialIdiOS,
     );
   }
 
   Future<void> _showInterstitialAd() async {
-    if (_interstitialAd == null || configController.adsDisabled) {
+    if (configController.adsDisabled) {
       await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
       await getFiveRecordsByGroup();
       if (!Platform.isWindows) {
-        initBannerAd();
-        initBottomBannerAd();
+        await _loadAds();
       }
-      _createInterstitialAd();
       return;
     }
 
-    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdDismissedFullScreenContent: (ad) async {
-        await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
-
-        await getFiveRecordsByGroup();
-        if (!Platform.isWindows) {
-          initBannerAd();
-          initBottomBannerAd();
-        }
-        ad.dispose();
-
-        _createInterstitialAd();
-      },
-      onAdFailedToShowFullScreenContent: (ad, error) async {
-        ad.dispose();
-        _createInterstitialAd();
-      },
-    );
-    _interstitialAd!.show();
-    _interstitialAd = null;
-
-    setState(() {});
-
-    _createInterstitialAd();
+    await adService.showInterstitial(onDismissed: () async {
+      await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
+      await getFiveRecordsByGroup();
+      if (!Platform.isWindows) {
+        await _loadAds();
+      }
+    });
   }
-
   Future<void> getFiveRecordsByGroup() async =>
       await recordController.getFiveRecordsByGroup();
 

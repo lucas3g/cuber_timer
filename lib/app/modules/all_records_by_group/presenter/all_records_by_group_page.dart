@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../../../shared/services/ad_service.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 import '../../../core/constants/constants.dart';
@@ -22,6 +23,7 @@ class AllRecordsByGroupPage extends StatefulWidget {
 class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
   final RecordController recordController = getIt<RecordController>();
   final ConfigController configController = getIt<ConfigController>();
+  final IAdService adService = getIt<IAdService>();
 
   late final String? groupArg;
   bool isAdLoaded = false;
@@ -38,8 +40,8 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await initBannerAd();
-      await initBannerAdBottom();
+      await _loadTopBanner();
+      await _loadBottomBanner();
 
       await _getAllRecordsByGroup(groupArg!);
     });
@@ -52,38 +54,32 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
         (ModalRoute.of(context)!.settings.arguments as Map)['group'] as String;
   }
 
-  Future<void> initBannerAd() async {
+  Future<void> _loadTopBanner() async {
     isAdLoaded = false;
     setState(() {});
 
-    myBanner = BannerAd(
-      adUnitId: bannerIDAllRecords,
-      size: AdSize.banner,
-      request: const AdRequest(),
+    myBanner = await adService.loadBanner(
+      androidAdId: bannerIDAllRecords,
+      iosAdId: bannerIDAllRecordsIOS,
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => isAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
-
-    await myBanner.load();
   }
 
-  Future<void> initBannerAdBottom() async {
+  Future<void> _loadBottomBanner() async {
     isAdLoadedBottom = false;
     setState(() {});
 
-    myBannerBottom = BannerAd(
-      adUnitId: bannerIDAllRecordsBottom,
-      size: AdSize.banner,
-      request: const AdRequest(),
+    myBannerBottom = await adService.loadBanner(
+      androidAdId: bannerIDAllRecordsBottom,
+      iosAdId: bannerIDAllRecordsBottomIOS,
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => isAdLoadedBottom = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
       ),
     );
-
-    await myBannerBottom.load();
   }
 
   @override
