@@ -11,13 +11,15 @@ const intersticialID = 'ca-app-pub-1898798427054986/4998867194';
 const bannerIDAllRecords = 'ca-app-pub-1898798427054986/2492942529';
 const bannerIDAllRecordsBottom = 'ca-app-pub-1898798427054986/5498379813';
 const bannerdIdListScrambles = 'ca-app-pub-1898798427054986/2882775019';
-const bannerTopIdiOS = 'ca-app-pub-3940256099942544/2934735716';
-const bannerBottomIdiOS = 'ca-app-pub-3940256099942544/2934735716';
-const bannerTimerPageIdiOS = 'ca-app-pub-3940256099942544/2934735716';
-const intersticialIdiOS = 'ca-app-pub-3940256099942544/4411468910';
-const bannerIDAllRecordsIOS = 'ca-app-pub-3940256099942544/2934735716';
-const bannerIDAllRecordsBottomIOS = 'ca-app-pub-3940256099942544/2934735716';
-const bannerdIdListScramblesIOS = 'ca-app-pub-3940256099942544/2934735716';
+
+const bannerTopIdiOS = 'ca-app-pub-1898798427054986/8561925764';
+const bannerBottomIdiOS = 'ca-app-pub-1898798427054986/1693265085';
+const bannerTimerPageIdiOS = 'ca-app-pub-1898798427054986/6626059386';
+const intersticialIdiOS = 'ca-app-pub-1898798427054986/6482557331';
+const bannerIDAllRecordsIOS = 'ca-app-pub-1898798427054986/5440938406';
+const bannerIDAllRecordsBottomIOS = 'ca-app-pub-1898798427054986/8266444111';
+const bannerdIdListScramblesIOS = 'ca-app-pub-1898798427054986/4127856736';
+
 const weeklyPlanId = 'weekly_plan';
 const monthlyPlanId = 'monthly_plan';
 const annualPlanId = 'annual_plan';
