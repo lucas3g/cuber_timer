@@ -25,6 +25,7 @@ import '../modules/home/presenter/controller/record_controller.dart' as _i11;
 import '../modules/timer/controller/count_down_controller.dart' as _i14;
 import '../modules/timer/controller/timer_controller.dart' as _i12;
 import '../shared/services/app_review_service.dart' as _i8;
+import '../shared/services/ad_service.dart' as _i16;
 import 'dependency_injection.dart' as _i15;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -48,6 +49,7 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.factory<_i8.IAppReviewService>(
         () => _i8.AppReviewService(gh<_i3.ILocalStorage>()));
+    gh.singleton<_i16.IAdService>(() => _i16.AdService());
     gh.factory<_i9.ILocalDatabase>(() => _i10.IsarService(gh<_i5.Isar>()));
     gh.singleton<_i11.RecordController>(
         () => _i11.RecordController(localDatabase: gh<_i9.ILocalDatabase>()));
