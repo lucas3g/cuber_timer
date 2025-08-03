@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import '../../core/constants/constants.dart';
+import '../translate/translate.dart';
 
 class Formatters {}
 
@@ -100,10 +100,10 @@ extension AnoMesDia on DateTime {
 }
 
 extension FormatDateTime on DateTime {
-  String formatDateTime(BuildContext context) {
+  String formatDateTime() {
     final format = DateFormat(
-      context.translate.homePage.formatDateTime,
-      context.translate.homePage.tagDateTime,
+      translate('home_page.formatDateTime'),
+      translate('home_page.tagDateTime'),
     );
 
     return format.format(this);

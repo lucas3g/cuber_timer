@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../shared/components/my_elevated_button_widget.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class AlertCongratsBeatRecordWidget extends StatelessWidget {
   const AlertCongratsBeatRecordWidget({super.key});
@@ -19,7 +20,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
         children: [
           Center(
             child: Text(
-              'Woouu',
+              translate('timer_page.alert_title_congrats'),
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -28,7 +29,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
           const Divider(),
           Lottie.asset('assets/images/congrats.json', width: 200),
           Text(
-            context.translate.timerPage.textBeatRecord,
+            translate('timer_page.text_beat_record'),
             textAlign: TextAlign.center,
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
@@ -39,7 +40,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: MyElevatedButtonWidget(
-                  label: Text(context.translate.timerPage.textButtonBeatRecord),
+                  label: Text(translate('timer_page.text_button_beat_record')),
                   onPressed: () {
                     Navigator.of(context).pop('dialog');
                   },

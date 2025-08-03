@@ -1,5 +1,6 @@
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 import '../../../core/domain/entities/named_routes.dart';
 import '../../../di/dependency_injection.dart';
@@ -40,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            context.translate.splashPage.title,
+            translate('splash_page.title'),
             style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 25,

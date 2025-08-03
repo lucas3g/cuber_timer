@@ -18,6 +18,7 @@ import '../controller/timer_controller.dart';
 import '../controller/timer_states.dart';
 import 'widgets/alert_congrats_beat_record_widget.dart';
 import 'widgets/list_scrambles_page.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -85,7 +86,7 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate.timerPage.titleAppBar),
+        title: Text(translate('timer_page.title_appbar')),
         leading: BackButton(
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
@@ -179,8 +180,7 @@ class _TimerPageState extends State<TimerPage> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                context.translate.timerPage
-                                                    .titleScrambles,
+                                                translate('timer_page.title_scrambles'),
                                                 style: context
                                                     .textTheme.bodyLarge
                                                     ?.copyWith(
@@ -203,14 +203,10 @@ class _TimerPageState extends State<TimerPage> {
                                                     ),
                                                   );
                                                 },
-                                                child: Text(context
-                                                    .translate
-                                                    .timerPage
-                                                    .textButtonListScrambles),
+                                                child: Text(translate('timer_page.textButtonListScrambles')),
                                               ),
                                               // Text(
-                                              //   context.translate.timerPage
-                                              //       .textHowToChangeScramble,
+                                              //   translate('timer_page.text_description_how_to_change_scrambles'),
                                               //   style:
                                               //       context.textTheme.bodySmall,
                                               // ),
@@ -233,8 +229,7 @@ class _TimerPageState extends State<TimerPage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                context.translate.timerPage
-                                                    .textDescriptionLabelGroup,
+                                                translate('timer_page.text_description_label_group'),
                                                 style: context
                                                     .textTheme.bodyLarge
                                                     ?.copyWith(
@@ -285,8 +280,7 @@ class _TimerPageState extends State<TimerPage> {
                                       ),
                                     ),
                                     Text(
-                                      context
-                                          .translate.timerPage.textHelpToUseApp,
+                                      translate('timer_page.text_help_to_use_app'),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
@@ -326,8 +320,7 @@ class _TimerPageState extends State<TimerPage> {
                                       data > 0 && (state is StopTimerState),
                                   child: MyElevatedButtonWidget(
                                     label: Text(
-                                      context.translate.timerPage
-                                          .textButtonNewStopwatch,
+                                      translate('timer_page.text_button_new_stop_watch'),
                                     ),
                                     onPressed: () {
                                       timerController.resetTimer();
@@ -342,8 +335,7 @@ class _TimerPageState extends State<TimerPage> {
                                       data > 0 && (state is StartTimerState),
                                   child: Center(
                                     child: Text(
-                                      context.translate.timerPage
-                                          .textHelpToStopTimer,
+                                      translate('timer_page.text_help_to_stop_timer'),
                                       style: context.textTheme.bodyLarge,
                                     ),
                                   ),

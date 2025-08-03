@@ -72,7 +72,7 @@ class _CardRecordWidgetState extends State<CardRecordWidget> {
         ),
       ),
       subtitle: Text(
-        widget.recordEntity.createdAt.formatDateTime(context),
+        widget.recordEntity.createdAt.formatDateTime(),
       ),
       trailing: IconButton(
         onPressed: () {
