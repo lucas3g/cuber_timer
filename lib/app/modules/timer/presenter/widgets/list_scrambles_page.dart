@@ -9,6 +9,7 @@ import '../../../../core/constants/constants.dart';
 import '../../../../di/dependency_injection.dart';
 import '../../../config/presenter/controller/config_controller.dart';
 import 'card_scramble_widget.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class ListScramblesPage extends StatefulWidget {
   final PageController pageController;
@@ -64,7 +65,7 @@ class _ListScramblesPageState extends State<ListScramblesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate.timerPage.titleAppbarScramblesList),
+        title: Text(translate('timer_page.titleAppbarScramblesList')),
         centerTitle: true,
       ),
       body: Column(
@@ -85,7 +86,7 @@ class _ListScramblesPageState extends State<ListScramblesPage> {
                 : const SizedBox(height: 10),
           ],
           Text(
-            context.translate.timerPage.textDescriptionScrambleSelected,
+            translate('timer_page.textDescriptionScrambleSelected'),
             style: context.textTheme.bodyMedium?.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w500,

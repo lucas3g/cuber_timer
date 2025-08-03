@@ -13,6 +13,7 @@ home_page:
   formatDateTime: "dd 'de' MMMM 'de' yyyy "as" 'hh:mm:ss a"
   tagDateTime: pt_br
   buttonMoreRecords: Mais Recordes
+  error_title: Opss...
 
 timer_page:
   title_appbar: Cronômetro
@@ -30,3 +31,12 @@ timer_page:
   textButtonListScrambles: Clique aqui para ver a lista de embaralhamentos
   titleAppbarScramblesList: Lista de Embaralhamentos
   textDescriptionScrambleSelected: Clique em um embaralhamento para destacá-lo
+  alert_title_congrats: Uhuu
+
+config_page:
+  title_appbar: Configurações
+  premium_message: Você é Premium. Obrigado por apoiar!
+  plan_weekly: Plano Semanal
+  plan_monthly: Plano Mensal
+  plan_annual: Plano Anual
+  button_subscribe: Assinar

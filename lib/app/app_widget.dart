@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cuber_timer/app/core/domain/entities/app_language.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 import 'core/domain/entities/named_routes.dart';
 import 'core/routes/app_routes.dart';
@@ -21,7 +22,7 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cube Timer',
+      title: translate('splash_page.title'),
       debugShowCheckedModeBanner: false,
       navigatorKey: GlobalContext.navigatorKey,
       theme: lightThemeApp,

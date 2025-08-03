@@ -12,6 +12,7 @@ import '../../config/presenter/controller/config_controller.dart';
 import '../../home/presenter/controller/record_controller.dart';
 import '../../home/presenter/controller/record_states.dart';
 import '../../home/presenter/widgets/card_record_widget.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class AllRecordsByGroupPage extends StatefulWidget {
   const AllRecordsByGroupPage({super.key});
@@ -95,7 +96,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.translate.timerPage.titleAppBarMoreRecords,
+          translate('timer_page.title_appbar_more_records'),
         ),
       ),
       body: Padding(
@@ -117,7 +118,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
 
               if (records.isEmpty) {
                 return Center(
-                  child: Text(context.translate.homePage.listEmpty),
+                  child: Text(translate('home_page.list_empty')),
                 );
               }
 
@@ -134,8 +135,8 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
                   ],
                   Text(
                     groupArg == null
-                        ? context.translate.timerPage.textGroupByModelLoading
-                        : '${context.translate.timerPage.textGroupByModel}: $groupArg',
+                        ? translate('timer_page.textGroupByModelLoading')
+                        : '${translate('timer_page.textGroupByModel')}: $groupArg',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -186,7 +187,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
             }
 
             return Center(
-              child: Text(context.translate.homePage.listEmpty),
+              child: Text(translate('home_page.list_empty')),
             );
           },
         ),

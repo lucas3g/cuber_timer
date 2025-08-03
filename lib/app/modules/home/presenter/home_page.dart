@@ -15,6 +15,7 @@ import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart
 import 'package:cuber_timer/app/shared/components/my_snackbar.dart';
 import 'package:cuber_timer/app/shared/components/no_data_widget.dart';
 import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       if (state is ErrorRecordState) {
         MySnackBar(
-          title: 'Opss...',
+          title: translate('home_page.error_title'),
           message: state.message,
           type: TypeSnack.error,
         );
@@ -260,7 +261,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               Observer(builder: (context) {
                 if (_tabController == null || sortedGroupedRecords.isEmpty) {
                   return NoDataWidget(
-                    text: context.translate.homePage.listEmpty,
+                    text: translate('home_page.list_empty'),
                   );
                 }
 
@@ -273,7 +274,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     children: [
                       const MyCircularProgressWidget(),
                       Text(
-                        context.translate.homePage.textLoading,
+                        translate('home_page.text_loading'),
                         style: context.textTheme.bodyLarge,
                       ),
                     ],
@@ -284,7 +285,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
                 if (records.isEmpty) {
                   return NoDataWidget(
-                    text: context.translate.homePage.listEmpty,
+                    text: translate('home_page.list_empty'),
                   );
                 }
 
@@ -317,7 +318,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ),
                             child: Text(
-                              context.translate.homePage.titleList,
+                              translate('home_page.title_list'),
                               style: context.textTheme.bodyLarge
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
@@ -432,7 +433,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           await getFiveRecordsByGroup();
                         },
                         child: Text(
-                          context.translate.homePage.buttonMoreRecords,
+                          translate('home_page.buttonMoreRecords'),
                         ),
                       ),
                     ),
@@ -472,7 +473,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             child: Text(
-              context.translate.homePage.titleAvg,
+              translate('home_page.title_avg'),
               style: context.textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -484,17 +485,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildAvgColumn(
-              context.translate.homePage.best,
+              translate('home_page.best'),
               recordController.bestTime(selectedGroup),
               Colors.amber,
             ),
             _buildAvgColumn(
-              context.translate.homePage.avg5,
+              translate('home_page.avg_5'),
               recordController.avgFive(selectedGroup),
               Colors.green,
             ),
             _buildAvgColumn(
-              context.translate.homePage.avg12,
+              translate('home_page.avg_12'),
               recordController.avgTwelve(selectedGroup),
               Colors.blue,
             ),
@@ -519,7 +520,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: [
           MyElevatedButtonWidget(
             width: context.screenWidth * .4,
-            label: Text(context.translate.homePage.buttonStart),
+            label: Text(translate('home_page.button_start')),
             onPressed: _showInterstitialAd,
           ),
           const SizedBox(height: 15),

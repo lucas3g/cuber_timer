@@ -13,6 +13,7 @@ home_page:
   formatDateTime: "MMMM dd, yyyy 'at' h:mm:ss a"
   tagDateTime: en_us
   buttonMoreRecords: More Records
+  error_title: Oops...
 
 timer_page:
   title_appbar: Stopwatch
@@ -30,3 +31,12 @@ timer_page:
   textButtonListScrambles: Click here to see the scrambles list
   titleAppbarScramblesList: Scrambles List
   textDescriptionScrambleSelected: Click on a scramble to highlight it
+  alert_title_congrats: Woohoo
+
+config_page:
+  title_appbar: Settings
+  premium_message: You are Premium. Thanks for supporting!
+  plan_weekly: Weekly Plan
+  plan_monthly: Monthly Plan
+  plan_annual: Annual Plan
+  button_subscribe: Subscribe

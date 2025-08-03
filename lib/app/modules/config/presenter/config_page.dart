@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../core/domain/entities/subscription_plan.dart';
 import '../../../di/dependency_injection.dart';
 import 'controller/config_controller.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
@@ -26,7 +27,7 @@ class _ConfigPageState extends State<ConfigPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Configurações'),
+        title: Text(translate('config_page.title_appbar')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -35,25 +36,25 @@ class _ConfigPageState extends State<ConfigPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (configController.isPremium)
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Text(
-                    'Você é Premium. Obrigado por apoiar!',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    translate('config_page.premium_message'),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               _buildPlanCard(
-                'Plano Semanal',
+                translate('config_page.plan_weekly'),
                 configController.priceFor(SubscriptionPlan.weekly),
                 onTap: () => configController.buyPlan(SubscriptionPlan.weekly),
               ),
               _buildPlanCard(
-                'Plano Mensal',
+                translate('config_page.plan_monthly'),
                 configController.priceFor(SubscriptionPlan.monthly),
                 onTap: () => configController.buyPlan(SubscriptionPlan.monthly),
               ),
               _buildPlanCard(
-                'Plano Anual',
+                translate('config_page.plan_annual'),
                 configController.priceFor(SubscriptionPlan.annual),
                 onTap: () => configController.buyPlan(SubscriptionPlan.annual),
               ),
@@ -76,7 +77,7 @@ class _ConfigPageState extends State<ConfigPage> {
         subtitle: Text(price),
         trailing: ElevatedButton(
           onPressed: onTap,
-          child: const Text('Assinar'),
+          child: Text(translate('config_page.button_subscribe')),
         ),
       ),
     );
