@@ -14,6 +14,8 @@ home_page:
   tagDateTime: en_us
   buttonMoreRecords: More Records
   error_title: Oops...
+  button_subscribe: Subscribe
+  button_upgrade: Upgrade
 
 timer_page:
   title_appbar: Stopwatch

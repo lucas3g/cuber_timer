@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
 import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
+import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
+import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
@@ -289,6 +291,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   );
                 }
 
+                final Widget? subscriptionButton =
+                    _buildSubscriptionButton();
+
                 return Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,11 +328,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          IconButton(
-                            onPressed: () => Navigator.pushNamed(
-                                context, NamedRoutes.config.route),
-                            icon: const Icon(Icons.settings),
-                          ),
+                          if (subscriptionButton != null) subscriptionButton,
                         ],
                       ),
 
@@ -346,6 +347,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ),
       ),
+    );
+  }
+
+  Widget? _buildSubscriptionButton() {
+    final SubscriptionPlan plan = AppGlobal.instance.plan;
+
+    if (plan == SubscriptionPlan.annual) {
+      return null;
+    }
+
+    final bool isUpgrade =
+        plan == SubscriptionPlan.weekly || plan == SubscriptionPlan.monthly;
+
+    final String label = isUpgrade
+        ? translate('home_page.button_upgrade')
+        : translate('home_page.button_subscribe');
+
+    return TextButton(
+      onPressed: () =>
+          Navigator.pushNamed(context, NamedRoutes.config.route),
+      child: Text(label),
     );
   }
 
