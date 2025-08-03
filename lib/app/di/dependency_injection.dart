@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
+import 'package:cuber_timer/app/shared/services/ad_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../modules/config/presenter/services/purchase_service.dart';
 
 import '../core/data/clients/local_database/schemas/record.dart';
+import '../modules/config/presenter/services/purchase_service.dart';
 import 'dependency_injection.config.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -27,7 +28,11 @@ Future<void> configureDependencies() async {
 
   await getIt.init();
 
-  await getIt<PurchaseService>().init();
+  await getIt<IAdService>().init();
+
+  if (!kDebugMode) {
+    await getIt<PurchaseService>().init();
+  }
 
   await _checkRecordsWithoutGroupAndSetGroupDefault();
   await _insertDebugRecords();

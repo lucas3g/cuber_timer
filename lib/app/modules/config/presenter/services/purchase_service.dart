@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
@@ -16,10 +17,13 @@ class PurchaseService extends ChangeNotifier {
 
   final Map<SubscriptionPlan, String> _prices = {};
 
-  static const Map<SubscriptionPlan, String> _productIds = {
-    SubscriptionPlan.weekly: 'weekly_plan',
-    SubscriptionPlan.monthly: 'monthly_plan',
-    SubscriptionPlan.annual: 'annual_plan',
+  static final Map<SubscriptionPlan, String> _productIds = {
+    SubscriptionPlan.weekly:
+        Platform.isAndroid ? 'weekly_plan' : 'weekly_plan_cubetimer',
+    SubscriptionPlan.monthly:
+        Platform.isAndroid ? 'monthly_plan' : 'monthly_plan_cubetimer',
+    SubscriptionPlan.annual:
+        Platform.isAndroid ? 'annual_plan' : 'annual_plan_cubetimer',
   };
 
   static String idForPlan(SubscriptionPlan plan) => _productIds[plan]!;
@@ -31,7 +35,10 @@ class PurchaseService extends ChangeNotifier {
   Future<void> init() async {
     final bool available = await _iap.isAvailable();
     if (!available) return;
-    _subscription = _iap.purchaseStream.listen(_onPurchaseUpdated);
+    _subscription =
+        _iap.purchaseStream.listen(_onPurchaseUpdated, onError: (error) {
+      _controller.add(PurchaseState.error);
+    });
     await _iap.restorePurchases();
     await _loadPrices();
   }

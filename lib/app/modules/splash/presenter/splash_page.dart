@@ -28,7 +28,6 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    configController.fetchSubscriptions();
     configController.checkAdFreeStatus();
 
     _init();

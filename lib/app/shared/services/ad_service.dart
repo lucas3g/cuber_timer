@@ -5,6 +5,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class IAdService {
+  Future<void> init();
+
   Future<BannerAd> loadBanner({
     required String androidAdId,
     required String iosAdId,
@@ -91,5 +93,9 @@ class AdService implements IAdService {
     await _interstitialAd!.show();
     _interstitialAd = null;
   }
-}
 
+  @override
+  Future<void> init() async {
+    await MobileAds.instance.initialize();
+  }
+}

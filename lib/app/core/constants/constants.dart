@@ -20,10 +20,6 @@ const bannerIDAllRecordsIOS = 'ca-app-pub-1898798427054986/5440938406';
 const bannerIDAllRecordsBottomIOS = 'ca-app-pub-1898798427054986/8266444111';
 const bannerdIdListScramblesIOS = 'ca-app-pub-1898798427054986/4127856736';
 
-const weeklyPlanId = 'weekly_plan';
-const monthlyPlanId = 'monthly_plan';
-const annualPlanId = 'annual_plan';
-
 const double kPadding = 20;
 
 extension ContextExtensions on BuildContext {
