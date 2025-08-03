@@ -15,7 +15,7 @@ final lightThemeApp = ThemeData(
       color: lightColorSchemePapagaio.surface,
     ),
   ),
-  dialogTheme: const DialogThemeData(
+  dialogTheme: const DialogTheme(
     backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
   ),
@@ -39,7 +39,7 @@ final darkThemeApp = ThemeData(
     backgroundColor: darkColorSchemePapagaio.onPrimary,
     centerTitle: true,
   ),
-  dialogTheme: const DialogThemeData(
+  dialogTheme: const DialogTheme(
     backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
   ),

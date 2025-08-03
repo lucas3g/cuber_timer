@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cuber_timer/app/core/domain/entities/app_language.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/domain/entities/named_routes.dart';
@@ -33,25 +32,18 @@ class _AppWidgetState extends State<AppWidget> {
       ],
       builder: (context, child) {
         BotToastInit()(context, child);
-        FlutterI18n.rootAppBuilder();
 
         return child!;
       },
-      localizationsDelegates: [
-        FlutterI18nDelegate(
-          translationLoader: FileTranslationLoader(
-            basePath: 'assets/i18n',
-            useCountryCode: true,
-            fallbackFile: 'en_US',
-            decodeStrategies: [YamlDecodeStrategy()],
-          ),
-          missingTranslationHandler: (key, locale) {},
-        ),
+      supportedLocales: <Locale>[
+        AppLanguage.portuguese.locale,
+        AppLanguage.english.locale,
+      ],
+      localizationsDelegates: const <LocalizationsDelegate<Object>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
       initialRoute: NamedRoutes.splash.route,
       onGenerateRoute: CustomNavigator(
         generateAnimation: _generateAnimation,

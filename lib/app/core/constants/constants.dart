@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../shared/translation/app_translation.dart';
-
 const bannerTopID = 'ca-app-pub-1898798427054986/5130180395';
 const bannerBottomID = 'ca-app-pub-1898798427054986/2075237603';
 const bannerTimerPage = 'ca-app-pub-1898798427054986/2399489477';
@@ -28,8 +26,6 @@ extension ContextExtensions on BuildContext {
 
   double get screenHeight => MediaQuery.of(this).size.height;
   double get screenWidth => MediaQuery.of(this).size.width;
-
-  AppTranslation get translate => AppTranslation(this);
 
   void closeKeyboard() => FocusScope.of(this).unfocus();
 
