@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
-import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
+import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
@@ -16,15 +16,16 @@ import 'package:cuber_timer/app/shared/components/my_circular_progress_widget.da
 import 'package:cuber_timer/app/shared/components/my_elevated_button_widget.dart';
 import 'package:cuber_timer/app/shared/components/my_snackbar.dart';
 import 'package:cuber_timer/app/shared/components/no_data_widget.dart';
-import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
+import 'package:cuber_timer/app/shared/utils/cube_types_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import '../../../shared/services/ad_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
+
+import '../../../shared/services/ad_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -200,7 +201,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-
   Future<void> _loadAds() async {
     isTopAdLoaded = false;
     isBottomAdLoaded = false;
@@ -248,6 +248,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       }
     });
   }
+
   Future<void> getFiveRecordsByGroup() async =>
       await recordController.getFiveRecordsByGroup();
 
@@ -291,8 +292,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   );
                 }
 
-                final Widget? subscriptionButton =
-                    _buildSubscriptionButton();
+                final Widget? subscriptionButton = _buildSubscriptionButton();
 
                 return Expanded(
                   child: Column(
@@ -364,10 +364,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ? translate('home_page.button_upgrade')
         : translate('home_page.button_subscribe');
 
-    return TextButton(
-      onPressed: () =>
-          Navigator.pushNamed(context, NamedRoutes.config.route),
-      child: Text(label),
+    return MyElevatedButtonWidget(
+      onPressed: () => Navigator.pushNamed(context, NamedRoutes.config.route),
+      label: Text(label),
+      icon: isUpgrade ? Icons.upgrade : Icons.star,
     );
   }
 

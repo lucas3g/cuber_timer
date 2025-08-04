@@ -30,7 +30,7 @@ class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
     return SizedBox(
       height: widget.height,
       width: widget.width,
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -40,7 +40,12 @@ class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: widget.label,
+        label: widget.label,
+        icon: widget.icon != null
+            ? Icon(
+                widget.icon,
+              )
+            : const SizedBox.shrink(),
       ),
     );
   }
