@@ -49,30 +49,6 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     });
   }
 
-  late final _$isRewardActiveAtom =
-      Atom(name: '_ConfigControllerBase.isRewardActive', context: context);
-
-  @override
-  bool get isRewardActive {
-    _$isRewardActiveAtom.reportRead();
-    return super.isRewardActive;
-  }
-
-  @override
-  set isRewardActive(bool value) {
-    _$isRewardActiveAtom.reportWrite(value, super.isRewardActive, () {
-      super.isRewardActive = value;
-    });
-  }
-
-  late final _$checkAdFreeStatusAsyncAction =
-      AsyncAction('_ConfigControllerBase.checkAdFreeStatus', context: context);
-
-  @override
-  Future<void> checkAdFreeStatus() {
-    return _$checkAdFreeStatusAsyncAction.run(() => super.checkAdFreeStatus());
-  }
-
   late final _$fetchSubscriptionsAsyncAction =
       AsyncAction('_ConfigControllerBase.fetchSubscriptions', context: context);
 
@@ -87,7 +63,6 @@ mixin _$ConfigController on _ConfigControllerBase, Store {
     return '''
 state: ${state},
 isPremium: ${isPremium},
-isRewardActive: ${isRewardActive},
 adsDisabled: ${adsDisabled}
     ''';
   }

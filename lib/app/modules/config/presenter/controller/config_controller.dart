@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cuber_timer/app/modules/config/presenter/services/purchase_service.dart';
-import 'package:cuber_timer/app/shared/services/app_review_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
@@ -16,11 +15,10 @@ class ConfigController = _ConfigControllerBase with _$ConfigController;
 
 abstract class _ConfigControllerBase with Store {
   final PurchaseService purchaseService;
-  final IAppReviewService appReviewService;
 
   late final StreamSubscription<PurchaseState> _purchaseSubscription;
 
-  _ConfigControllerBase(this.purchaseService, this.appReviewService) {
+  _ConfigControllerBase(this.purchaseService) {
     _purchaseSubscription =
         purchaseService.stream.listen(_onPurchaseStateChanged);
   }
@@ -31,20 +29,12 @@ abstract class _ConfigControllerBase with Store {
   @observable
   bool isPremium = false;
 
-  @observable
-  bool isRewardActive = false;
-
   @computed
-  bool get adsDisabled => isPremium || isRewardActive;
+  bool get adsDisabled => isPremium;
 
   String priceFor(SubscriptionPlan plan) => purchaseService.priceFor(plan);
 
   Future<void> buyPlan(SubscriptionPlan plan) => purchaseService.buy(plan);
-
-  @action
-  Future<void> checkAdFreeStatus() async {
-    isRewardActive = await appReviewService.isRewardActive();
-  }
 
   @action
   Future<void> fetchSubscriptions() async {
