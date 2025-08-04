@@ -58,10 +58,10 @@ extension GetItInjectableX on _i1.GetIt {
           recordController: gh<_i12.RecordController>(),
           appReviewService: gh<_i9.IAppReviewService>(),
         ));
-    gh.singleton<_i14.ConfigController>(() => _i14.ConfigController(
-          gh<_i7.PurchaseService>(),
-          gh<_i9.IAppReviewService>(),
-        ));
+    gh.singleton<_i14.ConfigController>(
+        () => _i14.ConfigController(
+              gh<_i7.PurchaseService>(),
+            ));
     gh.factory<_i15.CountDownController>(() =>
         _i15.CountDownController(timerController: gh<_i13.TimerController>()));
     return this;

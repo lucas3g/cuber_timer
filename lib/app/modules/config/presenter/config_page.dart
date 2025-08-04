@@ -20,7 +20,6 @@ class _ConfigPageState extends State<ConfigPage> {
   void initState() {
     super.initState();
     configController.fetchSubscriptions();
-    configController.checkAdFreeStatus();
   }
 
   @override
