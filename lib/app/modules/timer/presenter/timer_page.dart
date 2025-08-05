@@ -37,22 +37,22 @@ class _TimerPageState extends State<TimerPage> {
 
   bool terminated = false;
 
+  late final ReactionDisposer _stateDisposer;
+
   @override
   void initState() {
     super.initState();
 
-    autorun(
-      (_) {
-        final state = timerController.state;
+    _stateDisposer = autorun((_) {
+      final state = timerController.state;
 
-        if (state is BeatRecordTimerState) {
-          showDialog(
-            context: context,
-            builder: (_) => const AlertCongratsBeatRecordWidget(),
-          );
-        }
-      },
-    );
+      if (state is BeatRecordTimerState && mounted) {
+        showDialog(
+          context: context,
+          builder: (_) => const AlertCongratsBeatRecordWidget(),
+        );
+      }
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!Platform.isWindows) {
@@ -77,7 +77,11 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   void dispose() {
-    myBanner.dispose();
+    _stateDisposer();
+
+    if (!Platform.isWindows) {
+      myBanner.dispose();
+    }
 
     super.dispose();
   }
