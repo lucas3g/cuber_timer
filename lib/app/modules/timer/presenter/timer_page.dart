@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import '../../../shared/services/ad_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -11,6 +11,7 @@ import '../../../core/constants/constants.dart';
 import '../../../core/domain/entities/named_routes.dart';
 import '../../../di/dependency_injection.dart';
 import '../../../shared/components/my_elevated_button_widget.dart';
+import '../../../shared/services/ad_service.dart';
 import '../../../shared/utils/cube_types_list.dart';
 import '../../config/presenter/services/purchase_service.dart';
 import '../controller/count_down_controller.dart';
@@ -18,7 +19,6 @@ import '../controller/timer_controller.dart';
 import '../controller/timer_states.dart';
 import 'widgets/alert_congrats_beat_record_widget.dart';
 import 'widgets/list_scrambles_page.dart';
-import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -37,15 +37,17 @@ class _TimerPageState extends State<TimerPage> {
 
   bool terminated = false;
 
+  late final ReactionDisposer _stateDisposer;
+
   @override
   void initState() {
     super.initState();
 
-    autorun(
+    _stateDisposer = autorun(
       (_) {
         final state = timerController.state;
 
-        if (state is BeatRecordTimerState) {
+        if (state is BeatRecordTimerState && mounted) {
           showDialog(
             context: context,
             builder: (_) => const AlertCongratsBeatRecordWidget(),
@@ -77,7 +79,11 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   void dispose() {
-    myBanner.dispose();
+    _stateDisposer();
+
+    if (!Platform.isWindows) {
+      myBanner.dispose();
+    }
 
     super.dispose();
   }
@@ -188,8 +194,7 @@ class _TimerPageState extends State<TimerPage> {
                                                   style: context
                                                       .textTheme.bodyLarge
                                                       ?.copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 TextButton(
@@ -232,7 +237,8 @@ class _TimerPageState extends State<TimerPage> {
                                             ),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   translate(
@@ -240,14 +246,12 @@ class _TimerPageState extends State<TimerPage> {
                                                   style: context
                                                       .textTheme.bodyLarge
                                                       ?.copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 DropdownButtonHideUnderline(
                                                   child: DropdownButton(
-                                                    alignment:
-                                                        Alignment.center,
+                                                    alignment: Alignment.center,
                                                     items: CubeTypesList.types
                                                         .map((e) {
                                                       return DropdownMenuItem(
@@ -263,12 +267,13 @@ class _TimerPageState extends State<TimerPage> {
                                                     onChanged: (value) {
                                                       if (value != null) {
                                                         setState(() {
-                                                          timerController.group =
-                                                              value;
+                                                          timerController
+                                                              .group = value;
                                                         });
                                                       }
                                                     },
-                                                    value: timerController.group,
+                                                    value:
+                                                        timerController.group,
                                                     icon: const Icon(
                                                       Icons.arrow_drop_down,
                                                       color: Colors.grey,
@@ -290,7 +295,8 @@ class _TimerPageState extends State<TimerPage> {
                                         ),
                                       ),
                                       Text(
-                                        translate('timer_page.text_help_to_use_app'),
+                                        translate(
+                                            'timer_page.text_help_to_use_app'),
                                         textAlign: TextAlign.center,
                                       ),
                                     ],
@@ -338,7 +344,8 @@ class _TimerPageState extends State<TimerPage> {
                                       ),
                                       onPressed: () {
                                         timerController.resetTimer();
-                                        countDownController.resetTimerCountDown();
+                                        countDownController
+                                            .resetTimerCountDown();
                                         terminated = false;
                                         setState(() {});
                                       },

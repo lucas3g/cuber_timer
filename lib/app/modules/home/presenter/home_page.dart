@@ -52,6 +52,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   TabController? _tabController;
 
+  late final ReactionDisposer _autorunDisposer;
+
   @override
   void initState() {
     super.initState();
@@ -62,7 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     getFiveRecordsByGroup();
 
-    autorun((_) async {
+    _autorunDisposer = autorun((_) async {
       final state = recordController.state;
 
       if (state is ErrorRecordState) {
@@ -191,6 +193,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _autorunDisposer();
+
     _tabController?.removeListener(_onTabChanged);
     _tabController?.dispose();
 
@@ -233,6 +237,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Future<void> _showInterstitialAd() async {
     if (purchaseService.isPremium) {
       await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
+      if (!mounted) return;
       await getFiveRecordsByGroup();
       if (!Platform.isWindows) {
         await _loadAds();
@@ -242,6 +247,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     await adService.showInterstitial(onDismissed: () async {
       await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
+      if (!mounted) return;
       await getFiveRecordsByGroup();
       if (!Platform.isWindows) {
         await _loadAds();
@@ -264,86 +270,86 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Observer(builder: (context) {
-                if (_tabController == null || sortedGroupedRecords.isEmpty) {
-                  return NoDataWidget(
-                    text: translate('home_page.list_empty'),
-                  );
-                }
+                  if (_tabController == null || sortedGroupedRecords.isEmpty) {
+                    return NoDataWidget(
+                      text: translate('home_page.list_empty'),
+                    );
+                  }
 
-                final state = recordController.state;
+                  final state = recordController.state;
 
-                if (state is! SuccessGetListRecordState &&
-                    state is! SuccessDeleteRecordState) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const MyCircularProgressWidget(),
-                      Text(
-                        translate('home_page.text_loading'),
-                        style: context.textTheme.bodyLarge,
-                      ),
-                    ],
-                  );
-                }
-
-                final records = state.records;
-
-                if (records.isEmpty) {
-                  return NoDataWidget(
-                    text: translate('home_page.list_empty'),
-                  );
-                }
-
-                final Widget? subscriptionButton = _buildSubscriptionButton();
-
-                return Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Banners...
-                      if (!Platform.isWindows &&
-                          !purchaseService.isPremium) ...[
-                        if (isTopAdLoaded)
-                          SizedBox(
-                            height: myBanner.size.height.toDouble(),
-                            width: myBanner.size.width.toDouble(),
-                            child: AdWidget(ad: myBanner),
-                          ),
-                        const SizedBox(height: 10),
+                  if (state is! SuccessGetListRecordState &&
+                      state is! SuccessDeleteRecordState) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const MyCircularProgressWidget(),
+                        Text(
+                          translate('home_page.text_loading'),
+                          style: context.textTheme.bodyLarge,
+                        ),
                       ],
+                    );
+                  }
 
-                      // Header
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.symmetric(
-                                horizontal: BorderSide(
-                                  color: context.myTheme.onSurface,
+                  final records = state.records;
+
+                  if (records.isEmpty) {
+                    return NoDataWidget(
+                      text: translate('home_page.list_empty'),
+                    );
+                  }
+
+                  final Widget? subscriptionButton = _buildSubscriptionButton();
+
+                  return Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Banners...
+                        if (!Platform.isWindows &&
+                            !purchaseService.isPremium) ...[
+                          if (isTopAdLoaded)
+                            SizedBox(
+                              height: myBanner.size.height.toDouble(),
+                              width: myBanner.size.width.toDouble(),
+                              child: AdWidget(ad: myBanner),
+                            ),
+                          const SizedBox(height: 10),
+                        ],
+
+                        // Header
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.symmetric(
+                                  horizontal: BorderSide(
+                                    color: context.myTheme.onSurface,
+                                  ),
                                 ),
                               ),
+                              child: Text(
+                                translate('home_page.title_list'),
+                                style: context.textTheme.bodyLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                            child: Text(
-                              translate('home_page.title_list'),
-                              style: context.textTheme.bodyLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          if (subscriptionButton != null) subscriptionButton,
-                        ],
-                      ),
+                            if (subscriptionButton != null) subscriptionButton,
+                          ],
+                        ),
 
-                      // TabBar e TabBarView
-                      Expanded(
-                        child: _buildTabSection(),
-                      ),
-                    ],
-                  ),
-                );
-              }),
+                        // TabBar e TabBarView
+                        Expanded(
+                          child: _buildTabSection(),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
 
-              // Botão Start e banner inferior
+                // Botão Start e banner inferior
                 _buildBottomSection(),
               ],
             ),
