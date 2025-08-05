@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
+import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
 import 'package:cuber_timer/app/shared/services/ad_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -109,7 +110,7 @@ Future<void> _insertDebugRecords() async {
 void _initAppGlobal() {
   AppGlobal();
 
-  // if (kDebugMode) {
-  //   AppGlobal.instance.setPlan(SubscriptionPlan.annual);
-  // }
+  if (kDebugMode) {
+    AppGlobal.instance.setPlan(SubscriptionPlan.annual);
+  }
 }
