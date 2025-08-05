@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 import '../../../core/domain/entities/named_routes.dart';
-import '../../../di/dependency_injection.dart';
 import '../../../shared/components/my_circular_progress_widget.dart';
-import '../../config/presenter/controller/config_controller.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,8 +13,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final ConfigController configController = getIt<ConfigController>();
-
   Future _init() async {
     await Future.delayed(const Duration(seconds: 1));
 

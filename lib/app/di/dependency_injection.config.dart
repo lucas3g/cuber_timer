@@ -19,14 +19,13 @@ import '../core/data/clients/shared_preferences/local_storage_interface.dart'
     as _i4;
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
     as _i5;
-import '../modules/config/presenter/controller/config_controller.dart' as _i14;
 import '../modules/config/presenter/services/purchase_service.dart' as _i7;
 import '../modules/home/presenter/controller/record_controller.dart' as _i12;
-import '../modules/timer/controller/count_down_controller.dart' as _i15;
+import '../modules/timer/controller/count_down_controller.dart' as _i14;
 import '../modules/timer/controller/timer_controller.dart' as _i13;
 import '../shared/services/ad_service.dart' as _i3;
 import '../shared/services/app_review_service.dart' as _i9;
-import 'dependency_injection.dart' as _i16;
+import 'dependency_injection.dart' as _i15;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -58,14 +57,10 @@ extension GetItInjectableX on _i1.GetIt {
           recordController: gh<_i12.RecordController>(),
           appReviewService: gh<_i9.IAppReviewService>(),
         ));
-    gh.singleton<_i14.ConfigController>(
-        () => _i14.ConfigController(
-              gh<_i7.PurchaseService>(),
-            ));
-    gh.factory<_i15.CountDownController>(() =>
-        _i15.CountDownController(timerController: gh<_i13.TimerController>()));
+    gh.factory<_i14.CountDownController>(() =>
+        _i14.CountDownController(timerController: gh<_i13.TimerController>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i16.RegisterModule {}
+class _$RegisterModule extends _i15.RegisterModule {}

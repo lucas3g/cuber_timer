@@ -8,7 +8,7 @@ import 'package:super_sliver_list/super_sliver_list.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../di/dependency_injection.dart';
-import '../../config/presenter/controller/config_controller.dart';
+import '../../config/presenter/services/purchase_service.dart';
 import '../../home/presenter/controller/record_controller.dart';
 import '../../home/presenter/controller/record_states.dart';
 import '../../home/presenter/widgets/card_record_widget.dart';
@@ -23,7 +23,7 @@ class AllRecordsByGroupPage extends StatefulWidget {
 
 class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
   final RecordController recordController = getIt<RecordController>();
-  final ConfigController configController = getIt<ConfigController>();
+  final PurchaseService purchaseService = getIt<PurchaseService>();
   final IAdService adService = getIt<IAdService>();
 
   late final String? groupArg;
@@ -93,16 +93,18 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          translate('timer_page.title_appbar_more_records'),
+    return AnimatedBuilder(
+      animation: purchaseService,
+      builder: (_, __) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            translate('timer_page.title_appbar_more_records'),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Observer(
-          builder: (_) {
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Observer(
+            builder: (_) {
             final state = recordController.state;
 
             if (state is LoadingListRecordState) {
@@ -124,7 +126,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
 
               return Column(
                 children: [
-                  if (!Platform.isWindows && !configController.adsDisabled) ...[
+                  if (!Platform.isWindows && !purchaseService.isPremium) ...[
                     if (isAdLoaded)
                       SizedBox(
                         height: myBanner.size.height.toDouble(),
@@ -174,7 +176,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
                     ),
                   ),
                   const Divider(),
-                  if (!Platform.isWindows && !configController.adsDisabled) ...[
+                  if (!Platform.isWindows && !purchaseService.isPremium) ...[
                     if (isAdLoadedBottom)
                       SizedBox(
                         height: myBannerBottom.size.height.toDouble(),
@@ -190,6 +192,7 @@ class _AllRecordsByGroupPageState extends State<AllRecordsByGroupPage> {
               child: Text(translate('home_page.list_empty')),
             );
           },
+          ),
         ),
       ),
     );

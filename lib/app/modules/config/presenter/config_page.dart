@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-
 import '../../../core/domain/entities/subscription_plan.dart';
 import '../../../di/dependency_injection.dart';
-import 'controller/config_controller.dart';
+import 'services/purchase_service.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -14,12 +12,12 @@ class ConfigPage extends StatefulWidget {
 }
 
 class _ConfigPageState extends State<ConfigPage> {
-  final ConfigController configController = getIt<ConfigController>();
+  final PurchaseService purchaseService = getIt<PurchaseService>();
 
   @override
   void initState() {
     super.initState();
-    configController.fetchSubscriptions();
+    purchaseService.init();
   }
 
   @override
@@ -30,11 +28,12 @@ class _ConfigPageState extends State<ConfigPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Observer(
-          builder: (_) => Column(
+        child: AnimatedBuilder(
+          animation: purchaseService,
+          builder: (_, __) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (configController.isPremium)
+              if (purchaseService.isPremium)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Text(
@@ -44,18 +43,18 @@ class _ConfigPageState extends State<ConfigPage> {
                 ),
               _buildPlanCard(
                 translate('config_page.plan_weekly'),
-                configController.priceFor(SubscriptionPlan.weekly),
-                onTap: () => configController.buyPlan(SubscriptionPlan.weekly),
+                purchaseService.priceFor(SubscriptionPlan.weekly),
+                onTap: () => purchaseService.buy(SubscriptionPlan.weekly),
               ),
               _buildPlanCard(
                 translate('config_page.plan_monthly'),
-                configController.priceFor(SubscriptionPlan.monthly),
-                onTap: () => configController.buyPlan(SubscriptionPlan.monthly),
+                purchaseService.priceFor(SubscriptionPlan.monthly),
+                onTap: () => purchaseService.buy(SubscriptionPlan.monthly),
               ),
               _buildPlanCard(
                 translate('config_page.plan_annual'),
-                configController.priceFor(SubscriptionPlan.annual),
-                onTap: () => configController.buyPlan(SubscriptionPlan.annual),
+                purchaseService.priceFor(SubscriptionPlan.annual),
+                onTap: () => purchaseService.buy(SubscriptionPlan.annual),
               ),
             ],
           ),

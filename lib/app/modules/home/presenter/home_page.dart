@@ -8,7 +8,7 @@ import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
-import 'package:cuber_timer/app/modules/config/presenter/controller/config_controller.dart';
+import 'package:cuber_timer/app/modules/config/presenter/services/purchase_service.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_states.dart';
 import 'package:cuber_timer/app/modules/home/presenter/widgets/card_record_widget.dart';
@@ -36,7 +36,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final recordController = getIt<RecordController>();
-  final configController = getIt<ConfigController>();
+  final PurchaseService purchaseService = getIt<PurchaseService>();
   final IAdService adService = getIt<IAdService>();
 
   int _currentTabIndex = 0;
@@ -231,7 +231,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<void> _showInterstitialAd() async {
-    if (configController.adsDisabled) {
+    if (purchaseService.isPremium) {
       await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
       await getFiveRecordsByGroup();
       if (!Platform.isWindows) {
@@ -254,14 +254,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Observer(builder: (context) {
+    return AnimatedBuilder(
+      animation: purchaseService,
+      builder: (_, __) => Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Observer(builder: (context) {
                 if (_tabController == null || sortedGroupedRecords.isEmpty) {
                   return NoDataWidget(
                     text: translate('home_page.list_empty'),
@@ -300,7 +302,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     children: [
                       // Banners...
                       if (!Platform.isWindows &&
-                          !configController.adsDisabled) ...[
+                          !purchaseService.isPremium) ...[
                         if (isTopAdLoaded)
                           SizedBox(
                             height: myBanner.size.height.toDouble(),
@@ -342,8 +344,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               }),
 
               // Botão Start e banner inferior
-              _buildBottomSection(),
-            ],
+                _buildBottomSection(),
+              ],
+            ),
           ),
         ),
       ),
@@ -546,7 +549,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             onPressed: _showInterstitialAd,
           ),
           const SizedBox(height: 15),
-          if (!Platform.isWindows && !configController.adsDisabled) ...[
+          if (!Platform.isWindows && !purchaseService.isPremium) ...[
             if (isBottomAdLoaded && state.records.isNotEmpty)
               SizedBox(
                 height: myBottmBanner.size.height.toDouble(),
