@@ -96,6 +96,14 @@ class AdService implements IAdService {
 
   @override
   Future<void> init() async {
+    await MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(
+        maxAdContentRating: MaxAdContentRating.g,
+        tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+        tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.yes,
+      ),
+    );
+
     await MobileAds.instance.initialize();
   }
 }
