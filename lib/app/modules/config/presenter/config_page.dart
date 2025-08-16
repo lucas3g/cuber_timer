@@ -1,8 +1,9 @@
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
+
 import '../../../core/domain/entities/subscription_plan.dart';
 import '../../../di/dependency_injection.dart';
 import 'services/purchase_service.dart';
-import 'package:cuber_timer/app/shared/translate/translate.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
