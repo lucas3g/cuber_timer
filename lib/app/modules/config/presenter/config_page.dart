@@ -43,16 +43,19 @@ class _ConfigPageState extends State<ConfigPage> {
                 ),
               _buildPlanCard(
                 translate('config_page.plan_weekly'),
+                translate('config_page.remove_ads_description'),
                 purchaseService.priceFor(SubscriptionPlan.weekly),
                 onTap: () => purchaseService.buy(SubscriptionPlan.weekly),
               ),
               _buildPlanCard(
                 translate('config_page.plan_monthly'),
+                translate('config_page.remove_ads_description'),
                 purchaseService.priceFor(SubscriptionPlan.monthly),
                 onTap: () => purchaseService.buy(SubscriptionPlan.monthly),
               ),
               _buildPlanCard(
                 translate('config_page.plan_annual'),
+                translate('config_page.remove_ads_description'),
                 purchaseService.priceFor(SubscriptionPlan.annual),
                 onTap: () => purchaseService.buy(SubscriptionPlan.annual),
               ),
@@ -63,8 +66,12 @@ class _ConfigPageState extends State<ConfigPage> {
     );
   }
 
-  Widget _buildPlanCard(String title, String price,
-      {required VoidCallback onTap}) {
+  Widget _buildPlanCard(
+    String title,
+    String description,
+    String price, {
+    required VoidCallback onTap,
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
@@ -72,7 +79,13 @@ class _ConfigPageState extends State<ConfigPage> {
           title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(price),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(description),
+            Text(price),
+          ],
+        ),
         trailing: ElevatedButton(
           onPressed: onTap,
           child: Text(translate('config_page.button_subscribe')),

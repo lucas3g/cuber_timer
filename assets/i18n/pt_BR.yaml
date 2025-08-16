@@ -42,3 +42,4 @@ config_page:
   plan_monthly: Plano Mensal
   plan_annual: Plano Anual
   button_subscribe: Assinar
+  remove_ads_description: Remova anúncios do app.

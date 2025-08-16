@@ -42,3 +42,4 @@ config_page:
   plan_monthly: Monthly Plan
   plan_annual: Annual Plan
   button_subscribe: Subscribe
+  remove_ads_description: Remove ads from the app.
