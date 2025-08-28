@@ -21,11 +21,24 @@ class TranslateLoader {
 
   Future<Map<String, dynamic>> load() async {
     final Locale locale = this.locale ?? PlatformDispatcher.instance.locale;
-    final String yamlString = await rootBundle.loadString(
-      '$basePath/${locale.toString()}.yaml',
-    );
-    final dynamic yaml = loadYaml(yamlString);
-    return Map<String, dynamic>.from(_getModifiableNode(yaml));
+
+    if (!_fileExistsFromAssets('$basePath/${locale.toString()}.yaml')) {
+      final String yamlString = await rootBundle.loadString(
+        '$basePath/en_US.yaml',
+      );
+
+      final dynamic yaml = loadYaml(yamlString);
+
+      return Map<String, dynamic>.from(_getModifiableNode(yaml));
+    } else {
+      final String yamlString = await rootBundle.loadString(
+        '$basePath/${locale.toString()}.yaml',
+      );
+
+      final dynamic yaml = loadYaml(yamlString);
+
+      return Map<String, dynamic>.from(_getModifiableNode(yaml));
+    }
   }
 
   static dynamic _getModifiableNode(dynamic node) {
@@ -41,5 +54,14 @@ class TranslateLoader {
     }
 
     return node;
+  }
+
+  bool _fileExistsFromAssets(String path) {
+    try {
+      rootBundle.loadString(path);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }
