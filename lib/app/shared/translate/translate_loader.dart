@@ -5,6 +5,8 @@ class TranslateLoader {
   final String basePath;
   final Locale? locale;
 
+  static const Locale _fallbackLocale = Locale('en', 'US');
+
   TranslateLoader({
     required this.basePath,
     this.locale,
@@ -22,22 +24,19 @@ class TranslateLoader {
   Future<Map<String, dynamic>> load() async {
     final Locale locale = this.locale ?? PlatformDispatcher.instance.locale;
 
-    if (!_fileExistsFromAssets('$basePath/${locale.toString()}.yaml')) {
-      final String yamlString = await rootBundle.loadString(
-        '$basePath/en_US.yaml',
+    final String yamlString = await _loadYamlString(locale);
+    final dynamic yaml = loadYaml(yamlString);
+
+    return Map<String, dynamic>.from(_getModifiableNode(yaml));
+  }
+
+  Future<String> _loadYamlString(Locale locale) async {
+    try {
+      return await rootBundle.loadString('$basePath/${locale.toString()}.yaml');
+    } on FlutterError {
+      return rootBundle.loadString(
+        '$basePath/${_fallbackLocale.toString()}.yaml',
       );
-
-      final dynamic yaml = loadYaml(yamlString);
-
-      return Map<String, dynamic>.from(_getModifiableNode(yaml));
-    } else {
-      final String yamlString = await rootBundle.loadString(
-        '$basePath/${locale.toString()}.yaml',
-      );
-
-      final dynamic yaml = loadYaml(yamlString);
-
-      return Map<String, dynamic>.from(_getModifiableNode(yaml));
     }
   }
 
@@ -54,14 +53,5 @@ class TranslateLoader {
     }
 
     return node;
-  }
-
-  bool _fileExistsFromAssets(String path) {
-    try {
-      rootBundle.loadString(path);
-      return true;
-    } catch (_) {
-      return false;
-    }
   }
 }
