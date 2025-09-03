@@ -1,5 +1,6 @@
 import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/domain/entities/subscription_plan.dart';
 import '../../../di/dependency_injection.dart';
@@ -14,6 +15,13 @@ class ConfigPage extends StatefulWidget {
 
 class _ConfigPageState extends State<ConfigPage> {
   final PurchaseService purchaseService = getIt<PurchaseService>();
+  final Uri _privacyUri = Uri.parse('https://lucas3g.github.io/#/');
+
+  Future<void> _openPrivacyTerms() async {
+    if (await canLaunchUrl(_privacyUri)) {
+      await launchUrl(_privacyUri, mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   void initState() {
@@ -59,6 +67,13 @@ class _ConfigPageState extends State<ConfigPage> {
                 translate('config_page.remove_ads_description'),
                 purchaseService.priceFor(SubscriptionPlan.annual),
                 onTap: () => purchaseService.buy(SubscriptionPlan.annual),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: _openPrivacyTerms,
+                child: Text(
+                  translate('config_page.button_privacy_terms'),
+                ),
               ),
             ],
           ),
