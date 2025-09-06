@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isTopAdLoaded = false;
   bool isBottomAdLoaded = false;
 
-  late Map<String, List<RecordEntity>> sortedGroupedRecords;
+  Map<String, List<RecordEntity>> sortedGroupedRecords = {};
 
   TabController? _tabController;
 
@@ -271,14 +271,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Observer(builder: (context) {
                   final Widget? subscriptionButton = _buildSubscriptionButton();
-
-                  if (_tabController == null || sortedGroupedRecords.isEmpty) {
-                    return NoDataWidget(
-                      text: translate('home_page.list_empty'),
-                      child: subscriptionButton,
-                    );
-                  }
-
                   final state = recordController.state;
 
                   if (state is! SuccessGetListRecordState &&
@@ -292,15 +284,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           style: context.textTheme.bodyLarge,
                         ),
                       ],
-                    );
-                  }
-
-                  final records = state.records;
-
-                  if (records.isEmpty) {
-                    return NoDataWidget(
-                      text: translate('home_page.list_empty'),
-                      child: subscriptionButton,
                     );
                   }
 
@@ -342,9 +325,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                         ),
 
-                        // TabBar e TabBarView
+                        // TabBar e TabBarView ou mensagem de vazio
                         Expanded(
-                          child: _buildTabSection(),
+                          child: (_tabController != null &&
+                                  sortedGroupedRecords.isNotEmpty)
+                              ? _buildTabSection()
+                              : Center(
+                                  child: NoDataWidget(
+                                    text: translate('home_page.list_empty'),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
