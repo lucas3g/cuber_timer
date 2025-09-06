@@ -5,9 +5,11 @@ import 'package:lottie/lottie.dart';
 
 class NoDataWidget extends StatelessWidget {
   final String text;
+  final Widget? child;
   const NoDataWidget({
     Key? key,
     required this.text,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class NoDataWidget extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          if (child != null) child!,
         ],
       ),
     );

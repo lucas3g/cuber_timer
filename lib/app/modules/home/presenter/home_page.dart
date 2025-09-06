@@ -270,9 +270,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Observer(builder: (context) {
+                  final Widget? subscriptionButton = _buildSubscriptionButton();
+
                   if (_tabController == null || sortedGroupedRecords.isEmpty) {
                     return NoDataWidget(
                       text: translate('home_page.list_empty'),
+                      child: subscriptionButton,
                     );
                   }
 
@@ -297,10 +300,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   if (records.isEmpty) {
                     return NoDataWidget(
                       text: translate('home_page.list_empty'),
+                      child: subscriptionButton,
                     );
                   }
-
-                  final Widget? subscriptionButton = _buildSubscriptionButton();
 
                   return Expanded(
                     child: Column(
