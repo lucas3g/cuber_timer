@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../modules/all_records_by_group/presenter/all_records_by_group_page.dart';
 import '../../modules/config/presenter/config_page.dart';
 import '../../modules/home/presenter/home_page.dart';
+import '../../modules/main_navigator/presenter/main_navigator_page.dart';
 import '../../modules/splash/presenter/splash_page.dart';
 import '../../modules/timer/presenter/timer_page.dart';
 import '../domain/entities/named_routes.dart';
@@ -17,6 +18,7 @@ class CustomNavigator {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final Map<String, WidgetBuilder> appRoutes = <String, WidgetBuilder>{
       NamedRoutes.splash.route: (BuildContext context) => const SplashPage(),
+      NamedRoutes.mainNavigator.route: (BuildContext context) => const MainNavigatorPage(),
       NamedRoutes.home.route: (BuildContext context) => const HomePage(),
       NamedRoutes.timer.route: (BuildContext context) => const TimerPage(),
       NamedRoutes.config.route: (BuildContext context) => const ConfigPage(),

@@ -4,7 +4,9 @@
       "Bash(cat:*)",
       "Bash(fvm flutter pub get:*)",
       "Bash(fvm flutter pub run build_runner build:*)",
-      "Bash(fvm flutter:*)"
+      "Bash(fvm flutter:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []

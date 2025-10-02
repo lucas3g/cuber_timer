@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
 
     if (mounted) {
       await Navigator.pushNamedAndRemoveUntil(
-          context, NamedRoutes.home.route, (route) => false);
+          context, NamedRoutes.mainNavigator.route, (route) => false);
     }
   }
 

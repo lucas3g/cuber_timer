@@ -21,6 +21,8 @@ import '../core/data/clients/shared_preferences/local_storage_interface.dart'
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
     as _i745;
 import '../modules/config/presenter/services/purchase_service.dart' as _i429;
+import '../modules/dashboard/presenter/controller/dashboard_controller.dart'
+    as _i652;
 import '../modules/home/presenter/controller/record_controller.dart' as _i529;
 import '../modules/timer/controller/count_down_controller.dart' as _i192;
 import '../modules/timer/controller/timer_controller.dart' as _i53;
@@ -49,6 +51,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i654.ILocalDatabase>(
       () => _i13.DriftService(gh<_i538.AppDatabase>()),
+    );
+    gh.singleton<_i652.DashboardController>(
+      () =>
+          _i652.DashboardController(localDatabase: gh<_i654.ILocalDatabase>()),
     );
     gh.singleton<_i529.RecordController>(
       () => _i529.RecordController(localDatabase: gh<_i654.ILocalDatabase>()),

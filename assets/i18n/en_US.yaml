@@ -43,3 +43,19 @@ config_page:
   plan_annual: Annual Plan
   button_subscribe: Subscribe
   remove_ads_description: Remove ads from the app.
+
+main_navigator:
+  dashboard: Dashboard
+  records: Records
+
+dashboard:
+  title: Dashboard
+  subtitle: Track your progress and improve your skills
+  no_data: No data available yet. Start practicing!
+  insights_title: Your Stats
+  total_solves: Total Solves
+  best_time: Best Time
+  average_time: Average Time
+  most_practiced: Most Practiced
+  progress_by_group: Progress by Cube Type
+  recommendations_title: Tips & Recommendations

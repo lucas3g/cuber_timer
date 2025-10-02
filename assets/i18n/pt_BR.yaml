@@ -43,3 +43,19 @@ config_page:
   plan_annual: Plano Anual
   button_subscribe: Assinar
   remove_ads_description: Remova anúncios do app.
+
+main_navigator:
+  dashboard: Dashboard
+  records: Recordes
+
+dashboard:
+  title: Dashboard
+  subtitle: Acompanhe seu progresso e melhore suas habilidades
+  no_data: Nenhum dado disponível ainda. Comece a praticar!
+  insights_title: Suas Estatísticas
+  total_solves: Total de Resoluções
+  best_time: Melhor Tempo
+  average_time: Tempo Médio
+  most_practiced: Mais Praticado
+  progress_by_group: Progresso por Tipo de Cubo
+  recommendations_title: Dicas e Recomendações
