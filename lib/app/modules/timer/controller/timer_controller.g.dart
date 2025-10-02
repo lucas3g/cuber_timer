@@ -12,27 +12,30 @@ mixin _$TimerController on TimerControllerBase, Store {
   Computed<List<String>>? _$listScramblesComputed;
 
   @override
-  List<String> get listScrambles => (_$listScramblesComputed ??=
-          Computed<List<String>>(() => super.listScrambles,
-              name: 'TimerControllerBase.listScrambles'))
-      .value;
+  List<String> get listScrambles =>
+      (_$listScramblesComputed ??= Computed<List<String>>(
+        () => super.listScrambles,
+        name: 'TimerControllerBase.listScrambles',
+      )).value;
   Computed<String>? _$randomScrambleComputed;
 
   @override
-  String get randomScramble =>
-      (_$randomScrambleComputed ??= Computed<String>(() => super.randomScramble,
-              name: 'TimerControllerBase.randomScramble'))
-          .value;
+  String get randomScramble => (_$randomScrambleComputed ??= Computed<String>(
+    () => super.randomScramble,
+    name: 'TimerControllerBase.randomScramble',
+  )).value;
   Computed<Stream<int>>? _$getTimerComputed;
 
   @override
-  Stream<int> get getTimer =>
-      (_$getTimerComputed ??= Computed<Stream<int>>(() => super.getTimer,
-              name: 'TimerControllerBase.getTimer'))
-          .value;
+  Stream<int> get getTimer => (_$getTimerComputed ??= Computed<Stream<int>>(
+    () => super.getTimer,
+    name: 'TimerControllerBase.getTimer',
+  )).value;
 
-  late final _$stateAtom =
-      Atom(name: 'TimerControllerBase.state', context: context);
+  late final _$stateAtom = Atom(
+    name: 'TimerControllerBase.state',
+    context: context,
+  );
 
   @override
   TimerStates get state {
@@ -47,8 +50,10 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
-  late final _$textColorAtom =
-      Atom(name: 'TimerControllerBase.textColor', context: context);
+  late final _$textColorAtom = Atom(
+    name: 'TimerControllerBase.textColor',
+    context: context,
+  );
 
   @override
   Color get textColor {
@@ -63,8 +68,10 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
-  late final _$groupAtom =
-      Atom(name: 'TimerControllerBase.group', context: context);
+  late final _$groupAtom = Atom(
+    name: 'TimerControllerBase.group',
+    context: context,
+  );
 
   @override
   String get group {
@@ -79,8 +86,10 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
-  late final _$colorChangeTimerAtom =
-      Atom(name: 'TimerControllerBase.colorChangeTimer', context: context);
+  late final _$colorChangeTimerAtom = Atom(
+    name: 'TimerControllerBase.colorChangeTimer',
+    context: context,
+  );
 
   @override
   Timer get colorChangeTimer {
@@ -95,21 +104,26 @@ mixin _$TimerController on TimerControllerBase, Store {
     });
   }
 
-  late final _$stopTimerAsyncAction =
-      AsyncAction('TimerControllerBase.stopTimer', context: context);
+  late final _$stopTimerAsyncAction = AsyncAction(
+    'TimerControllerBase.stopTimer',
+    context: context,
+  );
 
   @override
   Future<dynamic> stopTimer() {
     return _$stopTimerAsyncAction.run(() => super.stopTimer());
   }
 
-  late final _$TimerControllerBaseActionController =
-      ActionController(name: 'TimerControllerBase', context: context);
+  late final _$TimerControllerBaseActionController = ActionController(
+    name: 'TimerControllerBase',
+    context: context,
+  );
 
   @override
   TimerStates emit(TimerStates newState) {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.emit');
+      name: 'TimerControllerBase.emit',
+    );
     try {
       return super.emit(newState);
     } finally {
@@ -120,7 +134,8 @@ mixin _$TimerController on TimerControllerBase, Store {
   @override
   void toggleTimer() {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.toggleTimer');
+      name: 'TimerControllerBase.toggleTimer',
+    );
     try {
       return super.toggleTimer();
     } finally {
@@ -131,7 +146,8 @@ mixin _$TimerController on TimerControllerBase, Store {
   @override
   void resetTimer() {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.resetTimer');
+      name: 'TimerControllerBase.resetTimer',
+    );
     try {
       return super.resetTimer();
     } finally {
@@ -142,7 +158,8 @@ mixin _$TimerController on TimerControllerBase, Store {
   @override
   void startTimerColor() {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.startTimerColor');
+      name: 'TimerControllerBase.startTimerColor',
+    );
     try {
       return super.startTimerColor();
     } finally {
@@ -153,7 +170,8 @@ mixin _$TimerController on TimerControllerBase, Store {
   @override
   void changeColor(Color color) {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.changeColor');
+      name: 'TimerControllerBase.changeColor',
+    );
     try {
       return super.changeColor(color);
     } finally {
@@ -164,7 +182,8 @@ mixin _$TimerController on TimerControllerBase, Store {
   @override
   void resetColor() {
     final _$actionInfo = _$TimerControllerBaseActionController.startAction(
-        name: 'TimerControllerBase.resetColor');
+      name: 'TimerControllerBase.resetColor',
+    );
     try {
       return super.resetColor();
     } finally {

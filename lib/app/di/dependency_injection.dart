@@ -1,16 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/shared/services/ad_service.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/data/clients/local_database/schemas/record.dart';
+import '../core/data/clients/local_database/drift_database.dart';
 import '../modules/config/presenter/services/purchase_service.dart';
 import 'dependency_injection.config.dart';
 
@@ -23,8 +21,6 @@ final GetIt getIt = GetIt.instance;
 )
 Future<void> configureDependencies() async {
   _initAppGlobal();
-
-  await _initIsar();
 
   await getIt.init();
 
@@ -43,37 +39,23 @@ abstract class RegisterModule {
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 
-  Isar get isar => Isar.getInstance()!;
-}
-
-Future<void> _initIsar() async {
-  final Directory dir = await getApplicationDocumentsDirectory();
-
-  await Isar.open(
-    <CollectionSchema<dynamic>>[
-      RecordEntitySchema,
-    ],
-    directory: dir.path,
-  );
+  @lazySingleton
+  AppDatabase get database => AppDatabase();
 }
 
 Future<void> _checkRecordsWithoutGroupAndSetGroupDefault() async {
-  final isar = getIt<Isar>();
+  final db = getIt<AppDatabase>();
 
-  final records = await isar.recordEntitys
-      .where()
-      .filter()
-      .createdAtLessThan(DateTime(2010))
-      .findAll();
+  final records = await db.getRecordsCreatedBefore(DateTime(2010));
 
   if (records.isNotEmpty) {
     for (final record in records) {
-      record.group = 'Old Records';
-      record.createdAt = DateTime.now();
+      final updatedRecord = record.copyWith(
+        group: 'Old Records',
+        createdAt: DateTime.now(),
+      );
 
-      await isar.writeTxn(() async {
-        await isar.recordEntitys.put(record);
-      });
+      await db.updateRecord(updatedRecord);
     }
   }
 }
@@ -81,27 +63,21 @@ Future<void> _checkRecordsWithoutGroupAndSetGroupDefault() async {
 Future<void> _insertDebugRecords() async {
   if (!kDebugMode) return;
 
-  final isar = getIt<Isar>();
+  final db = getIt<AppDatabase>();
 
-  final existing = await isar.recordEntitys
-      .where()
-      .filter()
-      .groupContains('Old Records')
-      .findAll();
+  final existing = await db.getRecordsByGroup('Old Records');
 
   if (existing.isEmpty) {
     const sampleTimers = <int>[1000, 2000, 3000];
 
     for (final time in sampleTimers) {
-      final record = RecordEntity(
-        timer: time,
-        group: 'Old Records',
-        createdAt: DateTime.now(),
+      final record = RecordsCompanion(
+        timer: Value(time),
+        group: const Value('Old Records'),
+        createdAt: Value(DateTime.now()),
       );
 
-      await isar.writeTxn(() async {
-        await isar.recordEntitys.put(record);
-      });
+      await db.insertRecord(record);
     }
   }
 }

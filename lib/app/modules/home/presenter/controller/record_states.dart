@@ -1,7 +1,7 @@
-import '../../../../core/data/clients/local_database/schemas/record.dart';
+import '../../../../core/data/clients/local_database/drift_database.dart';
 
 abstract class RecordStates {
-  final List<RecordEntity> records;
+  final List<Record> records;
 
   RecordStates({required this.records});
 
@@ -9,7 +9,7 @@ abstract class RecordStates {
     return LoadingListRecordState(records: records);
   }
 
-  SuccessGetListRecordState success({List<RecordEntity>? records}) {
+  SuccessGetListRecordState success({List<Record>? records}) {
     return SuccessGetListRecordState(records: records ?? this.records);
   }
 

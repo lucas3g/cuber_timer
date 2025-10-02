@@ -12,13 +12,16 @@ mixin _$CountDownController on CountDownControllerBase, Store {
   Computed<Stream<int>>? _$getCountDownTimerComputed;
 
   @override
-  Stream<int> get getCountDownTimer => (_$getCountDownTimerComputed ??=
-          Computed<Stream<int>>(() => super.getCountDownTimer,
-              name: 'CountDownControllerBase.getCountDownTimer'))
-      .value;
+  Stream<int> get getCountDownTimer =>
+      (_$getCountDownTimerComputed ??= Computed<Stream<int>>(
+        () => super.getCountDownTimer,
+        name: 'CountDownControllerBase.getCountDownTimer',
+      )).value;
 
-  late final _$subFiftyAtom =
-      Atom(name: 'CountDownControllerBase.subFifty', context: context);
+  late final _$subFiftyAtom = Atom(
+    name: 'CountDownControllerBase.subFifty',
+    context: context,
+  );
 
   @override
   StreamSubscription<dynamic> get subFifty {
@@ -30,20 +33,26 @@ mixin _$CountDownController on CountDownControllerBase, Store {
 
   @override
   set subFifty(StreamSubscription<dynamic> value) {
-    _$subFiftyAtom
-        .reportWrite(value, _subFiftyIsInitialized ? super.subFifty : null, () {
-      super.subFifty = value;
-      _subFiftyIsInitialized = true;
-    });
+    _$subFiftyAtom.reportWrite(
+      value,
+      _subFiftyIsInitialized ? super.subFifty : null,
+      () {
+        super.subFifty = value;
+        _subFiftyIsInitialized = true;
+      },
+    );
   }
 
-  late final _$CountDownControllerBaseActionController =
-      ActionController(name: 'CountDownControllerBase', context: context);
+  late final _$CountDownControllerBaseActionController = ActionController(
+    name: 'CountDownControllerBase',
+    context: context,
+  );
 
   @override
   void startTimerCountDown() {
     final _$actionInfo = _$CountDownControllerBaseActionController.startAction(
-        name: 'CountDownControllerBase.startTimerCountDown');
+      name: 'CountDownControllerBase.startTimerCountDown',
+    );
     try {
       return super.startTimerCountDown();
     } finally {
@@ -54,7 +63,8 @@ mixin _$CountDownController on CountDownControllerBase, Store {
   @override
   void stopTimerCountDown() {
     final _$actionInfo = _$CountDownControllerBaseActionController.startAction(
-        name: 'CountDownControllerBase.stopTimerCountDown');
+      name: 'CountDownControllerBase.stopTimerCountDown',
+    );
     try {
       return super.stopTimerCountDown();
     } finally {
@@ -65,7 +75,8 @@ mixin _$CountDownController on CountDownControllerBase, Store {
   @override
   void resetTimerCountDown() {
     final _$actionInfo = _$CountDownControllerBaseActionController.startAction(
-        name: 'CountDownControllerBase.resetTimerCountDown');
+      name: 'CountDownControllerBase.resetTimerCountDown',
+    );
     try {
       return super.resetTimerCountDown();
     } finally {
@@ -76,7 +87,8 @@ mixin _$CountDownController on CountDownControllerBase, Store {
   @override
   StreamSubscription<int> _listenFiftySecondRemains() {
     final _$actionInfo = _$CountDownControllerBaseActionController.startAction(
-        name: 'CountDownControllerBase._listenFiftySecondRemains');
+      name: 'CountDownControllerBase._listenFiftySecondRemains',
+    );
     try {
       return super._listenFiftySecondRemains();
     } finally {

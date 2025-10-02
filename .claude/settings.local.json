@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(fvm flutter pub get:*)",
+      "Bash(fvm flutter pub run build_runner build:*)",
+      "Bash(fvm flutter:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

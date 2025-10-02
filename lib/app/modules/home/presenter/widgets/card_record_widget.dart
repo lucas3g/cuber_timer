@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../../../../core/constants/constants.dart';
-import '../../../../core/data/clients/local_database/schemas/record.dart';
+import '../../../../core/data/clients/local_database/drift_database.dart';
 import '../../../../shared/utils/formatters.dart';
 import '../controller/record_controller.dart';
 
 class CardRecordWidget extends StatefulWidget {
   final RecordController recordController;
   final int index;
-  final RecordEntity recordEntity;
+  final Record recordEntity;
   final Color colorText;
   final double fontSize;
 

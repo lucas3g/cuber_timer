@@ -1,10 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../../core/data/clients/local_database/drift_database.dart';
 import '../../../../core/data/clients/local_database/helpers/tables.dart';
 import '../../../../core/data/clients/local_database/local_database.dart';
 import '../../../../core/data/clients/local_database/params/local_database_params.dart';
-import '../../../../core/data/clients/local_database/schemas/record.dart';
 import 'record_states.dart';
 
 part 'record_controller.g.dart';
@@ -32,21 +32,9 @@ abstract class RecordControllerBase with Store {
 
       final params = GetDataParams(table: Tables.records);
 
-      final result =
-          await localDatabase.get(params: params) as List<RecordEntity>;
+      final result = await localDatabase.get(params: params) as List<Record>;
 
-      final records = result
-          .map(
-            (e) => RecordEntity(
-              id: e.id,
-              timer: e.timer,
-              group: e.group,
-              createdAt: e.createdAt,
-            ),
-          )
-          .toList();
-
-      emit(state.success(records: records));
+      emit(state.success(records: result));
     } catch (e) {
       emit(state.error('Error when trying to load the highscore list'));
     }
@@ -59,18 +47,17 @@ abstract class RecordControllerBase with Store {
 
       final params = GetDataParams(table: Tables.records);
 
-      final result =
-          await localDatabase.get(params: params) as List<RecordEntity>;
+      final result = await localDatabase.get(params: params) as List<Record>;
 
       // Cria um Map para agrupar os registros por grupo
-      final Map<String, List<RecordEntity>> grouped = {};
+      final Map<String, List<Record>> grouped = {};
 
       for (final record in result) {
         grouped.putIfAbsent(record.group, () => []).add(record);
       }
 
       // Filtra os 5 melhores por grupo
-      final List<RecordEntity> filteredRecords = [];
+      final List<Record> filteredRecords = [];
 
       grouped.forEach((group, groupRecords) {
         final sorted = [...groupRecords]
@@ -85,12 +72,12 @@ abstract class RecordControllerBase with Store {
   }
 
   @action
-  Future deleteRecord(RecordEntity record) async {
+  Future deleteRecord(Record record) async {
     final params = RemoveDataParams(table: Tables.records, id: record.id);
 
     await localDatabase.remove(params: params);
 
-    final updatedRecords = List<RecordEntity>.from(state.records)
+    final updatedRecords = List<Record>.from(state.records)
       ..remove(record);
 
     emit(state.success(records: updatedRecords));
@@ -162,21 +149,9 @@ abstract class RecordControllerBase with Store {
         filter: group,
       );
 
-      final result =
-          await localDatabase.get(params: params) as List<RecordEntity>;
+      final result = await localDatabase.get(params: params) as List<Record>;
 
-      final records = result
-          .map(
-            (e) => RecordEntity(
-              id: e.id,
-              timer: e.timer,
-              group: e.group,
-              createdAt: e.createdAt,
-            ),
-          )
-          .toList();
-
-      emit(state.success(records: records));
+      emit(state.success(records: result));
     } catch (e) {
       emit(state.error('Error when trying to load the highscore list'));
     }

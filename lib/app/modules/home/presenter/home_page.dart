@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/core/data/clients/local_database/schemas/record.dart';
+import 'package:cuber_timer/app/core/data/clients/local_database/drift_database.dart';
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isTopAdLoaded = false;
   bool isBottomAdLoaded = false;
 
-  late Map<String, List<RecordEntity>> sortedGroupedRecords;
+  late Map<String, List<Record>> sortedGroupedRecords;
 
   TabController? _tabController;
 
@@ -92,9 +92,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
-  void _updateTabController(List<RecordEntity> records) {
+  void _updateTabController(List<Record> records) {
     // Processar e agrupar records
-    final groupedRecords = <String, List<RecordEntity>>{};
+    final groupedRecords = <String, List<Record>>{};
 
     for (var record in records) {
       groupedRecords.putIfAbsent(record.group, () => []).add(record);
@@ -416,7 +416,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildTabContent(MapEntry<String, List<RecordEntity>> entry) {
+  Widget _buildTabContent(MapEntry<String, List<Record>> entry) {
     final groupItems = entry.value;
 
     return Column(
