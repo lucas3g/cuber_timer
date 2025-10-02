@@ -28,7 +28,7 @@ import 'package:super_sliver_list/super_sliver_list.dart';
 import '../../../shared/services/ad_service.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -170,8 +170,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   // Método para remover uma tab específica (exemplo)
   void removeTab(String groupToRemove) {
     if (sortedGroupedRecords.containsKey(groupToRemove)) {
-      final removedIndex =
-          sortedGroupedRecords.keys.toList().indexOf(groupToRemove);
+      final removedIndex = sortedGroupedRecords.keys.toList().indexOf(
+        groupToRemove,
+      );
 
       // Ajustar o índice atual se necessário
       if (_currentTabIndex >= removedIndex && _currentTabIndex > 0) {
@@ -245,14 +246,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       return;
     }
 
-    await adService.showInterstitial(onDismissed: () async {
-      await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
-      if (!mounted) return;
-      await getFiveRecordsByGroup();
-      if (!Platform.isWindows) {
-        await _loadAds();
-      }
-    });
+    await adService.showInterstitial(
+      onDismissed: () async {
+        await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
+        if (!mounted) return;
+        await getFiveRecordsByGroup();
+        if (!Platform.isWindows) {
+          await _loadAds();
+        }
+      },
+    );
   }
 
   Future<void> getFiveRecordsByGroup() async =>
@@ -269,85 +272,89 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Observer(builder: (context) {
-                  if (_tabController == null || sortedGroupedRecords.isEmpty) {
-                    return NoDataWidget(
-                      text: translate('home_page.list_empty'),
-                    );
-                  }
+                Observer(
+                  builder: (context) {
+                    if (_tabController == null ||
+                        sortedGroupedRecords.isEmpty) {
+                      return NoDataWidget(
+                        text: translate('home_page.list_empty'),
+                      );
+                    }
 
-                  final state = recordController.state;
+                    final state = recordController.state;
 
-                  if (state is! SuccessGetListRecordState &&
-                      state is! SuccessDeleteRecordState) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const MyCircularProgressWidget(),
-                        Text(
-                          translate('home_page.text_loading'),
-                          style: context.textTheme.bodyLarge,
-                        ),
-                      ],
-                    );
-                  }
-
-                  final records = state.records;
-
-                  if (records.isEmpty) {
-                    return NoDataWidget(
-                      text: translate('home_page.list_empty'),
-                    );
-                  }
-
-                  final Widget? subscriptionButton = _buildSubscriptionButton();
-
-                  return Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Banners...
-                        if (!Platform.isWindows &&
-                            !purchaseService.isPremium) ...[
-                          if (isTopAdLoaded)
-                            SizedBox(
-                              height: myBanner.size.height.toDouble(),
-                              width: myBanner.size.width.toDouble(),
-                              child: AdWidget(ad: myBanner),
-                            ),
-                          const SizedBox(height: 10),
+                    if (state is! SuccessGetListRecordState &&
+                        state is! SuccessDeleteRecordState) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const MyCircularProgressWidget(),
+                          Text(
+                            translate('home_page.text_loading'),
+                            style: context.textTheme.bodyLarge,
+                          ),
                         ],
+                      );
+                    }
 
-                        // Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.symmetric(
-                                  horizontal: BorderSide(
-                                    color: context.myTheme.onSurface,
+                    final records = state.records;
+
+                    if (records.isEmpty) {
+                      return NoDataWidget(
+                        text: translate('home_page.list_empty'),
+                      );
+                    }
+
+                    final Widget? subscriptionButton =
+                        _buildSubscriptionButton();
+
+                    return Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Banners...
+                          if (!Platform.isWindows &&
+                              !purchaseService.isPremium) ...[
+                            if (isTopAdLoaded)
+                              SizedBox(
+                                height: myBanner.size.height.toDouble(),
+                                width: myBanner.size.width.toDouble(),
+                                child: AdWidget(ad: myBanner),
+                              ),
+                            const SizedBox(height: 10),
+                          ],
+
+                          // Header
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.symmetric(
+                                    horizontal: BorderSide(
+                                      color: context.myTheme.onSurface,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  translate('home_page.title_list'),
+                                  style: context.textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                              child: Text(
-                                translate('home_page.title_list'),
-                                style: context.textTheme.bodyLarge
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            if (subscriptionButton != null) subscriptionButton,
-                          ],
-                        ),
+                              if (subscriptionButton != null)
+                                subscriptionButton,
+                            ],
+                          ),
 
-                        // TabBar e TabBarView
-                        Expanded(
-                          child: _buildTabSection(),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                          // TabBar e TabBarView
+                          Expanded(child: _buildTabSection()),
+                        ],
+                      ),
+                    );
+                  },
+                ),
 
                 // Botão Start e banner inferior
                 _buildBottomSection(),
@@ -463,9 +470,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           );
                           await getFiveRecordsByGroup();
                         },
-                        child: Text(
-                          translate('home_page.buttonMoreRecords'),
-                        ),
+                        child: Text(translate('home_page.buttonMoreRecords')),
                       ),
                     ),
                   ],
@@ -498,9 +503,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: Container(
             decoration: BoxDecoration(
               border: Border.symmetric(
-                horizontal: BorderSide(
-                  color: context.myTheme.onSurface,
-                ),
+                horizontal: BorderSide(color: context.myTheme.onSurface),
               ),
             ),
             child: Text(
@@ -538,34 +541,36 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildBottomSection() {
-    return Observer(builder: (context) {
-      final state = recordController.state;
+    return Observer(
+      builder: (context) {
+        final state = recordController.state;
 
-      if (state is! SuccessGetListRecordState &&
-          state is! SuccessDeleteRecordState) {
-        return const SizedBox();
-      }
+        if (state is! SuccessGetListRecordState &&
+            state is! SuccessDeleteRecordState) {
+          return const SizedBox();
+        }
 
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          MyElevatedButtonWidget(
-            width: context.screenWidth * .4,
-            label: Text(translate('home_page.button_start')),
-            onPressed: _showInterstitialAd,
-          ),
-          const SizedBox(height: 15),
-          if (!Platform.isWindows && !purchaseService.isPremium) ...[
-            if (isBottomAdLoaded && state.records.isNotEmpty)
-              SizedBox(
-                height: myBottmBanner.size.height.toDouble(),
-                width: myBottmBanner.size.width.toDouble(),
-                child: AdWidget(ad: myBottmBanner),
-              ),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MyElevatedButtonWidget(
+              width: context.screenWidth * .4,
+              label: Text(translate('home_page.button_start')),
+              onPressed: _showInterstitialAd,
+            ),
+            const SizedBox(height: 15),
+            if (!Platform.isWindows && !purchaseService.isPremium) ...[
+              if (isBottomAdLoaded && state.records.isNotEmpty)
+                SizedBox(
+                  height: myBottmBanner.size.height.toDouble(),
+                  width: myBottmBanner.size.width.toDouble(),
+                  child: AdWidget(ad: myBottmBanner),
+                ),
+            ],
           ],
-        ],
-      );
-    });
+        );
+      },
+    );
   }
 
   Widget _buildAvgColumn(String label, int time, Color color) {
@@ -573,8 +578,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       children: [
         Text(
           label,
-          style: context.textTheme.bodyLarge
-              ?.copyWith(fontWeight: FontWeight.bold, color: color),
+          style: context.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
         Text(
           StopWatchTimer.getDisplayTime(time, hours: false),
