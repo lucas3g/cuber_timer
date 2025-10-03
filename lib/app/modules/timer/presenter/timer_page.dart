@@ -99,7 +99,7 @@ class _TimerPageState extends State<TimerPage> {
             onPressed: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                NamedRoutes.home.route,
+                NamedRoutes.mainNavigator.route,
                 (route) => false,
               );
             },

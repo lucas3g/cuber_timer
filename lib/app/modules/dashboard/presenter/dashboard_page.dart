@@ -96,9 +96,7 @@ class _DashboardPageState extends State<DashboardPage> {
               }
 
               if (dashboardController.totalSolves == 0) {
-                return NoDataWidget(
-                  text: translate('dashboard.no_data'),
-                );
+                return NoDataWidget(text: translate('dashboard.no_data'));
               }
 
               return RefreshIndicator(
@@ -110,7 +108,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Banner superior
-                      if (!Platform.isWindows && !purchaseService.isPremium) ...[
+                      if (!Platform.isWindows &&
+                          !purchaseService.isPremium) ...[
                         if (isAdLoaded)
                           Center(
                             child: SizedBox(
@@ -172,67 +171,55 @@ class _DashboardPageState extends State<DashboardPage> {
         const SizedBox(height: 12),
         Observer(
           builder: (context) {
-            return Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: InsightCardWidget(
-                        title: translate('dashboard.total_solves'),
-                        value: '${dashboardController.totalSolves}',
-                        icon: Icons.timer,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: InsightCardWidget(
-                        title: translate('dashboard.best_time'),
-                        value: dashboardController.bestTimeOverall > 0
-                            ? StopWatchTimer.getDisplayTime(
-                                dashboardController.bestTimeOverall,
-                                hours: false,
-                              )
-                            : '-',
-                        icon: Icons.emoji_events,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: InsightCardWidget(
-                        title: translate('dashboard.average_time'),
-                        value: dashboardController.averageTime > 0
-                            ? StopWatchTimer.getDisplayTime(
-                                dashboardController.averageTime,
-                                hours: false,
-                              )
-                            : '-',
-                        icon: Icons.speed,
-                        color: Colors.green,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: InsightCardWidget(
-                        title: translate('dashboard.most_practiced'),
-                        value: dashboardController.mostPracticedGroup.isNotEmpty
-                            ? dashboardController.mostPracticedGroup
-                            : '-',
-                        icon: Icons.favorite,
-                        color: Colors.red,
-                        subtitle: dashboardController.mostPracticedGroup.isNotEmpty
-                            ? '${dashboardController.solvesByGroup[dashboardController.mostPracticedGroup]} solves'
-                            : null,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            return SizedBox(
+              height: context.screenHeight * 0.4,
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 1.1,
+                children: [
+                  InsightCardWidget(
+                    title: translate('dashboard.total_solves'),
+                    value: '${dashboardController.totalSolves}',
+                    icon: Icons.timer,
+                    color: Colors.blue,
+                  ),
+                  InsightCardWidget(
+                    title: translate('dashboard.best_time'),
+                    value: dashboardController.bestTimeOverall > 0
+                        ? StopWatchTimer.getDisplayTime(
+                            dashboardController.bestTimeOverall,
+                            hours: false,
+                          )
+                        : '-',
+                    icon: Icons.emoji_events,
+                    color: Colors.amber,
+                  ),
+                  InsightCardWidget(
+                    title: translate('dashboard.average_time'),
+                    value: dashboardController.averageTime > 0
+                        ? StopWatchTimer.getDisplayTime(
+                            dashboardController.averageTime,
+                            hours: false,
+                          )
+                        : '-',
+                    icon: Icons.speed,
+                    color: Colors.green,
+                  ),
+                  InsightCardWidget(
+                    title: translate('dashboard.most_practiced'),
+                    value: dashboardController.mostPracticedGroup.isNotEmpty
+                        ? dashboardController.mostPracticedGroup
+                        : '-',
+                    icon: Icons.favorite,
+                    color: Colors.red,
+                    subtitle: dashboardController.mostPracticedGroup.isNotEmpty
+                        ? '${dashboardController.solvesByGroup[dashboardController.mostPracticedGroup]} solves'
+                        : null,
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -248,8 +235,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
         if (solvesByGroup.isEmpty) return const SizedBox.shrink();
 
-        final maxSolves = solvesByGroup.values
-            .reduce((a, b) => a > b ? a : b);
+        final maxSolves = solvesByGroup.values.reduce((a, b) => a > b ? a : b);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,9 +279,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             const SizedBox(height: 12),
             ...recommendations.map((recommendation) {
-              return RecommendationCardWidget(
-                recommendation: recommendation,
-              );
+              return RecommendationCardWidget(recommendation: recommendation);
             }),
           ],
         );
