@@ -48,8 +48,8 @@ class _DashboardPageState extends State<DashboardPage> {
     setState(() {});
 
     myBanner = await adService.loadBanner(
-      androidAdId: 'ca-app-pub-3940256099942544/6300978111', // Test ID
-      iosAdId: 'ca-app-pub-3940256099942544/2934735716', // Test ID
+      androidAdId: 'ca-app-pub-1898798427054986/3600960623',
+      iosAdId: 'ca-app-pub-1898798427054986/2287878958',
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => isAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
