@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,11 +12,11 @@ class LocaleService extends ChangeNotifier {
   final ILocalStorage _localStorage;
   static const String _localeKey = 'app_locale';
 
-  Locale _currentLocale = AppLanguage.portuguese.locale;
+  Locale? _currentLocale;
 
   LocaleService(this._localStorage);
 
-  Locale get currentLocale => _currentLocale;
+  Locale get currentLocale => _currentLocale ?? _getSystemLocale();
 
   Future<void> init() async {
     final String? savedLocale = await _localStorage.getData(_localeKey);
@@ -23,10 +24,28 @@ class LocaleService extends ChangeNotifier {
     if (savedLocale != null) {
       final AppLanguage language = AppLanguage.fromString(savedLocale);
       _currentLocale = language.locale;
-      await I18nTranslate.refresh(_currentLocale);
+      await I18nTranslate.refresh(_currentLocale!);
+    } else {
+      // Usar o idioma do sistema se não houver preferência salva
+      _currentLocale = _getSystemLocale();
+      await I18nTranslate.refresh(_currentLocale!);
     }
 
     notifyListeners();
+  }
+
+  Locale _getSystemLocale() {
+    final systemLocale = ui.PlatformDispatcher.instance.locale;
+
+    // Verificar se o idioma do sistema é suportado
+    if (systemLocale.languageCode == 'pt') {
+      return AppLanguage.portuguese.locale;
+    } else if (systemLocale.languageCode == 'en') {
+      return AppLanguage.english.locale;
+    }
+
+    // Fallback para inglês se o idioma do sistema não for suportado
+    return AppLanguage.english.locale;
   }
 
   Future<void> changeLocale(Locale newLocale) async {
