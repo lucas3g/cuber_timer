@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class GroupProgressWidget extends StatelessWidget {
@@ -41,7 +42,7 @@ class GroupProgressWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                '$solveCount solves',
+                '$solveCount ${translate('dashboard.solves_count')}',
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.myTheme.onSurface.withOpacity(0.6),
                 ),
@@ -65,7 +66,7 @@ class GroupProgressWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Best time:',
+                translate('dashboard.best_time_label'),
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.myTheme.onSurface.withOpacity(0.6),
                 ),

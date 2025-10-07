@@ -8,6 +8,8 @@ import 'core/domain/entities/named_routes.dart';
 import 'core/routes/app_routes.dart';
 import 'core/routes/domain/entities/custom_transition.dart';
 import 'core/routes/domain/entities/custom_transition_type.dart';
+import 'di/dependency_injection.dart';
+import 'shared/services/locale_service.dart';
 import 'shared/themes/theme.dart';
 import 'shared/utils/global_context.dart';
 
@@ -19,36 +21,50 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
+  final LocaleService _localeService = getIt<LocaleService>();
+
+  @override
+  void initState() {
+    super.initState();
+    _localeService.init();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: translate('splash_page.title'),
-      debugShowCheckedModeBanner: false,
-      navigatorKey: GlobalContext.navigatorKey,
-      theme: lightThemeApp,
-      darkTheme: darkThemeApp,
-      themeMode: ThemeMode.dark,
-      navigatorObservers: [
-        BotToastNavigatorObserver(),
-      ],
+    return AnimatedBuilder(
+      animation: _localeService,
       builder: (context, child) {
-        BotToastInit()(context, child);
+        return MaterialApp(
+          title: translate('splash_page.title'),
+          debugShowCheckedModeBanner: false,
+          navigatorKey: GlobalContext.navigatorKey,
+          theme: lightThemeApp,
+          darkTheme: darkThemeApp,
+          themeMode: ThemeMode.dark,
+          locale: _localeService.currentLocale,
+          navigatorObservers: [
+            BotToastNavigatorObserver(),
+          ],
+          builder: (context, child) {
+            BotToastInit()(context, child);
 
-        return child!;
+            return child!;
+          },
+          supportedLocales: <Locale>[
+            AppLanguage.portuguese.locale,
+            AppLanguage.english.locale,
+          ],
+          localizationsDelegates: const <LocalizationsDelegate<Object>>[
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          initialRoute: NamedRoutes.splash.route,
+          onGenerateRoute: CustomNavigator(
+            generateAnimation: _generateAnimation,
+          ).onGenerateRoute,
+        );
       },
-      supportedLocales: <Locale>[
-        AppLanguage.portuguese.locale,
-        AppLanguage.english.locale,
-      ],
-      localizationsDelegates: const <LocalizationsDelegate<Object>>[
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      initialRoute: NamedRoutes.splash.route,
-      onGenerateRoute: CustomNavigator(
-        generateAnimation: _generateAnimation,
-      ).onGenerateRoute,
     );
   }
 

@@ -4,7 +4,9 @@ enum NamedRoutes {
   home('/home'),
   timer('/timer'),
   allRecordsByGroup('/all-records-by-group'),
-  config('/config');
+  config('/config'),
+  settings('/settings'),
+  subscriptions('/subscriptions');
 
   final String route;
   const NamedRoutes(this.route);

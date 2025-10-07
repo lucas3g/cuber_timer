@@ -72,13 +72,13 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Observer(
             builder: (context) {
               if (dashboardController.isLoading) {
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      MyCircularProgressWidget(),
-                      SizedBox(height: 16),
-                      Text('Loading dashboard...'),
+                      const MyCircularProgressWidget(),
+                      const SizedBox(height: 16),
+                      Text(translate('dashboard.loading')),
                     ],
                   ),
                 );
@@ -178,6 +178,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
                 childAspectRatio: 1.1,
+                physics: NeverScrollableScrollPhysics(),
                 children: [
                   InsightCardWidget(
                     title: translate('dashboard.total_solves'),
@@ -215,7 +216,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     icon: Icons.favorite,
                     color: Colors.red,
                     subtitle: dashboardController.mostPracticedGroup.isNotEmpty
-                        ? '${dashboardController.solvesByGroup[dashboardController.mostPracticedGroup]} solves'
+                        ? '${dashboardController.solvesByGroup[dashboardController.mostPracticedGroup]} ${translate('dashboard.solves_count')}'
                         : null,
                   ),
                 ],

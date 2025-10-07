@@ -1,6 +1,11 @@
 import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:cuber_timer/app/core/data/clients/shared_preferences/local_storage_interface.dart';
+import 'package:cuber_timer/app/core/data/clients/shared_preferences/adapters/shared_params.dart';
+import 'package:cuber_timer/app/di/dependency_injection.dart';
+import 'package:cuber_timer/app/modules/dashboard/presenter/controller/dashboard_controller.dart';
 import 'package:cuber_timer/app/modules/dashboard/presenter/dashboard_page.dart';
 import 'package:cuber_timer/app/modules/home/presenter/home_page.dart';
+import 'package:cuber_timer/app/shared/components/database_migration_dialog.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
 
@@ -12,26 +17,56 @@ class MainNavigatorPage extends StatefulWidget {
 }
 
 class _MainNavigatorPageState extends State<MainNavigatorPage> {
+  final DashboardController dashboardController = getIt<DashboardController>();
+  final ILocalStorage _localStorage = getIt<ILocalStorage>();
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
-    DashboardPage(),
-    HomePage(),
-  ];
+  final List<Widget> _pages = const [DashboardPage(), HomePage()];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowMigrationDialog();
+    });
+  }
+
+  Future<void> _checkAndShowMigrationDialog() async {
+    const String migrationKey = 'database_migration_dialog_shown_v4.0.4';
+    final bool? dialogShown = await _localStorage.getData(migrationKey);
+
+    if (dialogShown == null || dialogShown == false) {
+      if (!mounted) return;
+
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const DatabaseMigrationDialog(),
+      );
+
+      await _localStorage.setData(
+        params: SharedParams(
+          key: migrationKey,
+          value: true,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
+        onTap: (index) async {
           setState(() {
             _currentIndex = index;
           });
+
+          if (_currentIndex == 0) {
+            await dashboardController.loadAllRecords();
+          }
         },
         backgroundColor: context.myTheme.surface,
         selectedItemColor: context.myTheme.primary,

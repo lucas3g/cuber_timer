@@ -5,6 +5,7 @@ import '../../../../core/data/clients/local_database/drift_database.dart';
 import '../../../../core/data/clients/local_database/helpers/tables.dart';
 import '../../../../core/data/clients/local_database/local_database.dart';
 import '../../../../core/data/clients/local_database/params/local_database_params.dart';
+import '../../../../shared/translate/translate.dart';
 
 part 'dashboard_controller.g.dart';
 
@@ -37,7 +38,7 @@ abstract class DashboardControllerBase with Store {
       allRecords = result;
       isLoading = false;
     } catch (e) {
-      errorMessage = 'Error loading dashboard data';
+      errorMessage = translate('dashboard.error_loading');
       isLoading = false;
     }
   }
@@ -83,7 +84,7 @@ abstract class DashboardControllerBase with Store {
     final recommendations = <String>[];
 
     if (totalSolves == 0) {
-      recommendations.add('Start practicing to see your progress!');
+      recommendations.add(translate('dashboard.recommendation_start_practicing'));
       return recommendations;
     }
 
@@ -93,7 +94,7 @@ abstract class DashboardControllerBase with Store {
 
     if (sortedGroups.length > 1) {
       final leastPracticed = sortedGroups.first.key;
-      recommendations.add('Try practicing more with $leastPracticed');
+      recommendations.add('${translate('dashboard.recommendation_practice_more')} $leastPracticed');
     }
 
     // Verificar se há progresso recente
@@ -102,15 +103,15 @@ abstract class DashboardControllerBase with Store {
       final recentAvg = recentRecords.map((e) => e.timer).reduce((a, b) => a + b) ~/ 5;
 
       if (recentAvg < averageTime) {
-        recommendations.add('Great progress! You\'re improving!');
+        recommendations.add(translate('dashboard.recommendation_great_progress'));
       } else {
-        recommendations.add('Keep practicing to improve your times');
+        recommendations.add(translate('dashboard.recommendation_keep_practicing'));
       }
     }
 
     // Adicionar dica sobre consistência
     if (mostPracticedGroup.isNotEmpty) {
-      recommendations.add('You\'re doing great with $mostPracticedGroup!');
+      recommendations.add('${translate('dashboard.recommendation_doing_great')} $mostPracticedGroup!');
     }
 
     return recommendations;

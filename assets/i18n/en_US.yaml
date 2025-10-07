@@ -44,6 +44,33 @@ config_page:
   button_subscribe: Subscribe
   remove_ads_description: Remove ads from the app.
 
+settings_page:
+  title_appbar: Language
+  language_section_title: Choose Language
+  portuguese: Português (Brasil)
+  english: English (United States)
+  language_changed: Language changed successfully!
+
+subscriptions_page:
+  title_appbar: Premium
+  premium_active: Premium Active
+  premium_thanks: Thanks for supporting the development!
+  upgrade_title: Become Premium
+  upgrade_subtitle: Enjoy an ad-free experience and support continuous development
+  features_title: What you get
+  feature_no_ads: Completely ad-free experience
+  feature_unlimited: Unlimited access to all features
+  feature_support: Priority development support
+  plan_weekly: Weekly Plan
+  plan_monthly: Monthly Plan
+  plan_annual: Annual Plan
+  save_most: BEST VALUE
+  benefit_no_ads: No ads
+  benefit_weekly_billing: Weekly billing
+  benefit_monthly_billing: Monthly billing
+  benefit_annual_billing: Annual billing
+  button_subscribe: Subscribe Now
+
 main_navigator:
   dashboard: Dashboard
   records: Records
@@ -59,3 +86,20 @@ dashboard:
   most_practiced: Most Practiced
   progress_by_group: Progress by Cube Type
   recommendations_title: Tips & Recommendations
+  loading: Loading dashboard...
+  solves_count: solves
+  best_time_label: 'Best time:'
+  error_loading: Error loading dashboard data
+  recommendation_start_practicing: Start practicing to see your progress!
+  recommendation_practice_more: Try practicing more with
+  recommendation_great_progress: Great progress! You're improving!
+  recommendation_keep_practicing: Keep practicing to improve your times
+  recommendation_doing_great: You're doing great with
+
+database_migration:
+  title: We Apologize! 😔
+  message: Dear user,\n\nUnfortunately, due to an important database update in the application, your previous solves have been lost. We deeply regret this.\n\nThis change was necessary to significantly improve the app's performance and stability, bringing you a much better experience.\n\nPlease don't stop using the app! We are working hard to provide the best possible experience for you.\n\nWe greatly appreciate your understanding and continued support! ❤️
+  button_close: Close
+
+common:
+  error: Error

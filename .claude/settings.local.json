@@ -6,7 +6,8 @@
       "Bash(fvm flutter pub run build_runner build:*)",
       "Bash(fvm flutter:*)",
       "Bash(claude mcp add:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

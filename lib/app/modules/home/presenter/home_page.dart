@@ -343,8 +343,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              if (subscriptionButton != null)
-                                subscriptionButton,
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        NamedRoutes.settings.route,
+                                      );
+                                    },
+                                    icon: Icon(Icons.settings),
+                                  ),
+                                  if (subscriptionButton != null)
+                                    subscriptionButton,
+                                ],
+                              ),
                             ],
                           ),
 
@@ -381,7 +395,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         : translate('home_page.button_subscribe');
 
     return MyElevatedButtonWidget(
-      onPressed: () => Navigator.pushNamed(context, NamedRoutes.config.route),
+      onPressed: () =>
+          Navigator.pushNamed(context, NamedRoutes.subscriptions.route),
       label: Text(label),
       icon: isUpgrade ? Icons.upgrade : Icons.star,
     );

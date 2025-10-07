@@ -28,6 +28,7 @@ import '../modules/timer/controller/count_down_controller.dart' as _i192;
 import '../modules/timer/controller/timer_controller.dart' as _i53;
 import '../shared/services/ad_service.dart' as _i658;
 import '../shared/services/app_review_service.dart' as _i901;
+import '../shared/services/locale_service.dart' as _i202;
 import 'dependency_injection.dart' as _i9;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -46,6 +47,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i538.AppDatabase>(() => registerModule.database);
     gh.singleton<_i658.IAdService>(() => _i658.AdService());
     gh.factory<_i237.ILocalStorage>(() => _i745.SharedPreferencesService());
+    gh.singleton<_i202.LocaleService>(
+      () => _i202.LocaleService(gh<_i237.ILocalStorage>()),
+    );
     gh.factory<_i901.IAppReviewService>(
       () => _i901.AppReviewService(gh<_i237.ILocalStorage>()),
     );

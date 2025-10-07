@@ -44,6 +44,33 @@ config_page:
   button_subscribe: Assinar
   remove_ads_description: Remova anúncios do app.
 
+settings_page:
+  title_appbar: Idioma
+  language_section_title: Escolha o Idioma
+  portuguese: Português (Brasil)
+  english: English (United States)
+  language_changed: Idioma alterado com sucesso!
+
+subscriptions_page:
+  title_appbar: Premium
+  premium_active: Premium Ativo
+  premium_thanks: Obrigado por apoiar o desenvolvimento!
+  upgrade_title: Torne-se Premium
+  upgrade_subtitle: Aproveite uma experiência sem anúncios e apoie o desenvolvimento contínuo
+  features_title: O que você ganha
+  feature_no_ads: Experiência completamente sem anúncios
+  feature_unlimited: Acesso ilimitado a todos os recursos
+  feature_support: Suporte prioritário ao desenvolvimento
+  plan_weekly: Plano Semanal
+  plan_monthly: Plano Mensal
+  plan_annual: Plano Anual
+  save_most: ECONOMIA MÁXIMA
+  benefit_no_ads: Sem anúncios
+  benefit_weekly_billing: Cobrança semanal
+  benefit_monthly_billing: Cobrança mensal
+  benefit_annual_billing: Cobrança anual
+  button_subscribe: Assinar Agora
+
 main_navigator:
   dashboard: Dashboard
   records: Recordes
@@ -59,3 +86,20 @@ dashboard:
   most_practiced: Mais Praticado
   progress_by_group: Progresso por Tipo de Cubo
   recommendations_title: Dicas e Recomendações
+  loading: Carregando dashboard...
+  solves_count: resoluções
+  best_time_label: 'Melhor tempo:'
+  error_loading: Erro ao carregar dados do dashboard
+  recommendation_start_practicing: Comece a praticar para ver seu progresso!
+  recommendation_practice_more: Tente praticar mais com
+  recommendation_great_progress: Ótimo progresso! Você está melhorando!
+  recommendation_keep_practicing: Continue praticando para melhorar seus tempos
+  recommendation_doing_great: Você está indo muito bem com
+
+database_migration:
+  title: Pedimos Desculpas! 😔
+  message: Prezado usuário,\n\nInfelizmente, devido a uma importante atualização no banco de dados do aplicativo, seus solves anteriores foram perdidos. Lamentamos profundamente por isso.\n\nEsta mudança foi necessária para melhorar significativamente a performance e estabilidade do app, trazendo uma experiência muito melhor para você.\n\nPor favor, não deixe de usar o aplicativo! Estamos trabalhando arduamente para oferecer a melhor experiência possível.\n\nAgradecemos imensamente pela sua compreensão e continuidade conosco! ❤️
+  button_close: Fechar
+
+common:
+  error: Erro

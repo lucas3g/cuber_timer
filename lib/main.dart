@@ -19,7 +19,7 @@ Future<void> main() async {
     runApp(const AppWidget());
   }, (error, stackTrace) {
     MySnackBar(
-      title: 'Error',
+      title: translate('common.error'),
       message: error.toString(),
       type: TypeSnack.error,
     );

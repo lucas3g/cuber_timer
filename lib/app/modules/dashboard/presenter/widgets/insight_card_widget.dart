@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cuber_timer/app/core/constants/constants.dart';
+import 'package:flutter/material.dart';
 
 class InsightCardWidget extends StatelessWidget {
   final String title;
@@ -44,11 +44,15 @@ class InsightCardWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            value,
-            style: context.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              style: context.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
             ),
           ),
           if (subtitle != null) ...[
