@@ -70,6 +70,7 @@ subscriptions_page:
   benefit_weekly_billing: Cobrança semanal
   benefit_monthly_billing: Cobrança mensal
   benefit_annual_billing: Cobrança anual
+  price_note: "Preços sugeridos: Semanal R$ 14,90 (de R$ 19,90 - 25% OFF), Mensal R$ 29,90 (de R$ 49,90 - 40% OFF), Anual R$ 199,90 (de R$ 479,90 - 58% OFF)"
 
 main_navigator:
   dashboard: Dashboard

@@ -26,9 +26,7 @@ Future<void> configureDependencies() async {
 
   await getIt<IAdService>().init();
 
-  if (!kDebugMode) {
-    await getIt<PurchaseService>().init();
-  }
+  await getIt<PurchaseService>().init();
 
   await _checkRecordsWithoutGroupAndSetGroupDefault();
   await _insertDebugRecords();

@@ -377,7 +377,10 @@ class _AnnualPremiumPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 16,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
@@ -387,13 +390,55 @@ class _AnnualPremiumPlanCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        price,
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
+                      Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                price.isEmpty ? 'R\$ 199,90' : price,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                _calculateOriginalPrice(price, 279.90),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationThickness: 2,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
                             ),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              _calculateDiscountPercentage(price, 279.90),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -498,6 +543,41 @@ class _AnnualPremiumPlanCard extends StatelessWidget {
       ],
     );
   }
+
+  String _calculateOriginalPrice(String currentPrice, double addValue) {
+    if (currentPrice.isEmpty) {
+      return 'R\$ ${(199.90 + addValue).toStringAsFixed(2).replaceAll('.', ',')}';
+    }
+
+    // Extrair valor numérico do preço (remove símbolos e converte vírgula para ponto)
+    final cleanPrice = currentPrice
+        .replaceAll(RegExp(r'[^\d,.]'), '')
+        .replaceAll(',', '.');
+
+    final numericPrice = double.tryParse(cleanPrice) ?? 199.90;
+    final originalPrice = numericPrice + addValue;
+
+    // Manter o formato do preço original (símbolo de moeda)
+    final symbol = currentPrice.split(RegExp(r'[\d,.]')).first.trim();
+    return '$symbol ${originalPrice.toStringAsFixed(2).replaceAll('.', ',')}';
+  }
+
+  String _calculateDiscountPercentage(String currentPrice, double addValue) {
+    if (currentPrice.isEmpty) {
+      final discount = (addValue / (199.90 + addValue) * 100).round();
+      return '$discount% OFF';
+    }
+
+    final cleanPrice = currentPrice
+        .replaceAll(RegExp(r'[^\d,.]'), '')
+        .replaceAll(',', '.');
+
+    final numericPrice = double.tryParse(cleanPrice) ?? 199.90;
+    final originalPrice = numericPrice + addValue;
+    final discount = (addValue / originalPrice * 100).round();
+
+    return '$discount% OFF';
+  }
 }
 
 class _PremiumPlanCard extends StatelessWidget {
@@ -521,6 +601,21 @@ class _PremiumPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Definir valores a adicionar baseado no plano
+    double addValue = 0;
+
+    if (plan == SubscriptionPlan.monthly) {
+      addValue = 30.00; // Adiciona R$ 30 ao preço real
+    } else if (plan == SubscriptionPlan.weekly) {
+      addValue = 10.00; // Adiciona R$ 10 ao preço real
+    }
+
+    final originalPrice = _calculateOriginalPriceForPlan(price, addValue);
+    final discountPercentage = _calculateDiscountPercentageForPlan(
+      price,
+      addValue,
+    );
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -561,15 +656,59 @@ class _PremiumPlanCard extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            price,
-                            style: Theme.of(context).textTheme.headlineSmall
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
+                          const SizedBox(height: 8),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                price.isEmpty
+                                    ? (plan == SubscriptionPlan.monthly
+                                          ? 'R\$ 29,90'
+                                          : 'R\$ 14,90')
+                                    : price,
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              if (originalPrice.isNotEmpty) ...[
+                                const SizedBox(width: 8),
+                                Text(
+                                  originalPrice,
+                                  style: Theme.of(context).textTheme.bodyLarge
+                                      ?.copyWith(
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationThickness: 2,
+                                      ),
                                 ),
+                              ],
+                            ],
                           ),
+                          if (discountPercentage.isNotEmpty) ...[
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade600,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                discountPercentage,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -664,5 +803,46 @@ class _PremiumPlanCard extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  String _calculateOriginalPriceForPlan(String currentPrice, double addValue) {
+    if (currentPrice.isEmpty || addValue == 0) {
+      return '';
+    }
+
+    // Extrair valor numérico do preço (remove símbolos e converte vírgula para ponto)
+    final cleanPrice = currentPrice
+        .replaceAll(RegExp(r'[^\d,.]'), '')
+        .replaceAll(',', '.');
+
+    final numericPrice = double.tryParse(cleanPrice);
+    if (numericPrice == null) return '';
+
+    final originalPrice = numericPrice + addValue;
+
+    // Manter o formato do preço original (símbolo de moeda)
+    final symbol = currentPrice.split(RegExp(r'[\d,.]')).first.trim();
+    return '$symbol ${originalPrice.toStringAsFixed(2).replaceAll('.', ',')}';
+  }
+
+  String _calculateDiscountPercentageForPlan(
+    String currentPrice,
+    double addValue,
+  ) {
+    if (currentPrice.isEmpty || addValue == 0) {
+      return '';
+    }
+
+    final cleanPrice = currentPrice
+        .replaceAll(RegExp(r'[^\d,.]'), '')
+        .replaceAll(',', '.');
+
+    final numericPrice = double.tryParse(cleanPrice);
+    if (numericPrice == null) return '';
+
+    final originalPrice = numericPrice + addValue;
+    final discount = (addValue / originalPrice * 100).round();
+
+    return '$discount% OFF';
   }
 }
