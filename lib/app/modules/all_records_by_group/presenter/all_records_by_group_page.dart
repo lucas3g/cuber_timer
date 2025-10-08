@@ -1,18 +1,18 @@
 import 'dart:io';
 
+import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import '../../../shared/services/ad_service.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../di/dependency_injection.dart';
-import '../../config/presenter/services/purchase_service.dart';
+import '../../../shared/services/ad_service.dart';
 import '../../home/presenter/controller/record_controller.dart';
 import '../../home/presenter/controller/record_states.dart';
 import '../../home/presenter/widgets/card_record_widget.dart';
-import 'package:cuber_timer/app/shared/translate/translate.dart';
+import '../../subscriptions/services/purchase_service.dart';
 
 class AllRecordsByGroupPage extends StatefulWidget {
   const AllRecordsByGroupPage({super.key});

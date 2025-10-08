@@ -37,12 +37,7 @@ timer_page:
 
 config_page:
   title_appbar: Configurações
-  premium_message: Você é Premium. Obrigado por apoiar!
-  plan_weekly: Plano Semanal
-  plan_monthly: Plano Mensal
-  plan_annual: Plano Anual
-  button_subscribe: Assinar
-  remove_ads_description: Remova anúncios do app.
+  
 
 settings_page:
   title_appbar: Idioma
@@ -52,6 +47,12 @@ settings_page:
   language_changed: Idioma alterado com sucesso!
 
 subscriptions_page:
+  premium_message: Você é Premium. Obrigado por apoiar!
+  button_subscribe: Assinar Agora
+  remove_ads_description: Remova anúncios do app.
+  annual_dashboard_title: Dashboard Completo de Análise
+  annual_dashboard_description: Tenha acesso exclusivo ao Dashboard Completo! Monitore seu progresso em tempo real, visualize estatísticas detalhadas por tipo de cubo, descubra seus pontos fortes e fracos, e receba recomendações personalizadas para melhorar seus tempos. Transforme seus solves em dados inteligentes e alcance novos recordes!
+  annual_exclusive_feature: Recurso Exclusivo do Plano Anual
   title_appbar: Premium
   premium_active: Premium Ativo
   premium_thanks: Obrigado por apoiar o desenvolvimento!
@@ -69,7 +70,6 @@ subscriptions_page:
   benefit_weekly_billing: Cobrança semanal
   benefit_monthly_billing: Cobrança mensal
   benefit_annual_billing: Cobrança anual
-  button_subscribe: Assinar Agora
 
 main_navigator:
   dashboard: Dashboard

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
-import 'package:cuber_timer/app/modules/config/domain/entities/purchase_state.dart';
+import 'package:cuber_timer/app/modules/subscriptions/domain/entities/purchase_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:injectable/injectable.dart';
@@ -18,12 +18,15 @@ class PurchaseService extends ChangeNotifier {
   final Map<SubscriptionPlan, String> _prices = {};
 
   static final Map<SubscriptionPlan, String> _productIds = {
-    SubscriptionPlan.weekly:
-        Platform.isAndroid ? 'weekly_plan' : 'weekly_plan_cubetimer',
-    SubscriptionPlan.monthly:
-        Platform.isAndroid ? 'monthly_plan' : 'monthly_plan_cubetimer',
-    SubscriptionPlan.annual:
-        Platform.isAndroid ? 'annual_plan' : 'annual_plan_cubetimer',
+    SubscriptionPlan.weekly: Platform.isAndroid
+        ? 'weekly_plan'
+        : 'weekly_plan_cubetimer',
+    SubscriptionPlan.monthly: Platform.isAndroid
+        ? 'monthly_plan'
+        : 'monthly_plan_cubetimer',
+    SubscriptionPlan.annual: Platform.isAndroid
+        ? 'annual_plan'
+        : 'annual_plan_cubetimer',
   };
 
   static String idForPlan(SubscriptionPlan plan) => _productIds[plan]!;
@@ -35,10 +38,12 @@ class PurchaseService extends ChangeNotifier {
   Future<void> init() async {
     final bool available = await _iap.isAvailable();
     if (!available) return;
-    _subscription =
-        _iap.purchaseStream.listen(_onPurchaseUpdated, onError: (error) {
-      _controller.add(PurchaseState.error);
-    });
+    _subscription = _iap.purchaseStream.listen(
+      _onPurchaseUpdated,
+      onError: (error) {
+        _controller.add(PurchaseState.error);
+      },
+    );
     await _iap.restorePurchases();
     await _loadPrices();
   }

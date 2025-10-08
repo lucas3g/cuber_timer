@@ -20,10 +20,10 @@ import '../core/data/clients/shared_preferences/local_storage_interface.dart'
     as _i237;
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
     as _i745;
-import '../modules/config/presenter/services/purchase_service.dart' as _i429;
 import '../modules/dashboard/presenter/controller/dashboard_controller.dart'
     as _i652;
 import '../modules/home/presenter/controller/record_controller.dart' as _i529;
+import '../modules/subscriptions/services/purchase_service.dart' as _i957;
 import '../modules/timer/controller/count_down_controller.dart' as _i192;
 import '../modules/timer/controller/timer_controller.dart' as _i53;
 import '../shared/services/ad_service.dart' as _i658;
@@ -43,7 +43,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.singleton<_i429.PurchaseService>(() => _i429.PurchaseService());
+    gh.singleton<_i957.PurchaseService>(() => _i957.PurchaseService());
     gh.lazySingleton<_i538.AppDatabase>(() => registerModule.database);
     gh.singleton<_i658.IAdService>(() => _i658.AdService());
     gh.factory<_i237.ILocalStorage>(() => _i745.SharedPreferencesService());

@@ -9,7 +9,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/data/clients/local_database/drift_database.dart';
-import '../modules/config/presenter/services/purchase_service.dart';
+import '../modules/subscriptions/services/purchase_service.dart';
 import 'dependency_injection.config.dart';
 
 final GetIt getIt = GetIt.instance;

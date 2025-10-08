@@ -37,12 +37,6 @@ timer_page:
 
 config_page:
   title_appbar: Settings
-  premium_message: You are Premium. Thanks for supporting!
-  plan_weekly: Weekly Plan
-  plan_monthly: Monthly Plan
-  plan_annual: Annual Plan
-  button_subscribe: Subscribe
-  remove_ads_description: Remove ads from the app.
 
 settings_page:
   title_appbar: Language
@@ -52,6 +46,8 @@ settings_page:
   language_changed: Language changed successfully!
 
 subscriptions_page:
+  premium_message: You are Premium. Thanks for supporting!
+  button_subscribe: Subscribe Now
   title_appbar: Premium
   premium_active: Premium Active
   premium_thanks: Thanks for supporting the development!
@@ -69,7 +65,10 @@ subscriptions_page:
   benefit_weekly_billing: Weekly billing
   benefit_monthly_billing: Monthly billing
   benefit_annual_billing: Annual billing
-  button_subscribe: Subscribe Now
+  remove_ads_description: Remove ads from the app.
+  annual_dashboard_title: Complete Analytics Dashboard
+  annual_dashboard_description: Get exclusive access to the Complete Dashboard! Track your progress in real-time, view detailed statistics by cube type, discover your strengths and weaknesses, and receive personalized recommendations to improve your times. Transform your solves into intelligent data and achieve new records!
+  annual_exclusive_feature: Annual Plan Exclusive Feature
 
 main_navigator:
   dashboard: Dashboard

@@ -17,30 +17,29 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(translate('settings_page.title_appbar')),
-      ),
-      body: AnimatedBuilder(
-        animation: _localeService,
-        builder: (context, child) {
-          return Padding(
+    return AnimatedBuilder(
+      animation: _localeService,
+      builder: (context, child) {
+        return Scaffold(
+          appBar: AppBar(title: Text(translate('settings_page.title_appbar'))),
+          body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   translate('settings_page.language_section_title'),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
                 _LanguageCard(
                   language: translate('settings_page.portuguese'),
                   languageEnum: AppLanguage.portuguese,
                   flagEmoji: '🇧🇷',
-                  isSelected: _localeService.currentLanguage == AppLanguage.portuguese,
+                  isSelected:
+                      _localeService.currentLanguage == AppLanguage.portuguese,
                   onTap: () => _changeLanguage(AppLanguage.portuguese),
                 ),
                 const SizedBox(height: 12),
@@ -48,14 +47,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   language: translate('settings_page.english'),
                   languageEnum: AppLanguage.english,
                   flagEmoji: '🇺🇸',
-                  isSelected: _localeService.currentLanguage == AppLanguage.english,
+                  isSelected:
+                      _localeService.currentLanguage == AppLanguage.english,
                   onTap: () => _changeLanguage(AppLanguage.english),
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -110,18 +110,16 @@ class _LanguageCard extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Text(
-                flagEmoji,
-                style: const TextStyle(fontSize: 32),
-              ),
+              Text(flagEmoji, style: const TextStyle(fontSize: 32)),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   language,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                      ),
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                  ),
                 ),
               ),
               if (isSelected)

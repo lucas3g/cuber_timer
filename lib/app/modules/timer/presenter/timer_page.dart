@@ -13,7 +13,7 @@ import '../../../di/dependency_injection.dart';
 import '../../../shared/components/my_elevated_button_widget.dart';
 import '../../../shared/services/ad_service.dart';
 import '../../../shared/utils/cube_types_list.dart';
-import '../../config/presenter/services/purchase_service.dart';
+import '../../subscriptions/services/purchase_service.dart';
 import '../controller/count_down_controller.dart';
 import '../controller/timer_controller.dart';
 import '../controller/timer_states.dart';
@@ -43,18 +43,16 @@ class _TimerPageState extends State<TimerPage> {
   void initState() {
     super.initState();
 
-    _stateDisposer = autorun(
-      (_) {
-        final state = timerController.state;
+    _stateDisposer = autorun((_) {
+      final state = timerController.state;
 
-        if (state is BeatRecordTimerState && mounted) {
-          showDialog(
-            context: context,
-            builder: (_) => const AlertCongratsBeatRecordWidget(),
-          );
-        }
-      },
-    );
+      if (state is BeatRecordTimerState && mounted) {
+        showDialog(
+          context: context,
+          builder: (_) => const AlertCongratsBeatRecordWidget(),
+        );
+      }
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!Platform.isWindows) {
@@ -105,278 +103,299 @@ class _TimerPageState extends State<TimerPage> {
             },
           ),
         ),
-        body: Observer(builder: (context) {
-          final state = timerController.state;
+        body: Observer(
+          builder: (context) {
+            final state = timerController.state;
 
-          return GestureDetector(
-            onTap: () async {
-              if (timerController.timer.isRunning) {
-                terminated = true;
-                setState(() {});
-                await timerController.stopTimer();
-              }
-            },
-            onLongPress: () {
-              timerController.startTimerColor();
-              timerController.changeColor(Colors.yellow);
-              countDownController.startTimerCountDown();
-            },
-            onLongPressEnd: (details) {
-              if (!terminated) {
-                timerController.colorChangeTimer.cancel();
-
-                if (timerController.textColor == Colors.green) {
-                  countDownController.stopTimerCountDown();
-                  timerController.toggleTimer();
+            return GestureDetector(
+              onTap: () async {
+                if (timerController.timer.isRunning) {
+                  terminated = true;
+                  setState(() {});
+                  await timerController.stopTimer();
                 }
+              },
+              onLongPress: () {
+                timerController.startTimerColor();
+                timerController.changeColor(Colors.yellow);
+                countDownController.startTimerCountDown();
+              },
+              onLongPressEnd: (details) {
+                if (!terminated) {
+                  timerController.colorChangeTimer.cancel();
 
-                timerController.resetColor();
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              color: Colors.transparent,
-              width: context.screenWidth,
-              height: context.screenHeight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  if (!Platform.isWindows && !purchaseService.isPremium) ...[
-                    isAdLoaded
-                        ? Column(
-                            children: [
-                              SizedBox(
-                                height: myBanner.size.height.toDouble(),
-                                width: myBanner.size.width.toDouble(),
-                                child: AdWidget(ad: myBanner),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          )
-                        : const SizedBox(),
-                  ],
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        StreamBuilder<int>(
-                          stream: countDownController.getCountDownTimer,
-                          builder: (context, snap) {
-                            if (snap.hasData) {
-                              final data = snap.data!;
+                  if (timerController.textColor == Colors.green) {
+                    countDownController.stopTimerCountDown();
+                    timerController.toggleTimer();
+                  }
 
-                              return Visibility(
-                                visible:
-                                    (state is StopTimerState) && !terminated,
-                                child: Expanded(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: context.screenWidth,
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 8,
-                                              horizontal: 12,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF151818),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  translate(
-                                                      'timer_page.title_scrambles'),
-                                                  style: context
-                                                      .textTheme.bodyLarge
-                                                      ?.copyWith(
-                                                    fontWeight: FontWeight.bold,
+                  timerController.resetColor();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                color: Colors.transparent,
+                width: context.screenWidth,
+                height: context.screenHeight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    if (!Platform.isWindows && !purchaseService.isPremium) ...[
+                      isAdLoaded
+                          ? Column(
+                              children: [
+                                SizedBox(
+                                  height: myBanner.size.height.toDouble(),
+                                  width: myBanner.size.width.toDouble(),
+                                  child: AdWidget(ad: myBanner),
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ],
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          StreamBuilder<int>(
+                            stream: countDownController.getCountDownTimer,
+                            builder: (context, snap) {
+                              if (snap.hasData) {
+                                final data = snap.data!;
+
+                                return Visibility(
+                                  visible:
+                                      (state is StopTimerState) && !terminated,
+                                  child: Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              width: context.screenWidth,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 12,
                                                   ),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            ListScramblesPage(
-                                                          pageController:
-                                                              pageController,
-                                                          scrambles:
-                                                              timerController
-                                                                  .listScrambles,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF151818),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    translate(
+                                                      'timer_page.title_scrambles',
+                                                    ),
+                                                    style: context
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Text(translate(
-                                                      'timer_page.textButtonListScrambles')),
-                                                ),
-                                                // Text(
-                                                //   translate('timer_page.text_description_how_to_change_scrambles'),
-                                                //   style:
-                                                //       context.textTheme.bodySmall,
-                                                // ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 8,
-                                              horizontal: 12,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF151818),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  translate(
-                                                      'timer_page.text_description_label_group'),
-                                                  style: context
-                                                      .textTheme.bodyLarge
-                                                      ?.copyWith(
-                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                ),
-                                                DropdownButtonHideUnderline(
-                                                  child: DropdownButton(
-                                                    alignment: Alignment.center,
-                                                    items: CubeTypesList.types
-                                                        .map((e) {
-                                                      return DropdownMenuItem(
-                                                        value: e,
-                                                        child: Text(
-                                                          e,
-                                                          style: context
-                                                              .textTheme
-                                                              .bodyLarge,
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              ListScramblesPage(
+                                                                pageController:
+                                                                    pageController,
+                                                                scrambles:
+                                                                    timerController
+                                                                        .listScrambles,
+                                                              ),
                                                         ),
                                                       );
-                                                    }).toList(),
-                                                    onChanged: (value) {
-                                                      if (value != null) {
-                                                        setState(() {
-                                                          timerController
-                                                              .group = value;
-                                                        });
-                                                      }
                                                     },
-                                                    value:
-                                                        timerController.group,
-                                                    icon: const Icon(
-                                                      Icons.arrow_drop_down,
-                                                      color: Colors.grey,
+                                                    child: Text(
+                                                      translate(
+                                                        'timer_page.textButtonListScrambles',
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                  // Text(
+                                                  //   translate('timer_page.text_description_how_to_change_scrambles'),
+                                                  //   style:
+                                                  //       context.textTheme.bodySmall,
+                                                  // ),
+                                                ],
+                                              ),
                                             ),
+                                            const SizedBox(height: 10),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 12,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF151818),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    translate(
+                                                      'timer_page.text_description_label_group',
+                                                    ),
+                                                    style: context
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                  ),
+                                                  DropdownButtonHideUnderline(
+                                                    child: DropdownButton(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      items: CubeTypesList.types
+                                                          .map((e) {
+                                                            return DropdownMenuItem(
+                                                              value: e,
+                                                              child: Text(
+                                                                e,
+                                                                style: context
+                                                                    .textTheme
+                                                                    .bodyLarge,
+                                                              ),
+                                                            );
+                                                          })
+                                                          .toList(),
+                                                      onChanged: (value) {
+                                                        if (value != null) {
+                                                          setState(() {
+                                                            timerController
+                                                                    .group =
+                                                                value;
+                                                          });
+                                                        }
+                                                      },
+                                                      value:
+                                                          timerController.group,
+                                                      icon: const Icon(
+                                                        Icons.arrow_drop_down,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          data.toString(),
+                                          style: context.textTheme.bodyLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 50,
+                                                color:
+                                                    timerController.textColor,
+                                              ),
+                                        ),
+                                        Text(
+                                          translate(
+                                            'timer_page.text_help_to_use_app',
                                           ),
-                                        ],
-                                      ),
-                                      Text(
-                                        data.toString(),
-                                        style: context.textTheme.bodyLarge
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 50,
-                                          color: timerController.textColor,
+                                          textAlign: TextAlign.center,
                                         ),
-                                      ),
-                                      Text(
-                                        translate(
-                                            'timer_page.text_help_to_use_app'),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
+                                );
+                              }
 
-                            return const Text('15');
-                          },
-                        ),
-                        StreamBuilder(
-                          stream: timerController.getTimer,
-                          builder: (context, snap) {
-                            if (snap.hasData) {
-                              final data = snap.data!;
+                              return const Text('15');
+                            },
+                          ),
+                          StreamBuilder(
+                            stream: timerController.getTimer,
+                            builder: (context, snap) {
+                              if (snap.hasData) {
+                                final data = snap.data!;
 
-                              final time = StopWatchTimer.getDisplayTime(
-                                data,
-                                hours: false,
-                              );
+                                final time = StopWatchTimer.getDisplayTime(
+                                  data,
+                                  hours: false,
+                                );
 
-                              return Column(
-                                children: [
-                                  Visibility(
-                                    visible: data > 0,
-                                    child: Center(
-                                      child: Text(
-                                        time,
-                                        style: context.textTheme.bodyLarge
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 50,
+                                return Column(
+                                  children: [
+                                    Visibility(
+                                      visible: data > 0,
+                                      child: Center(
+                                        child: Text(
+                                          time,
+                                          style: context.textTheme.bodyLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 50,
+                                              ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Visibility(
-                                    visible:
-                                        data > 0 && (state is StopTimerState),
-                                    child: MyElevatedButtonWidget(
-                                      label: Text(
-                                        translate(
-                                            'timer_page.text_button_new_stop_watch'),
-                                      ),
-                                      onPressed: () {
-                                        timerController.resetTimer();
-                                        countDownController
-                                            .resetTimerCountDown();
-                                        terminated = false;
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible:
-                                        data > 0 && (state is StartTimerState),
-                                    child: Center(
-                                      child: Text(
-                                        translate(
-                                            'timer_page.text_help_to_stop_timer'),
-                                        style: context.textTheme.bodyLarge,
+                                    Visibility(
+                                      visible:
+                                          data > 0 && (state is StopTimerState),
+                                      child: MyElevatedButtonWidget(
+                                        label: Text(
+                                          translate(
+                                            'timer_page.text_button_new_stop_watch',
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          timerController.resetTimer();
+                                          countDownController
+                                              .resetTimerCountDown();
+                                          terminated = false;
+                                          setState(() {});
+                                        },
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            }
+                                    Visibility(
+                                      visible:
+                                          data > 0 &&
+                                          (state is StartTimerState),
+                                      child: Center(
+                                        child: Text(
+                                          translate(
+                                            'timer_page.text_help_to_stop_timer',
+                                          ),
+                                          style: context.textTheme.bodyLarge,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
 
-                            return const Text('00:00.0');
-                          },
-                        ),
-                      ],
+                              return const Text('00:00.0');
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ),
     );
   }

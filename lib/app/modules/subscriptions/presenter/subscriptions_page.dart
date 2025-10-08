@@ -1,9 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/domain/entities/subscription_plan.dart';
 import '../../../di/dependency_injection.dart';
-import '../../config/presenter/services/purchase_service.dart';
+import '../services/purchase_service.dart';
 
 class SubscriptionsPage extends StatefulWidget {
   const SubscriptionsPage({super.key});
@@ -90,17 +91,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                       const SizedBox(height: 16),
                       Text(
                         translate('subscriptions_page.upgrade_title'),
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         translate('subscriptions_page.upgrade_subtitle'),
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                          color: Colors.grey[600],
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -113,39 +113,44 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      _PremiumPlanCard(
-                        plan: SubscriptionPlan.annual,
-                        title: translate('subscriptions_page.plan_annual'),
-                        price: purchaseService.priceFor(SubscriptionPlan.annual),
-                        discount: translate('subscriptions_page.save_most'),
-                        isPopular: true,
-                        benefits: [
-                          translate('subscriptions_page.benefit_no_ads'),
-                          translate('subscriptions_page.benefit_annual_billing'),
-                        ],
-                        onTap: () => purchaseService.buy(SubscriptionPlan.annual),
+                      _AnnualPremiumPlanCard(
+                        price: purchaseService.priceFor(
+                          SubscriptionPlan.annual,
+                        ),
+                        onTap: () =>
+                            purchaseService.buy(SubscriptionPlan.annual),
                       ),
                       const SizedBox(height: 16),
                       _PremiumPlanCard(
                         plan: SubscriptionPlan.monthly,
                         title: translate('subscriptions_page.plan_monthly'),
-                        price: purchaseService.priceFor(SubscriptionPlan.monthly),
+                        price: purchaseService.priceFor(
+                          SubscriptionPlan.monthly,
+                        ),
                         benefits: [
                           translate('subscriptions_page.benefit_no_ads'),
-                          translate('subscriptions_page.benefit_monthly_billing'),
+                          translate(
+                            'subscriptions_page.benefit_monthly_billing',
+                          ),
                         ],
-                        onTap: () => purchaseService.buy(SubscriptionPlan.monthly),
+                        onTap: () =>
+                            purchaseService.buy(SubscriptionPlan.monthly),
                       ),
                       const SizedBox(height: 16),
                       _PremiumPlanCard(
                         plan: SubscriptionPlan.weekly,
                         title: translate('subscriptions_page.plan_weekly'),
-                        price: purchaseService.priceFor(SubscriptionPlan.weekly),
+                        price: purchaseService.priceFor(
+                          SubscriptionPlan.weekly,
+                        ),
                         benefits: [
                           translate('subscriptions_page.benefit_no_ads'),
-                          translate('subscriptions_page.benefit_weekly_billing'),
+                          translate(
+                            'subscriptions_page.benefit_weekly_billing',
+                          ),
                         ],
-                        onTap: () => purchaseService.buy(SubscriptionPlan.weekly),
+                        onTap: () =>
+                            purchaseService.buy(SubscriptionPlan.weekly),
                       ),
                     ],
                   ),
@@ -176,39 +181,321 @@ class _BenefitsList extends StatelessWidget {
         children: [
           Text(
             translate('subscriptions_page.features_title'),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          ...benefits.map((benefit) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Row(
+          ...benefits.map(
+            (benefit) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.check_rounded,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      benefit,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AnnualPremiumPlanCard extends StatelessWidget {
+  final String price;
+  final VoidCallback onTap;
+
+  const _AnnualPremiumPlanCard({required this.price, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary,
+              width: 3,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        Icons.check_rounded,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 20,
+                        Icons.workspace_premium,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: 32,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        benefit,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            translate('subscriptions_page.plan_annual'),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              translate(
+                                'subscriptions_page.annual_exclusive_feature',
+                              ),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              )),
-        ],
-      ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surface.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.dashboard_rounded,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              translate(
+                                'subscriptions_page.annual_dashboard_title',
+                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        translate(
+                          'subscriptions_page.annual_dashboard_description',
+                        ),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          height: 1.5,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.85),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildBenefit(
+                  context,
+                  Icons.block,
+                  translate('subscriptions_page.benefit_no_ads'),
+                ),
+                const SizedBox(height: 10),
+                _buildBenefit(
+                  context,
+                  Icons.calendar_today,
+                  translate('subscriptions_page.benefit_annual_billing'),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        price,
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onTap,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      elevation: 6,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.upgrade, size: 22),
+                        const SizedBox(width: 8),
+                        Text(
+                          translate('subscriptions_page.button_subscribe'),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          top: -12,
+          right: 20,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.orange.shade600, Colors.deepOrange.shade700],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orange.withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.star, color: Colors.white, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  translate('subscriptions_page.save_most'),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBenefit(BuildContext context, IconData icon, String text) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: Theme.of(context).colorScheme.primary,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -271,14 +558,14 @@ class _PremiumPlanCard extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             price,
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -295,25 +582,28 @@ class _PremiumPlanCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                ...benefits.map((benefit) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
+                ...benefits.map(
+                  (benefit) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            benefit,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              benefit,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
@@ -351,10 +641,7 @@ class _PremiumPlanCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.orange.shade600,
-                    Colors.deepOrange.shade600,
-                  ],
+                  colors: [Colors.orange.shade600, Colors.deepOrange.shade600],
                 ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [

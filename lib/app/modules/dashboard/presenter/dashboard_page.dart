@@ -15,7 +15,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-import '../../../modules/config/presenter/services/purchase_service.dart';
+import '../../subscriptions/services/purchase_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

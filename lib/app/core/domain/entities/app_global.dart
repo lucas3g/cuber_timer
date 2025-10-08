@@ -17,4 +17,5 @@ class AppGlobal {
 
   void setPlan(SubscriptionPlan planParam) => plan = planParam;
   bool get isPremium => plan != SubscriptionPlan.free;
+  bool get isAnnualPremium => plan == SubscriptionPlan.annual;
 }
