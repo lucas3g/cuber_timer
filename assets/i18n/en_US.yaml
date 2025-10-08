@@ -48,11 +48,17 @@ settings_page:
 subscriptions_page:
   premium_message: You are Premium. Thanks for supporting!
   button_subscribe: Subscribe Now
+  button_upgrade: Upgrade Plan
+  button_close: Close
   title_appbar: Premium
   premium_active: Premium Active
+  premium_annual_active: Annual Premium Active
   premium_thanks: Thanks for supporting the development!
+  premium_annual_thanks: You have full access to all features, including the Analytics Dashboard!
   upgrade_title: Become Premium
+  upgrade_from_plan: Upgrade Your Plan
   upgrade_subtitle: Enjoy an ad-free experience and support continuous development
+  upgrade_to_annual: Upgrade to Annual and unlock the Dashboard!
   features_title: What you get
   feature_no_ads: Completely ad-free experience
   feature_unlimited: Unlimited access to all features
@@ -60,6 +66,7 @@ subscriptions_page:
   plan_weekly: Weekly Plan
   plan_monthly: Monthly Plan
   plan_annual: Annual Plan
+  current_plan: Your Current Plan
   save_most: BEST VALUE
   benefit_no_ads: No ads
   benefit_weekly_billing: Weekly billing
@@ -69,7 +76,12 @@ subscriptions_page:
   annual_dashboard_title: Complete Analytics Dashboard
   annual_dashboard_description: Get exclusive access to the Complete Dashboard! Track your progress in real-time, view detailed statistics by cube type, discover your strengths and weaknesses, and receive personalized recommendations to improve your times. Transform your solves into intelligent data and achieve new records!
   annual_exclusive_feature: Annual Plan Exclusive Feature
+  dashboard_included: Complete Dashboard Included
   price_note: "Suggested prices: Weekly $14.90 (from $19.90 - 25% OFF), Monthly $29.90 (from $49.90 - 40% OFF), Annual $199.90 (from $479.90 - 58% OFF)"
+  success_title: Congratulations! 🎉
+  success_message: Subscription successful!
+  success_description: You now have access to all premium features. Enjoy!
+  success_button: Start Using
 
 main_navigator:
   dashboard: Dashboard
