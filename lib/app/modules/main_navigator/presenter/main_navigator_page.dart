@@ -8,6 +8,7 @@ import 'package:cuber_timer/app/modules/dashboard/presenter/dashboard_page.dart'
 import 'package:cuber_timer/app/modules/home/presenter/home_page.dart';
 import 'package:cuber_timer/app/shared/components/database_migration_dialog.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MainNavigatorPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
   int _currentIndex = 0;
 
   List<Widget> get _pages {
-    if (AppGlobal.instance.isAnnualPremium) {
+    if (AppGlobal.instance.isAnnualPremium || kDebugMode) {
       return const [DashboardPage(), HomePage()];
     }
     return const [HomePage()];
@@ -32,7 +33,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
   List<BottomNavigationBarItem> get _navigationItems {
     final items = <BottomNavigationBarItem>[];
 
-    if (AppGlobal.instance.isAnnualPremium) {
+    if (AppGlobal.instance.isAnnualPremium || kDebugMode) {
       items.add(
         BottomNavigationBarItem(
           icon: const Icon(Icons.dashboard),
@@ -82,7 +83,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _pages),
-      bottomNavigationBar: AppGlobal.instance.isAnnualPremium
+      bottomNavigationBar: (AppGlobal.instance.isAnnualPremium || kDebugMode)
           ? BottomNavigationBar(
               currentIndex: _currentIndex,
               onTap: (index) async {

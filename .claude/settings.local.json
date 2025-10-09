@@ -9,7 +9,9 @@
       "Bash(mkdir:*)",
       "Bash(dir:*)",
       "WebSearch",
-      "WebFetch(domain:mobbin.com)"
+      "WebFetch(domain:mobbin.com)",
+      "Bash(pod repo update:*)",
+      "Bash(pod update:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,4 +1,3 @@
-import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -23,34 +22,48 @@ class DistributionBoxplotWidget extends StatelessWidget {
     final sortedMetrics = analytics.cubeMetrics.values.toList()
       ..sort((a, b) => a.medianTime.compareTo(b.medianTime));
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              translate('dashboard.boxplot_title'),
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                translate('dashboard.boxplot_title'),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              translate('dashboard.boxplot_subtitle'),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodySmall?.color,
+              const SizedBox(height: 4),
+              Text(
+                translate('dashboard.boxplot_subtitle'),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.textTheme.bodySmall?.color,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              height: context.screenHeight * 0.4,
-              child: _buildChart(sortedMetrics, theme),
-            ),
-            _buildLegend(theme),
-          ],
+            ],
+          ),
         ),
-      ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 280,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            itemCount: sortedMetrics.length,
+            itemBuilder: (context, index) {
+              return _buildCubeBoxplotCard(sortedMetrics[index], theme);
+            },
+          ),
+        ),
+        const SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: _buildLegend(theme),
+        ),
+      ],
     );
   }
 
@@ -69,47 +82,96 @@ class DistributionBoxplotWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildChart(List<CubePerformanceMetrics> metrics, ThemeData theme) {
-    // Calculate quartiles for each cube
-    final boxPlotData = metrics.map((m) => _calculateQuartiles(m)).toList();
+  Widget _buildCubeBoxplotCard(
+    CubePerformanceMetrics metrics,
+    ThemeData theme,
+  ) {
+    final data = _calculateQuartiles(metrics);
+    final color = _getCategoryColor(metrics.category);
 
-    // Find global min/max for y-axis
-    final allValues = boxPlotData.expand(
-      (data) => [
-        data['min']!,
-        data['q1']!,
-        data['median']!,
-        data['q3']!,
-        data['max']!,
-      ],
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      elevation: 2,
+      child: Container(
+        width: 200,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Cube name
+            Text(
+              metrics.cubeModel,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            // Solve count
+            Text(
+              '${metrics.totalSolves} ${translate('dashboard.solves')}',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.grey.shade600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Boxplot chart
+            Expanded(child: _buildSingleBoxplot(data, color, theme)),
+            const SizedBox(height: 12),
+            // Statistics
+            _buildStatistics(data, theme),
+          ],
+        ),
+      ),
     );
-    final minY = allValues.reduce((a, b) => a < b ? a : b) * 0.9;
-    final maxY = allValues.reduce((a, b) => a > b ? a : b) * 1.1;
+  }
+
+  Widget _buildSingleBoxplot(
+    Map<String, double> data,
+    Color color,
+    ThemeData theme,
+  ) {
+    final min = data['min']!;
+    final q1 = data['q1']!;
+    final median = data['median']!;
+    final q3 = data['q3']!;
+    final max = data['max']!;
+
+    // Calculate range and ensure it's not zero
+    final range = max - min;
+    final safeRange = range > 0 ? range : max * 0.1;
+    final interval = safeRange / 4;
+
+    // Adjust min/max Y for better visualization
+    final minY = min > 0 ? min * 0.9 : min - safeRange * 0.1;
+    final maxY = max * 1.1;
 
     return BarChart(
       BarChartData(
-        alignment: BarChartAlignment.spaceAround,
+        alignment: BarChartAlignment.center,
         minY: minY,
         maxY: maxY,
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
-          horizontalInterval: (maxY - minY) / 5,
+          horizontalInterval: interval,
           getDrawingHorizontalLine: (value) => FlLine(
-            color: Colors.grey.shade300,
+            color: Colors.grey.shade200,
             strokeWidth: 1,
-            dashArray: [5, 5],
+            dashArray: [3, 3],
           ),
         ),
         titlesData: FlTitlesData(
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              reservedSize: 45,
+              reservedSize: 50,
+              interval: interval,
               getTitlesWidget: (value, meta) {
                 return Text(
                   '${(value / 1000).toStringAsFixed(1)}s',
-                  style: TextStyle(fontSize: 10, color: Colors.grey.shade700),
+                  style: TextStyle(fontSize: 9, color: Colors.grey.shade600),
                 );
               },
             ),
@@ -120,150 +182,113 @@ class DistributionBoxplotWidget extends StatelessWidget {
           topTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 50,
-              getTitlesWidget: (value, meta) {
-                final index = value.toInt();
-                if (index < 0 || index >= metrics.length) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    metrics[index].cubeModel,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                );
-              },
-            ),
+          bottomTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
           ),
         ),
         borderData: FlBorderData(
           show: true,
           border: Border(
-            left: BorderSide(color: Colors.grey.shade400),
-            bottom: BorderSide(color: Colors.grey.shade400),
+            left: BorderSide(color: Colors.grey.shade300),
+            bottom: BorderSide(color: Colors.grey.shade300),
           ),
         ),
-        barGroups: List.generate(
-          metrics.length,
-          (index) => _createBoxPlotBarGroup(
-            index,
-            boxPlotData[index],
-            _getCategoryColor(metrics[index].category),
+        barGroups: [
+          BarChartGroupData(
+            x: 0,
+            barRods: [
+              // Whisker inferior (min to Q1)
+              BarChartRodData(
+                fromY: min,
+                toY: q1,
+                width: 2,
+                color: color.withOpacity(0.6),
+                borderRadius: BorderRadius.zero,
+              ),
+              // Box (Q1 to median)
+              BarChartRodData(
+                fromY: q1,
+                toY: median,
+                width: 40,
+                color: color.withOpacity(0.7),
+                borderRadius: BorderRadius.zero,
+              ),
+              // Box (median to Q3)
+              BarChartRodData(
+                fromY: median,
+                toY: q3,
+                width: 40,
+                color: color.withOpacity(0.5),
+                borderRadius: BorderRadius.zero,
+              ),
+              // Whisker superior (Q3 to max)
+              BarChartRodData(
+                fromY: q3,
+                toY: max,
+                width: 2,
+                color: color.withOpacity(0.6),
+                borderRadius: BorderRadius.zero,
+              ),
+              // Median line
+              BarChartRodData(
+                fromY: median - safeRange * 0.01,
+                toY: median + safeRange * 0.01,
+                width: 42,
+                color: Colors.white,
+                borderRadius: BorderRadius.zero,
+              ),
+            ],
           ),
-        ),
-        barTouchData: BarTouchData(
-          enabled: true,
-          touchTooltipData: BarTouchTooltipData(
-            getTooltipColor: (group) => Colors.black87,
-            getTooltipItem: (group, groupIndex, rod, rodIndex) {
-              final metric = metrics[groupIndex];
-              final data = boxPlotData[groupIndex];
-              return BarTooltipItem(
-                '${metric.cubeModel}\n',
-                const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-                children: [
-                  TextSpan(
-                    text:
-                        '${translate('dashboard.min')}: '
-                        '${(data['min']! / 1000).toStringAsFixed(2)}s\n',
-                    style: const TextStyle(color: Colors.white70, fontSize: 11),
-                  ),
-                  TextSpan(
-                    text:
-                        '${translate('dashboard.quartile_1')}: '
-                        '${(data['q1']! / 1000).toStringAsFixed(2)}s\n',
-                    style: const TextStyle(color: Colors.white70, fontSize: 11),
-                  ),
-                  TextSpan(
-                    text:
-                        '${translate('dashboard.median')}: '
-                        '${(data['median']! / 1000).toStringAsFixed(2)}s\n',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text:
-                        '${translate('dashboard.quartile_3')}: '
-                        '${(data['q3']! / 1000).toStringAsFixed(2)}s\n',
-                    style: const TextStyle(color: Colors.white70, fontSize: 11),
-                  ),
-                  TextSpan(
-                    text:
-                        '${translate('dashboard.max')}: '
-                        '${(data['max']! / 1000).toStringAsFixed(2)}s',
-                    style: const TextStyle(color: Colors.white70, fontSize: 11),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+        ],
+        barTouchData: BarTouchData(enabled: false),
       ),
     );
   }
 
-  /// Creates a bar group that visually represents a boxplot
-  BarChartGroupData _createBoxPlotBarGroup(
-    int x,
-    Map<String, double> data,
-    Color color,
-  ) {
-    final min = data['min']!;
-    final q1 = data['q1']!;
-    final median = data['median']!;
-    final q3 = data['q3']!;
-    final max = data['max']!;
-
-    // Calculate a small offset for median line visibility
-    final range = max - min;
-    final medianLineThickness = range * 0.02; // 2% of range
-
-    return BarChartGroupData(
-      x: x,
-      barRods: [
-        // Main bar: full range with whiskers and box
-        BarChartRodData(
-          fromY: min,
-          toY: max,
-          width: 30,
-          color: Colors.transparent,
-          borderRadius: BorderRadius.zero,
-          rodStackItems: [
-            // Lower whisker (min to Q1) - thin, transparent
-            BarChartRodStackItem(min, q1, color.withOpacity(0.4)),
-            // Box (Q1 to Q3) - main colored area
-            BarChartRodStackItem(q1, q3, color.withOpacity(0.8)),
-            // Upper whisker (Q3 to max) - thin, transparent
-            BarChartRodStackItem(q3, max, color.withOpacity(0.4)),
-          ],
-        ),
-        // Median line - separate thin bar for better visibility
-        BarChartRodData(
-          fromY: median - medianLineThickness,
-          toY: median + medianLineThickness,
-          width: 30,
-          color: Colors.white,
-          borderRadius: BorderRadius.zero,
-        ),
+  Widget _buildStatistics(Map<String, double> data, ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildStatRow('Min', data['min']!, theme),
+        _buildStatRow('Q1', data['q1']!, theme),
+        _buildStatRow('Median', data['median']!, theme, highlight: true),
+        _buildStatRow('Q3', data['q3']!, theme),
+        _buildStatRow('Max', data['max']!, theme),
       ],
-      showingTooltipIndicators: [],
+    );
+  }
+
+  Widget _buildStatRow(
+    String label,
+    double value,
+    ThemeData theme, {
+    bool highlight = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: highlight ? FontWeight.bold : FontWeight.normal,
+              color: highlight
+                  ? theme.colorScheme.primary
+                  : Colors.grey.shade700,
+            ),
+          ),
+          Text(
+            '${(value / 1000).toStringAsFixed(2)}s',
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: highlight ? FontWeight.bold : FontWeight.normal,
+              color: highlight
+                  ? theme.colorScheme.primary
+                  : Colors.grey.shade700,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -189,56 +189,54 @@ class _DashboardPageState extends State<DashboardPage> {
         const SizedBox(height: 12),
         Observer(
           builder: (context) {
-            return SizedBox(
-              height: context.screenHeight * 0.4,
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 1.1,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  InsightCardWidget(
-                    title: translate('dashboard.total_solves'),
-                    value: '${dashboardController.totalSolves}',
-                    icon: Icons.timer,
-                    color: Colors.blue,
-                  ),
-                  InsightCardWidget(
-                    title: translate('dashboard.best_time'),
-                    value: dashboardController.bestTimeOverall > 0
-                        ? StopWatchTimer.getDisplayTime(
-                            dashboardController.bestTimeOverall,
-                            hours: false,
-                          )
-                        : '-',
-                    icon: Icons.emoji_events,
-                    color: Colors.amber,
-                  ),
-                  InsightCardWidget(
-                    title: translate('dashboard.average_time'),
-                    value: dashboardController.averageTime > 0
-                        ? StopWatchTimer.getDisplayTime(
-                            dashboardController.averageTime,
-                            hours: false,
-                          )
-                        : '-',
-                    icon: Icons.speed,
-                    color: Colors.green,
-                  ),
-                  InsightCardWidget(
-                    title: translate('dashboard.most_practiced'),
-                    value: dashboardController.mostPracticedGroup.isNotEmpty
-                        ? dashboardController.mostPracticedGroup
-                        : '-',
-                    icon: Icons.favorite,
-                    color: Colors.red,
-                    subtitle: dashboardController.mostPracticedGroup.isNotEmpty
-                        ? '${dashboardController.solvesByGroup[dashboardController.mostPracticedGroup]} ${translate('dashboard.solves_count')}'
-                        : null,
-                  ),
-                ],
-              ),
+            return GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1.3,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                InsightCardWidget(
+                  title: translate('dashboard.total_solves'),
+                  value: '${dashboardController.totalSolves}',
+                  icon: Icons.timer,
+                  color: Colors.blue,
+                ),
+                InsightCardWidget(
+                  title: translate('dashboard.best_time'),
+                  value: dashboardController.bestTimeOverall > 0
+                      ? StopWatchTimer.getDisplayTime(
+                          dashboardController.bestTimeOverall,
+                          hours: false,
+                        )
+                      : '-',
+                  icon: Icons.emoji_events,
+                  color: Colors.amber,
+                ),
+                InsightCardWidget(
+                  title: translate('dashboard.average_time'),
+                  value: dashboardController.averageTime > 0
+                      ? StopWatchTimer.getDisplayTime(
+                          dashboardController.averageTime,
+                          hours: false,
+                        )
+                      : '-',
+                  icon: Icons.speed,
+                  color: Colors.green,
+                ),
+                InsightCardWidget(
+                  title: translate('dashboard.most_practiced'),
+                  value: dashboardController.mostPracticedGroup.isNotEmpty
+                      ? dashboardController.mostPracticedGroup
+                      : '-',
+                  icon: Icons.favorite,
+                  color: Colors.red,
+                  subtitle: dashboardController.mostPracticedGroup.isNotEmpty
+                      ? '${dashboardController.solvesByGroup[dashboardController.mostPracticedGroup]} ${translate('dashboard.solves_count')}'
+                      : null,
+                ),
+              ],
             );
           },
         ),

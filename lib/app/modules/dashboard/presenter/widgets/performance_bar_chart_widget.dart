@@ -158,7 +158,7 @@ class PerformanceBarChartWidget extends StatelessWidget {
               BarChartRodData(
                 toY: metrics[index].medianTime.toDouble(),
                 color: _getCategoryColor(metrics[index].category),
-                width: 25,
+                width: 20,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(6),
                   topRight: Radius.circular(6),
