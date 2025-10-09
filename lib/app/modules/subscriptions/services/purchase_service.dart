@@ -35,6 +35,14 @@ class PurchaseService extends ChangeNotifier {
 
   String priceFor(SubscriptionPlan plan) => _prices[plan] ?? '';
 
+  double rawPriceFor(SubscriptionPlan plan) {
+    final price = _prices[plan];
+    if (price == null || price.isEmpty) return 0.0;
+    final cleaned = price.replaceAll(RegExp(r'[^0-9.,]'), '');
+    final normalized = cleaned.replaceAll(',', '.');
+    return double.tryParse(normalized) ?? 0.0;
+  }
+
   Future<void> init() async {
     final bool available = await _iap.isAvailable();
     if (!available) return;

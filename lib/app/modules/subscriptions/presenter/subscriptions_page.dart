@@ -110,7 +110,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
               },
               style: FilledButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                foregroundColor: Theme.of(
+                  context,
+                ).colorScheme.onPrimaryContainer,
                 minimumSize: const Size(double.infinity, 52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -152,10 +154,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
         },
       ),
     );
-  }
-
-  Widget _buildPremiumActiveView(BuildContext context) {
-    return _buildAnnualPremiumView(context);
   }
 
   Widget _buildAnnualPremiumView(BuildContext context) {
@@ -205,7 +203,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                       translate('subscriptions_page.premium_annual_thanks'),
                       style: TextStyle(
                         fontSize: 16,
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.6),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -213,9 +213,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     FilledButton.icon(
                       onPressed: () => Navigator.of(context).pop(),
                       style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                        foregroundColor: Theme.of(context).colorScheme.onSurface,
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onSurface,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 16,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -267,7 +274,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   // Current Plan Badge
                   Center(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer,
                         borderRadius: BorderRadius.circular(20),
@@ -294,13 +304,17 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         end: Alignment.bottomRight,
                         colors: [
                           Theme.of(context).colorScheme.primaryContainer,
-                          Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),
+                          Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer.withOpacity(0.8),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.4),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer.withOpacity(0.4),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -319,11 +333,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                             const SizedBox(width: 12),
                             Flexible(
                               child: Text(
-                                translate('subscriptions_page.annual_dashboard_title'),
+                                translate(
+                                  'subscriptions_page.annual_dashboard_title',
+                                ),
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -332,19 +350,28 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          translate('subscriptions_page.annual_dashboard_description'),
+                          translate(
+                            'subscriptions_page.annual_dashboard_description',
+                          ),
                           style: TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.9),
                             height: 1.5,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.15),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -357,11 +384,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                translate('subscriptions_page.annual_exclusive_feature'),
+                                translate(
+                                  'subscriptions_page.annual_exclusive_feature',
+                                ),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                               ),
                             ],
@@ -396,7 +427,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     translate('subscriptions_page.upgrade_to_annual'),
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.6),
                       height: 1.4,
                     ),
                     textAlign: TextAlign.center,
@@ -409,9 +442,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     context,
                     plan: SubscriptionPlan.annual,
                     title: translate('subscriptions_page.plan_annual'),
-                    price: purchaseService.priceFor(SubscriptionPlan.annual),
-                    defaultPrice: 'R\$ 199,90',
-                    perMonth: 'R\$ 16,66',
                     saveLabel: '58% OFF',
                     isPopular: true,
                     hasDashboard: true,
@@ -450,7 +480,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 elevation: 4,
-                shadowColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
+                shadowColor: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withOpacity(0.5),
               ),
               child: Text(
                 translate('subscriptions_page.button_upgrade'),
@@ -672,9 +704,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     context,
                     plan: SubscriptionPlan.annual,
                     title: translate('subscriptions_page.plan_annual'),
-                    price: purchaseService.priceFor(SubscriptionPlan.annual),
-                    defaultPrice: 'R\$ 199,90',
-                    perMonth: 'R\$ 16,66',
                     saveLabel: '58% OFF',
                     isPopular: true,
                     hasDashboard: true,
@@ -686,9 +715,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     context,
                     plan: SubscriptionPlan.monthly,
                     title: translate('subscriptions_page.plan_monthly'),
-                    price: purchaseService.priceFor(SubscriptionPlan.monthly),
-                    defaultPrice: 'R\$ 29,90',
-                    perMonth: 'R\$ 29,90',
                   ),
 
                   const SizedBox(height: 12),
@@ -697,9 +723,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     context,
                     plan: SubscriptionPlan.weekly,
                     title: translate('subscriptions_page.plan_weekly'),
-                    price: purchaseService.priceFor(SubscriptionPlan.weekly),
-                    defaultPrice: 'R\$ 14,90',
-                    perMonth: 'R\$ 59,60',
                   ),
 
                   const SizedBox(height: 24),
@@ -788,15 +811,14 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
     BuildContext context, {
     required SubscriptionPlan plan,
     required String title,
-    required String price,
-    required String defaultPrice,
-    required String perMonth,
     String? saveLabel,
     bool isPopular = false,
     bool hasDashboard = false,
   }) {
     final isSelected = selectedPlan == plan;
-    final displayPrice = price.isEmpty ? defaultPrice : price;
+    final price = purchaseService.priceFor(plan);
+    final displayPrice = price;
+
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
@@ -849,12 +871,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   gradient: isSelected
                       ? LinearGradient(
                           colors: [
-                            Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withOpacity(0.3),
-                            Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withOpacity(0.2),
+                            Colors.orange.shade600,
+                            Colors.deepOrange.shade600,
                           ],
                         )
                       : LinearGradient(
@@ -898,20 +916,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                             ),
                           ),
                         ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '$perMonth/mês',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isSelected
-                              ? Theme.of(
-                                  context,
-                                ).colorScheme.onSurface.withOpacity(0.7)
-                              : Theme.of(
-                                  context,
-                                ).colorScheme.onSurface.withOpacity(0.5),
-                        ),
                       ),
                     ],
                   ),
