@@ -20,6 +20,8 @@ import '../core/data/clients/shared_preferences/local_storage_interface.dart'
     as _i237;
 import '../core/data/clients/shared_preferences/shared_preferences_service.dart'
     as _i745;
+import '../modules/dashboard/domain/services/analytics_service.dart' as _i476;
+import '../modules/dashboard/domain/services/insights_generator.dart' as _i101;
 import '../modules/dashboard/presenter/controller/dashboard_controller.dart'
     as _i652;
 import '../modules/home/presenter/controller/record_controller.dart' as _i529;
@@ -43,6 +45,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.factory<_i476.AnalyticsService>(() => _i476.AnalyticsService());
+    gh.factory<_i101.InsightsGenerator>(() => _i101.InsightsGenerator());
     gh.singleton<_i957.PurchaseService>(() => _i957.PurchaseService());
     gh.lazySingleton<_i538.AppDatabase>(() => registerModule.database);
     gh.singleton<_i658.IAdService>(() => _i658.AdService());
@@ -57,8 +61,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i13.DriftService(gh<_i538.AppDatabase>()),
     );
     gh.singleton<_i652.DashboardController>(
-      () =>
-          _i652.DashboardController(localDatabase: gh<_i654.ILocalDatabase>()),
+      () => _i652.DashboardController(
+        localDatabase: gh<_i654.ILocalDatabase>(),
+        analyticsService: gh<_i476.AnalyticsService>(),
+        insightsGenerator: gh<_i101.InsightsGenerator>(),
+      ),
     );
     gh.singleton<_i529.RecordController>(
       () => _i529.RecordController(localDatabase: gh<_i654.ILocalDatabase>()),

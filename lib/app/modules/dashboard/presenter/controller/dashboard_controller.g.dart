@@ -62,6 +62,119 @@ mixin _$DashboardController on DashboardControllerBase, Store {
         () => super.bestTimeByGroup,
         name: 'DashboardControllerBase.bestTimeByGroup',
       )).value;
+  Computed<SolveAnalytics>? _$analyticsComputed;
+
+  @override
+  SolveAnalytics get analytics =>
+      (_$analyticsComputed ??= Computed<SolveAnalytics>(
+        () => super.analytics,
+        name: 'DashboardControllerBase.analytics',
+      )).value;
+  Computed<int?>? _$currentAo5Computed;
+
+  @override
+  int? get currentAo5 => (_$currentAo5Computed ??= Computed<int?>(
+    () => super.currentAo5,
+    name: 'DashboardControllerBase.currentAo5',
+  )).value;
+  Computed<int?>? _$currentAo12Computed;
+
+  @override
+  int? get currentAo12 => (_$currentAo12Computed ??= Computed<int?>(
+    () => super.currentAo12,
+    name: 'DashboardControllerBase.currentAo12',
+  )).value;
+  Computed<double>? _$consistencyScoreComputed;
+
+  @override
+  double get consistencyScore =>
+      (_$consistencyScoreComputed ??= Computed<double>(
+        () => super.consistencyScore,
+        name: 'DashboardControllerBase.consistencyScore',
+      )).value;
+  Computed<double>? _$improvementRateComputed;
+
+  @override
+  double get improvementRate => (_$improvementRateComputed ??= Computed<double>(
+    () => super.improvementRate,
+    name: 'DashboardControllerBase.improvementRate',
+  )).value;
+  Computed<bool>? _$isImprovingComputed;
+
+  @override
+  bool get isImproving => (_$isImprovingComputed ??= Computed<bool>(
+    () => super.isImproving,
+    name: 'DashboardControllerBase.isImproving',
+  )).value;
+  Computed<TrendDirection>? _$overallTrendComputed;
+
+  @override
+  TrendDirection get overallTrend =>
+      (_$overallTrendComputed ??= Computed<TrendDirection>(
+        () => super.overallTrend,
+        name: 'DashboardControllerBase.overallTrend',
+      )).value;
+  Computed<String?>? _$bestPerformingCubeComputed;
+
+  @override
+  String? get bestPerformingCube =>
+      (_$bestPerformingCubeComputed ??= Computed<String?>(
+        () => super.bestPerformingCube,
+        name: 'DashboardControllerBase.bestPerformingCube',
+      )).value;
+  Computed<String?>? _$mostConsistentCubeComputed;
+
+  @override
+  String? get mostConsistentCube =>
+      (_$mostConsistentCubeComputed ??= Computed<String?>(
+        () => super.mostConsistentCube,
+        name: 'DashboardControllerBase.mostConsistentCube',
+      )).value;
+  Computed<int>? _$outliersCountComputed;
+
+  @override
+  int get outliersCount => (_$outliersCountComputed ??= Computed<int>(
+    () => super.outliersCount,
+    name: 'DashboardControllerBase.outliersCount',
+  )).value;
+  Computed<int?>? _$bestDayOfWeekComputed;
+
+  @override
+  int? get bestDayOfWeek => (_$bestDayOfWeekComputed ??= Computed<int?>(
+    () => super.bestDayOfWeek,
+    name: 'DashboardControllerBase.bestDayOfWeek',
+  )).value;
+  Computed<int?>? _$bestHourOfDayComputed;
+
+  @override
+  int? get bestHourOfDay => (_$bestHourOfDayComputed ??= Computed<int?>(
+    () => super.bestHourOfDay,
+    name: 'DashboardControllerBase.bestHourOfDay',
+  )).value;
+  Computed<List<String>>? _$intelligentInsightsComputed;
+
+  @override
+  List<String> get intelligentInsights =>
+      (_$intelligentInsightsComputed ??= Computed<List<String>>(
+        () => super.intelligentInsights,
+        name: 'DashboardControllerBase.intelligentInsights',
+      )).value;
+  Computed<List<CubeRecommendation>>? _$cubeRecommendationsComputed;
+
+  @override
+  List<CubeRecommendation> get cubeRecommendations =>
+      (_$cubeRecommendationsComputed ??= Computed<List<CubeRecommendation>>(
+        () => super.cubeRecommendations,
+        name: 'DashboardControllerBase.cubeRecommendations',
+      )).value;
+  Computed<PerformanceSummary>? _$performanceSummaryComputed;
+
+  @override
+  PerformanceSummary get performanceSummary =>
+      (_$performanceSummaryComputed ??= Computed<PerformanceSummary>(
+        () => super.performanceSummary,
+        name: 'DashboardControllerBase.performanceSummary',
+      )).value;
 
   late final _$allRecordsAtom = Atom(
     name: 'DashboardControllerBase.allRecords',
@@ -139,7 +252,22 @@ averageTime: ${averageTime},
 solvesByGroup: ${solvesByGroup},
 mostPracticedGroup: ${mostPracticedGroup},
 practiceRecommendations: ${practiceRecommendations},
-bestTimeByGroup: ${bestTimeByGroup}
+bestTimeByGroup: ${bestTimeByGroup},
+analytics: ${analytics},
+currentAo5: ${currentAo5},
+currentAo12: ${currentAo12},
+consistencyScore: ${consistencyScore},
+improvementRate: ${improvementRate},
+isImproving: ${isImproving},
+overallTrend: ${overallTrend},
+bestPerformingCube: ${bestPerformingCube},
+mostConsistentCube: ${mostConsistentCube},
+outliersCount: ${outliersCount},
+bestDayOfWeek: ${bestDayOfWeek},
+bestHourOfDay: ${bestHourOfDay},
+intelligentInsights: ${intelligentInsights},
+cubeRecommendations: ${cubeRecommendations},
+performanceSummary: ${performanceSummary}
     ''';
   }
 }

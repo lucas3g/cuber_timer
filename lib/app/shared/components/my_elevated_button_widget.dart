@@ -11,14 +11,14 @@ class MyElevatedButtonWidget extends StatefulWidget {
   final Color? backgroundColor;
 
   const MyElevatedButtonWidget({
-    Key? key,
+    super.key,
     required this.label,
     this.icon,
     required this.onPressed,
     this.height = 40,
     this.width,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   State<MyElevatedButtonWidget> createState() => _MyElevatedButtonWidgetState();
@@ -35,17 +35,13 @@ class _MyElevatedButtonWidgetState extends State<MyElevatedButtonWidget> {
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           backgroundColor:
-              widget.backgroundColor ?? context.myTheme.primaryContainer,
+              widget.backgroundColor ?? context.colorScheme.primaryContainer,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
         label: widget.label,
-        icon: widget.icon != null
-            ? Icon(
-                widget.icon,
-              )
-            : const SizedBox.shrink(),
+        icon: widget.icon != null ? Icon(widget.icon) : const SizedBox.shrink(),
       ),
     );
   }

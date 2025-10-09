@@ -11,7 +11,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: context.myTheme.surface,
+      backgroundColor: context.colorScheme.surface,
       titleTextStyle: context.textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.bold,
       ),
@@ -47,7 +47,7 @@ class AlertCongratsBeatRecordWidget extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

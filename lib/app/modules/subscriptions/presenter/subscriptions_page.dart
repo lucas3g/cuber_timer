@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
+import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +41,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
     _purchaseSubscription = purchaseService.stream.listen((state) {
       if (!mounted) return;
       if (state == PurchaseState.success) {
+        purchaseService.controller.add(PurchaseState.idle);
         _showSuccessDialog();
       }
     });
@@ -47,11 +50,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   void _showSuccessDialog() {
     if (!mounted) return;
 
+    final isAnnualPurchase = AppGlobal.instance.isAnnualPremium;
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: context.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         contentPadding: const EdgeInsets.all(32),
         content: Column(
@@ -60,13 +65,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: context.colorScheme.primaryContainer,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.check_circle_rounded,
                 size: 64,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                color: context.colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(height: 24),
@@ -75,7 +80,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: context.colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
             ),
@@ -85,7 +90,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: context.colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
             ),
@@ -94,7 +99,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
               translate('subscriptions_page.success_description'),
               style: TextStyle(
                 fontSize: 14,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                color: context.colorScheme.onSurface.withOpacity(0.7),
               ),
               textAlign: TextAlign.center,
             ),
@@ -104,15 +109,26 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                 if (Navigator.of(dialogContext).canPop()) {
                   Navigator.of(dialogContext).pop(); // Close dialog
                 }
-                if (mounted && Navigator.of(context).canPop()) {
-                  Navigator.of(context).pop(); // Close subscriptions page
+
+                if (!mounted) return;
+
+                // Se comprou plano anual, volta para a página principal e recarrega
+                if (isAnnualPurchase) {
+                  // Volta para a rota principal, recarregando a MainNavigatorPage
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    NamedRoutes.mainNavigator.route,
+                    (route) => false,
+                  );
+                } else {
+                  // Para outros planos, apenas fecha a página de assinaturas
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  }
                 }
               },
               style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                foregroundColor: Theme.of(
-                  context,
-                ).colorScheme.onPrimaryContainer,
+                backgroundColor: context.colorScheme.primaryContainer,
+                foregroundColor: context.colorScheme.onSurface,
                 minimumSize: const Size(double.infinity, 52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -135,7 +151,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.brightness == Brightness.dark;
     final isAnnual = AppGlobal.instance.isAnnualPremium;
     final isPremium = purchaseService.isPremium;
 
@@ -179,13 +195,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        color: context.colorScheme.primaryContainer,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.workspace_premium_rounded,
                         size: 80,
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: context.colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -194,7 +210,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: context.colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -247,7 +263,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   }
 
   Widget _buildUpgradeView(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.brightness == Brightness.dark;
     final currentPlan = AppGlobal.instance.plan;
 
     return SafeArea(
@@ -279,7 +295,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        color: context.colorScheme.primaryContainer,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -287,7 +303,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: context.colorScheme.onSurface,
                         ),
                       ),
                     ),
@@ -303,7 +319,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Theme.of(context).colorScheme.primaryContainer,
+                          context.colorScheme.primaryContainer,
                           Theme.of(
                             context,
                           ).colorScheme.primaryContainer.withOpacity(0.8),
@@ -327,7 +343,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                           children: [
                             Icon(
                               Icons.dashboard_rounded,
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: context.colorScheme.onSurface,
                               size: 32,
                             ),
                             const SizedBox(width: 12),
@@ -379,7 +395,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                             children: [
                               Icon(
                                 Icons.workspace_premium_rounded,
-                                color: Theme.of(context).colorScheme.onSurface,
+                                color: context.colorScheme.onSurface,
                                 size: 18,
                               ),
                               const SizedBox(width: 8),
@@ -414,7 +430,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           height: 1.2,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: context.colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -465,7 +481,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
               color: isDark ? Colors.black : Colors.white,
               border: Border(
                 top: BorderSide(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+                  color: context.colorScheme.outline.withOpacity(0.1),
                   width: 1,
                 ),
               ),
@@ -473,8 +489,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
             child: FilledButton(
               onPressed: () => purchaseService.buy(SubscriptionPlan.annual),
               style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                backgroundColor: context.colorScheme.primaryContainer,
+                foregroundColor: context.colorScheme.onSurface,
                 minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -513,7 +529,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   }
 
   Widget _buildSubscriptionView(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.brightness == Brightness.dark;
 
     return SafeArea(
       child: Column(
@@ -544,7 +560,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Theme.of(context).colorScheme.primaryContainer,
+                          context.colorScheme.primaryContainer,
                           Theme.of(
                             context,
                           ).colorScheme.primaryContainer.withOpacity(0.8),
@@ -568,7 +584,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                           children: [
                             Icon(
                               Icons.dashboard_rounded,
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: context.colorScheme.onSurface,
                               size: 32,
                             ),
                             const SizedBox(width: 12),
@@ -620,7 +636,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                             children: [
                               Icon(
                                 Icons.workspace_premium_rounded,
-                                color: Theme.of(context).colorScheme.onSurface,
+                                color: context.colorScheme.onSurface,
                                 size: 18,
                               ),
                               const SizedBox(width: 8),
@@ -655,7 +671,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           height: 1.2,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: context.colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -743,7 +759,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
               color: isDark ? Colors.black : Colors.white,
               border: Border(
                 top: BorderSide(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+                  color: context.colorScheme.outline.withOpacity(0.1),
                   width: 1,
                 ),
               ),
@@ -751,8 +767,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
             child: FilledButton(
               onPressed: () => purchaseService.buy(selectedPlan),
               style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                backgroundColor: context.colorScheme.primaryContainer,
+                foregroundColor: context.colorScheme.onSurface,
                 minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -783,14 +799,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: context.colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(
-            icon,
-            size: 24,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+          child: Icon(icon, size: 24, color: context.colorScheme.onSurface),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -799,7 +811,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: context.colorScheme.onSurface,
             ),
           ),
         ),
@@ -819,7 +831,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
     final price = purchaseService.priceFor(plan);
     final displayPrice = price;
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = context.brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () {
@@ -832,14 +844,14 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isSelected
-              ? Theme.of(context).colorScheme.primaryContainer
+              ? context.colorScheme.primaryContainer
               : (isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF5F5F5)),
           borderRadius: BorderRadius.circular(16),
           border: isSelected
               ? null
               : (hasDashboard
                     ? Border.all(
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        color: context.colorScheme.primaryContainer,
                         width: 2,
                       )
                     : Border.all(
@@ -889,7 +901,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: isSelected
-                        ? Theme.of(context).colorScheme.onSurface
+                        ? context.colorScheme.onSurface
                         : Colors.white,
                   ),
                 ),
@@ -910,8 +922,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: isSelected
-                                    ? Theme.of(context).colorScheme.onSurface
-                                    : Theme.of(context).colorScheme.onSurface,
+                                    ? context.colorScheme.onSurface
+                                    : context.colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -929,8 +941,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: isSelected
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.onSurface,
+                            ? context.colorScheme.onSurface
+                            : context.colorScheme.onSurface,
                       ),
                     ),
                     if (saveLabel != null) ...[
@@ -976,8 +988,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                       Icons.dashboard_rounded,
                       size: 16,
                       color: isSelected
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.onSurface,
+                          ? context.colorScheme.onSurface
+                          : context.colorScheme.onSurface,
                     ),
                     const SizedBox(width: 6),
                     Flexible(
@@ -987,8 +999,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: isSelected
-                              ? Theme.of(context).colorScheme.onSurface
-                              : Theme.of(context).colorScheme.onSurface,
+                              ? context.colorScheme.onSurface
+                              : context.colorScheme.onSurface,
                         ),
                       ),
                     ),

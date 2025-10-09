@@ -37,7 +37,7 @@ class InsightCardWidget extends StatelessWidget {
                 child: Text(
                   title,
                   style: context.textTheme.bodyMedium?.copyWith(
-                    color: context.myTheme.onSurface.withOpacity(0.7),
+                    color: context.colorScheme.onSurface.withOpacity(0.7),
                   ),
                 ),
               ),
@@ -60,7 +60,7 @@ class InsightCardWidget extends StatelessWidget {
             Text(
               subtitle!,
               style: context.textTheme.bodySmall?.copyWith(
-                color: context.myTheme.onSurface.withOpacity(0.5),
+                color: context.colorScheme.onSurface.withOpacity(0.5),
               ),
             ),
           ],

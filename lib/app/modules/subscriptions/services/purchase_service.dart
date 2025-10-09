@@ -12,7 +12,7 @@ import 'package:injectable/injectable.dart';
 class PurchaseService extends ChangeNotifier {
   final InAppPurchase _iap = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
-  final StreamController<PurchaseState> _controller =
+  final StreamController<PurchaseState> controller =
       StreamController<PurchaseState>.broadcast();
 
   final Map<SubscriptionPlan, String> _prices = {};
@@ -31,7 +31,7 @@ class PurchaseService extends ChangeNotifier {
 
   static String idForPlan(SubscriptionPlan plan) => _productIds[plan]!;
 
-  Stream<PurchaseState> get stream => _controller.stream;
+  Stream<PurchaseState> get stream => controller.stream;
 
   String priceFor(SubscriptionPlan plan) => _prices[plan] ?? '';
 
@@ -49,7 +49,7 @@ class PurchaseService extends ChangeNotifier {
     _subscription = _iap.purchaseStream.listen(
       _onPurchaseUpdated,
       onError: (error) {
-        _controller.add(PurchaseState.error);
+        controller.add(PurchaseState.error);
       },
     );
     await _iap.restorePurchases();
@@ -58,27 +58,34 @@ class PurchaseService extends ChangeNotifier {
 
   void _onPurchaseUpdated(List<PurchaseDetails> purchases) {
     for (final purchase in purchases) {
-      if (purchase.status == PurchaseStatus.purchased ||
-          purchase.status == PurchaseStatus.restored) {
+      final isNewPurchase = purchase.status == PurchaseStatus.purchased;
+      final isRestored = purchase.status == PurchaseStatus.restored;
+
+      if (isNewPurchase || isRestored) {
+        SubscriptionPlan? plan;
+
         if (purchase.productID == idForPlan(SubscriptionPlan.weekly)) {
-          AppGlobal.instance.setPlan(SubscriptionPlan.weekly);
-          notifyListeners();
-          _controller.add(PurchaseState.success);
+          plan = SubscriptionPlan.weekly;
         } else if (purchase.productID == idForPlan(SubscriptionPlan.monthly)) {
-          AppGlobal.instance.setPlan(SubscriptionPlan.monthly);
-          notifyListeners();
-          _controller.add(PurchaseState.success);
+          plan = SubscriptionPlan.monthly;
         } else if (purchase.productID == idForPlan(SubscriptionPlan.annual)) {
-          AppGlobal.instance.setPlan(SubscriptionPlan.annual);
+          plan = SubscriptionPlan.annual;
+        }
+
+        if (plan != null) {
+          AppGlobal.instance.setPlan(plan);
           notifyListeners();
-          _controller.add(PurchaseState.success);
+
+          // Só emite success para compras novas, restored para compras restauradas
+          controller.add(isNewPurchase ? PurchaseState.success : PurchaseState.restored);
         }
       }
+
       if (purchase.status == PurchaseStatus.error) {
-        _controller.add(PurchaseState.error);
+        controller.add(PurchaseState.error);
       }
       if (purchase.status == PurchaseStatus.canceled) {
-        _controller.add(PurchaseState.canceled);
+        controller.add(PurchaseState.canceled);
       }
     }
   }
@@ -102,11 +109,11 @@ class PurchaseService extends ChangeNotifier {
 
   Future<void> buy(SubscriptionPlan plan) async {
     try {
-      _controller.add(PurchaseState.loading);
+      controller.add(PurchaseState.loading);
       final id = idForPlan(plan);
       final response = await _iap.queryProductDetails({id});
       if (response.productDetails.isEmpty) {
-        _controller.add(PurchaseState.error);
+        controller.add(PurchaseState.error);
         return;
       }
       final param = PurchaseParam(
@@ -114,7 +121,7 @@ class PurchaseService extends ChangeNotifier {
       );
       await _iap.buyNonConsumable(purchaseParam: param);
     } catch (_) {
-      _controller.add(PurchaseState.error);
+      controller.add(PurchaseState.error);
     }
   }
 
@@ -123,7 +130,7 @@ class PurchaseService extends ChangeNotifier {
   @override
   void dispose() {
     _subscription.cancel();
-    _controller.close();
+    controller.close();
 
     super.dispose();
   }

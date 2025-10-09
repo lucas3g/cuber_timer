@@ -332,7 +332,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                   border: Border.symmetric(
                                     horizontal: BorderSide(
-                                      color: context.myTheme.onSurface,
+                                      color: context.colorScheme.onSurface,
                                     ),
                                   ),
                                 ),
@@ -409,9 +409,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           controller: _tabController,
           isScrollable: true,
           labelColor: Colors.white,
-          unselectedLabelColor: context.myTheme.onSurface,
+          unselectedLabelColor: context.colorScheme.onSurface,
           tabAlignment: TabAlignment.start,
-          indicatorColor: context.myTheme.primary,
+          indicatorColor: context.colorScheme.primary,
           tabs: sortedGroupedRecords.keys
               .map(
                 (group) => Tab(
@@ -513,12 +513,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget _buildAverageSection() {
     return Column(
       children: [
-        Divider(color: context.myTheme.onSurface),
+        Divider(color: context.colorScheme.onSurface),
         Center(
           child: Container(
             decoration: BoxDecoration(
               border: Border.symmetric(
-                horizontal: BorderSide(color: context.myTheme.onSurface),
+                horizontal: BorderSide(color: context.colorScheme.onSurface),
               ),
             ),
             child: Text(
@@ -550,7 +550,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
         ),
-        Divider(color: context.myTheme.onSurface),
+        Divider(color: context.colorScheme.onSurface),
       ],
     );
   }

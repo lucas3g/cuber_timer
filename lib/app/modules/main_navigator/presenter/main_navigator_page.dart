@@ -1,6 +1,6 @@
 import 'package:cuber_timer/app/core/constants/constants.dart';
-import 'package:cuber_timer/app/core/data/clients/shared_preferences/local_storage_interface.dart';
 import 'package:cuber_timer/app/core/data/clients/shared_preferences/adapters/shared_params.dart';
+import 'package:cuber_timer/app/core/data/clients/shared_preferences/local_storage_interface.dart';
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/dashboard/presenter/controller/dashboard_controller.dart';
@@ -73,10 +73,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
       );
 
       await _localStorage.setData(
-        params: SharedParams(
-          key: migrationKey,
-          value: true,
-        ),
+        params: SharedParams(key: migrationKey, value: true),
       );
     }
   }
@@ -97,9 +94,11 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
                   await dashboardController.loadAllRecords();
                 }
               },
-              backgroundColor: context.myTheme.surface,
-              selectedItemColor: context.myTheme.primary,
-              unselectedItemColor: context.myTheme.onSurface.withOpacity(0.6),
+              backgroundColor: context.colorScheme.surface,
+              selectedItemColor: context.colorScheme.primary,
+              unselectedItemColor: context.colorScheme.onSurface.withOpacity(
+                0.6,
+              ),
               type: BottomNavigationBarType.fixed,
               elevation: 8,
               items: _navigationItems,

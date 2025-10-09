@@ -6,6 +6,9 @@ import '../../../../core/data/clients/local_database/helpers/tables.dart';
 import '../../../../core/data/clients/local_database/local_database.dart';
 import '../../../../core/data/clients/local_database/params/local_database_params.dart';
 import '../../../../shared/translate/translate.dart';
+import '../../domain/entities/solve_analytics.dart';
+import '../../domain/services/analytics_service.dart';
+import '../../domain/services/insights_generator.dart';
 
 part 'dashboard_controller.g.dart';
 
@@ -14,8 +17,14 @@ class DashboardController = DashboardControllerBase with _$DashboardController;
 
 abstract class DashboardControllerBase with Store {
   final ILocalDatabase localDatabase;
+  final AnalyticsService analyticsService;
+  final InsightsGenerator insightsGenerator;
 
-  DashboardControllerBase({required this.localDatabase});
+  DashboardControllerBase({
+    required this.localDatabase,
+    required this.analyticsService,
+    required this.insightsGenerator,
+  });
 
   @observable
   List<Record> allRecords = [];
@@ -29,6 +38,8 @@ abstract class DashboardControllerBase with Store {
   @action
   Future<void> loadAllRecords() async {
     try {
+      await Future.delayed(const Duration(milliseconds: 300));
+
       isLoading = true;
       errorMessage = null;
 
@@ -50,7 +61,9 @@ abstract class DashboardControllerBase with Store {
   int get bestTimeOverall {
     if (allRecords.isEmpty) return -1;
     return allRecords
-        .reduce((value, element) => value.timer < element.timer ? value : element)
+        .reduce(
+          (value, element) => value.timer < element.timer ? value : element,
+        )
         .timer;
   }
 
@@ -84,7 +97,9 @@ abstract class DashboardControllerBase with Store {
     final recommendations = <String>[];
 
     if (totalSolves == 0) {
-      recommendations.add(translate('dashboard.recommendation_start_practicing'));
+      recommendations.add(
+        translate('dashboard.recommendation_start_practicing'),
+      );
       return recommendations;
     }
 
@@ -94,24 +109,33 @@ abstract class DashboardControllerBase with Store {
 
     if (sortedGroups.length > 1) {
       final leastPracticed = sortedGroups.first.key;
-      recommendations.add('${translate('dashboard.recommendation_practice_more')} $leastPracticed');
+      recommendations.add(
+        '${translate('dashboard.recommendation_practice_more')} $leastPracticed',
+      );
     }
 
     // Verificar se há progresso recente
     if (allRecords.length >= 5) {
       final recentRecords = allRecords.take(5).toList();
-      final recentAvg = recentRecords.map((e) => e.timer).reduce((a, b) => a + b) ~/ 5;
+      final recentAvg =
+          recentRecords.map((e) => e.timer).reduce((a, b) => a + b) ~/ 5;
 
       if (recentAvg < averageTime) {
-        recommendations.add(translate('dashboard.recommendation_great_progress'));
+        recommendations.add(
+          translate('dashboard.recommendation_great_progress'),
+        );
       } else {
-        recommendations.add(translate('dashboard.recommendation_keep_practicing'));
+        recommendations.add(
+          translate('dashboard.recommendation_keep_practicing'),
+        );
       }
     }
 
     // Adicionar dica sobre consistência
     if (mostPracticedGroup.isNotEmpty) {
-      recommendations.add('${translate('dashboard.recommendation_doing_great')} $mostPracticedGroup!');
+      recommendations.add(
+        '${translate('dashboard.recommendation_doing_great')} $mostPracticedGroup!',
+      );
     }
 
     return recommendations;
@@ -132,4 +156,69 @@ abstract class DashboardControllerBase with Store {
 
     return bestTimes;
   }
+
+  /// Comprehensive analytics computed from all records
+  @computed
+  SolveAnalytics get analytics {
+    return analyticsService.processRecords(allRecords);
+  }
+
+  /// Current Average of 5 (Ao5)
+  @computed
+  int? get currentAo5 => analytics.currentAo5;
+
+  /// Current Average of 12 (Ao12)
+  @computed
+  int? get currentAo12 => analytics.currentAo12;
+
+  /// Overall consistency score (0-1, higher is better)
+  @computed
+  double get consistencyScore => analytics.consistencyScoreOverall;
+
+  /// Improvement rate as percentage per week
+  @computed
+  double get improvementRate => analytics.improvementRate;
+
+  /// Whether the user is improving (times getting faster)
+  @computed
+  bool get isImproving => analytics.isImproving;
+
+  /// Trend direction (improving/plateauing/declining)
+  @computed
+  TrendDirection get overallTrend => analytics.overallTrend;
+
+  /// Best performing cube model (by median time)
+  @computed
+  String? get bestPerformingCube => analytics.bestPerformingCube;
+
+  /// Most consistent cube model
+  @computed
+  String? get mostConsistentCube => analytics.mostConsistentCube;
+
+  /// Number of detected outliers
+  @computed
+  int get outliersCount => analytics.outliers.length;
+
+  /// Best day of week for performance (1=Monday, 7=Sunday)
+  @computed
+  int? get bestDayOfWeek => analytics.bestDayOfWeek;
+
+  /// Best hour of day for performance (0-23)
+  @computed
+  int? get bestHourOfDay => analytics.bestHourOfDay;
+
+  /// Intelligent insights generated from analytics
+  @computed
+  List<String> get intelligentInsights =>
+      insightsGenerator.generateInsights(analytics);
+
+  /// Cube-specific recommendations
+  @computed
+  List<CubeRecommendation> get cubeRecommendations =>
+      insightsGenerator.generateCubeRecommendations(analytics);
+
+  /// Performance summary with best and worst performers
+  @computed
+  PerformanceSummary get performanceSummary =>
+      insightsGenerator.generatePerformanceSummary(analytics);
 }

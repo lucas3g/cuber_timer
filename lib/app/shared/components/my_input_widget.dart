@@ -30,7 +30,7 @@ class MyInputWidget extends StatelessWidget {
   final Color? color;
 
   const MyInputWidget({
-    Key? key,
+    super.key,
     this.focusNode,
     this.keyboardType = TextInputType.text,
     this.hintText,
@@ -55,12 +55,12 @@ class MyInputWidget extends StatelessWidget {
     this.value,
     this.controller,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     Color returnBorderColor() {
-      return context.myTheme.onSurface;
+      return context.colorScheme.onSurface;
     }
 
     return TextFormField(
@@ -84,21 +84,22 @@ class MyInputWidget extends StatelessWidget {
       inputFormatters: inputFormaters,
       onFieldSubmitted: onFieldSubmitted,
       maxLength: maxLength,
-      style: TextStyle(color: color ?? context.myTheme.onSurface),
+      style: TextStyle(color: color ?? context.colorScheme.onSurface),
       decoration: InputDecoration(
         errorStyle: context.textTheme.bodySmall?.copyWith(
-          color: color ?? context.myTheme.onSurface,
+          color: color ?? context.colorScheme.onSurface,
         ),
         counterText: '',
         hintText: hintText,
         hintStyle: context.textTheme.bodyLarge?.copyWith(
-          color: color?.withOpacity(0.7) ??
-              context.myTheme.onSurface.withOpacity(0.7),
+          color:
+              color?.withOpacity(0.7) ??
+              context.colorScheme.onSurface.withOpacity(0.7),
         ),
         label: Text(
           label,
           style: context.textTheme.bodyLarge?.copyWith(
-            color: color ?? context.myTheme.onSurface,
+            color: color ?? context.colorScheme.onSurface,
           ),
         ),
         suffixIcon: suffixIcon,
@@ -108,21 +109,15 @@ class MyInputWidget extends StatelessWidget {
         fillColor: Colors.transparent,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: color ?? returnBorderColor(),
-          ),
+          borderSide: BorderSide(color: color ?? returnBorderColor()),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: color ?? returnBorderColor(),
-          ),
+          borderSide: BorderSide(color: color ?? returnBorderColor()),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: color ?? returnBorderColor(),
-          ),
+          borderSide: BorderSide(color: color ?? returnBorderColor()),
         ),
       ),
     );

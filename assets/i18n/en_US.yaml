@@ -108,6 +108,111 @@ dashboard:
   recommendation_keep_practicing: Keep practicing to improve your times
   recommendation_doing_great: You're doing great with
 
+  # Advanced Metrics
+  ao5: Ao5
+  ao12: Ao12
+  median_time: Median Time
+  consistency: Consistency
+  std_deviation: Std Dev
+  improvement_rate: Improvement
+  worst_time: Worst Time
+  outliers: Outliers
+
+  # Chart Titles
+  time_series_title: Solve Time Trend
+  time_series_subtitle: Last {count} solves with rolling averages
+  boxplot_title: Time Distribution by Cube
+  boxplot_subtitle: Compare performance across models
+  bar_chart_title: Average Time Comparison
+  bar_chart_subtitle: Ranked from fastest to slowest
+  heatmap_title: Performance Heatmap
+  heatmap_subtitle: Best times by day and hour
+  scatter_title: All Solves Overview
+  scatter_subtitle: Outliers highlighted in red
+
+  # Performance Categories
+  category_excellent: Excellent
+  category_good: Good
+  category_average: Average
+  category_needs_improvement: Needs Improvement
+
+  # Trends
+  trend_improving: Improving
+  trend_plateauing: Stable
+  trend_declining: Declining
+  improving_badge: "{percent}% faster"
+  declining_badge: "{percent}% slower"
+
+  # Days of Week
+  day_monday: Monday
+  day_tuesday: Tuesday
+  day_wednesday: Wednesday
+  day_thursday: Thursday
+  day_friday: Friday
+  day_saturday: Saturday
+  day_sunday: Sunday
+
+  # Insights
+  best_model_insight: "You perform best with {model} (median: {time})"
+  inconsistent_model: "{model} shows inconsistency (std: {std})"
+  time_pattern: "You improve {percent}% faster during {period} sessions"
+  practice_focus: "Focus on practicing {model} to improve faster"
+  best_day_insight: "Your best day is {day}"
+  best_hour_insight: "You perform best at {hour}:00"
+  outlier_detected: "{count} outliers detected - check for distractions"
+  consistency_excellent: "Excellent consistency! Keep it up!"
+  consistency_needs_work: "Work on consistency - try controlled solves"
+  improvement_trend: "You've improved {percent}% over the last {days} days"
+  no_improvement: "Times are plateauing - try new practice techniques"
+  most_consistent_cube: "Most consistent: {model} ({score}% consistency)"
+
+  # Model Comparison
+  best_performers_title: "🏆 Best Performers"
+  needs_practice_title: "⚠️ Needs Practice"
+  model_comparison_title: Model Comparison
+  percent_from_best: "{percent}% from best"
+  suggestion_check_tension: "Suggestion: Check tension, add lubricant"
+  suggestion_practice_more: "Practice more to build muscle memory"
+  suggestion_technique: "Review solve technique for this model"
+
+  # Sections
+  advanced_metrics_title: Advanced Metrics
+  visualizations_title: Performance Visualizations
+  insights_section_title: Intelligent Insights
+  model_analysis_title: Cube Model Analysis
+
+  # KPI Cards
+  kpi_ao5_label: Current Ao5
+  kpi_ao12_label: Current Ao12
+  kpi_consistency_label: Consistency Score
+  kpi_improvement_label: Weekly Improvement
+  kpi_best_cube_label: Best Cube
+  kpi_outliers_label: Outliers Detected
+
+  # Empty States
+  not_enough_data_ao5: Need 5+ solves
+  not_enough_data_ao12: Need 12+ solves
+  not_enough_data_trends: Need 20+ solves for trends
+  no_outliers: No outliers detected
+
+  # Chart Labels
+  raw_times: Raw Times
+  rolling_ao5: Rolling Ao5
+  rolling_ao12: Rolling Ao12
+  time_seconds: Time (seconds)
+  solve_number: Solve Number
+  cube_model: Cube Model
+  hour_of_day: Hour of Day
+
+  # Statistics
+  median: Median
+  mean: Average
+  min: Best
+  max: Worst
+  quartile_1: Q1
+  quartile_3: Q3
+  standard_deviation: Standard Deviation
+
 database_migration:
   title: We Apologize! 😔
   message: Dear user,\n\nUnfortunately, due to an important database update in the application, your previous solves have been lost. We deeply regret this.\n\nThis change was necessary to significantly improve the app's performance and stability, bringing you a much better experience.\n\nPlease don't stop using the app! We are working hard to provide the best possible experience for you.\n\nWe greatly appreciate your understanding and continued support! ❤️

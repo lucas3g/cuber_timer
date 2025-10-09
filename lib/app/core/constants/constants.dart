@@ -21,8 +21,9 @@ const bannerdIdListScramblesIOS = 'ca-app-pub-1898798427054986/4127856736';
 const double kPadding = 20;
 
 extension ContextExtensions on BuildContext {
-  ColorScheme get myTheme => Theme.of(this).colorScheme;
+  ColorScheme get colorScheme => Theme.of(this).colorScheme;
   TextTheme get textTheme => Theme.of(this).textTheme;
+  Brightness get brightness => Theme.of(this).brightness;
 
   double get screenHeight => MediaQuery.of(this).size.height;
   double get screenWidth => MediaQuery.of(this).size.width;
@@ -38,8 +39,8 @@ extension ContextExtensions on BuildContext {
           (Platform.isWindows
               ? 75
               : Platform.isIOS
-                  ? 50
-                  : 70),
+              ? 50
+              : 70),
     );
   }
 }

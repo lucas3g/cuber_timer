@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/shared/translate/translate.dart';
+import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class GroupProgressWidget extends StatelessWidget {
@@ -25,9 +25,11 @@ class GroupProgressWidget extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: context.myTheme.surface,
+        color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: context.myTheme.onSurface.withOpacity(0.2)),
+        border: Border.all(
+          color: context.colorScheme.onSurface.withOpacity(0.2),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +46,7 @@ class GroupProgressWidget extends StatelessWidget {
               Text(
                 '$solveCount ${translate('dashboard.solves_count')}',
                 style: context.textTheme.bodySmall?.copyWith(
-                  color: context.myTheme.onSurface.withOpacity(0.6),
+                  color: context.colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
             ],
@@ -54,9 +56,9 @@ class GroupProgressWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
-              backgroundColor: context.myTheme.onSurface.withOpacity(0.1),
+              backgroundColor: context.colorScheme.onSurface.withOpacity(0.1),
               valueColor: AlwaysStoppedAnimation<Color>(
-                context.myTheme.primary,
+                context.colorScheme.primary,
               ),
               minHeight: 8,
             ),
@@ -68,7 +70,7 @@ class GroupProgressWidget extends StatelessWidget {
               Text(
                 translate('dashboard.best_time_label'),
                 style: context.textTheme.bodySmall?.copyWith(
-                  color: context.myTheme.onSurface.withOpacity(0.6),
+                  color: context.colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
               Text(

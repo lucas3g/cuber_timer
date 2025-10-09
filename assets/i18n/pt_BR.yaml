@@ -109,6 +109,111 @@ dashboard:
   recommendation_keep_practicing: Continue praticando para melhorar seus tempos
   recommendation_doing_great: Você está indo muito bem com
 
+  # Métricas Avançadas
+  ao5: Ao5
+  ao12: Ao12
+  median_time: Tempo Mediano
+  consistency: Consistência
+  std_deviation: Desvio Padrão
+  improvement_rate: Melhoria
+  worst_time: Pior Tempo
+  outliers: Outliers
+
+  # Títulos dos Gráficos
+  time_series_title: Tendência de Tempos
+  time_series_subtitle: Últimos {count} solves com médias móveis
+  boxplot_title: Distribuição de Tempos por Cubo
+  boxplot_subtitle: Compare o desempenho entre modelos
+  bar_chart_title: Comparação de Tempo Médio
+  bar_chart_subtitle: Classificado do mais rápido ao mais lento
+  heatmap_title: Mapa de Calor de Desempenho
+  heatmap_subtitle: Melhores tempos por dia e hora
+  scatter_title: Visão Geral de Todos os Solves
+  scatter_subtitle: Outliers destacados em vermelho
+
+  # Categorias de Desempenho
+  category_excellent: Excelente
+  category_good: Bom
+  category_average: Médio
+  category_needs_improvement: Precisa Melhorar
+
+  # Tendências
+  trend_improving: Melhorando
+  trend_plateauing: Estável
+  trend_declining: Declinando
+  improving_badge: "{percent}% mais rápido"
+  declining_badge: "{percent}% mais lento"
+
+  # Dias da Semana
+  day_monday: Segunda-feira
+  day_tuesday: Terça-feira
+  day_wednesday: Quarta-feira
+  day_thursday: Quinta-feira
+  day_friday: Sexta-feira
+  day_saturday: Sábado
+  day_sunday: Domingo
+
+  # Insights
+  best_model_insight: "Você performa melhor com {model} (mediana: {time})"
+  inconsistent_model: "{model} mostra inconsistência (desvio: {std})"
+  time_pattern: "Você melhora {percent}% mais rápido durante sessões de {period}"
+  practice_focus: "Foque em praticar {model} para melhorar mais rápido"
+  best_day_insight: "Seu melhor dia é {day}"
+  best_hour_insight: "Você performa melhor às {hour}:00"
+  outlier_detected: "{count} outliers detectados - verifique distrações"
+  consistency_excellent: "Consistência excelente! Continue assim!"
+  consistency_needs_work: "Trabalhe na consistência - tente solves controlados"
+  improvement_trend: "Você melhorou {percent}% nos últimos {days} dias"
+  no_improvement: "Tempos estão estagnados - tente novas técnicas de prática"
+  most_consistent_cube: "Mais consistente: {model} ({score}% de consistência)"
+
+  # Comparação de Modelos
+  best_performers_title: "🏆 Melhores Desempenhos"
+  needs_practice_title: "⚠️ Precisa Praticar"
+  model_comparison_title: Comparação de Modelos
+  percent_from_best: "{percent}% do melhor"
+  suggestion_check_tension: "Sugestão: Verifique a tensão, adicione lubrificante"
+  suggestion_practice_more: "Pratique mais para desenvolver memória muscular"
+  suggestion_technique: "Revise a técnica de resolução para este modelo"
+
+  # Seções
+  advanced_metrics_title: Métricas Avançadas
+  visualizations_title: Visualizações de Desempenho
+  insights_section_title: Insights Inteligentes
+  model_analysis_title: Análise de Modelos de Cubo
+
+  # Cards KPI
+  kpi_ao5_label: Ao5 Atual
+  kpi_ao12_label: Ao12 Atual
+  kpi_consistency_label: Pontuação de Consistência
+  kpi_improvement_label: Melhoria Semanal
+  kpi_best_cube_label: Melhor Cubo
+  kpi_outliers_label: Outliers Detectados
+
+  # Estados Vazios
+  not_enough_data_ao5: Precisa de 5+ solves
+  not_enough_data_ao12: Precisa de 12+ solves
+  not_enough_data_trends: Precisa de 20+ solves para tendências
+  no_outliers: Nenhum outlier detectado
+
+  # Rótulos de Gráficos
+  raw_times: Tempos Brutos
+  rolling_ao5: Ao5 Móvel
+  rolling_ao12: Ao12 Móvel
+  time_seconds: Tempo (segundos)
+  solve_number: Número do Solve
+  cube_model: Modelo do Cubo
+  hour_of_day: Hora do Dia
+
+  # Estatísticas
+  median: Mediana
+  mean: Média
+  min: Melhor
+  max: Pior
+  quartile_1: Q1
+  quartile_3: Q3
+  standard_deviation: Desvio Padrão
+
 database_migration:
   title: Pedimos Desculpas! 😔
   message: Prezado usuário,\n\nInfelizmente, devido a uma importante atualização no banco de dados do aplicativo, seus solves anteriores foram perdidos. Lamentamos profundamente por isso.\n\nEsta mudança foi necessária para melhorar significativamente a performance e estabilidade do app, trazendo uma experiência muito melhor para você.\n\nPor favor, não deixe de usar o aplicativo! Estamos trabalhando arduamente para oferecer a melhor experiência possível.\n\nAgradecemos imensamente pela sua compreensão e continuidade conosco! ❤️

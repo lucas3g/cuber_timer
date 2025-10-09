@@ -17,17 +17,17 @@ class RecommendationCardWidget extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: context.myTheme.primary.withOpacity(0.1),
+        color: context.colorScheme.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: context.myTheme.primary.withOpacity(0.3),
+          color: context.colorScheme.primary.withOpacity(0.3),
         ),
       ),
       child: Row(
         children: [
           Icon(
             icon,
-            color: context.myTheme.primary,
+            color: context.colorScheme.primary,
             size: 20,
           ),
           const SizedBox(width: 12),

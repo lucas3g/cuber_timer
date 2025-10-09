@@ -43,14 +43,12 @@ class _DatabaseMigrationDialogState extends State<DatabaseMigrationDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: context.myTheme.surface,
+          color: context.colorScheme.surface,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -59,7 +57,7 @@ class _DatabaseMigrationDialogState extends State<DatabaseMigrationDialog> {
               translate('database_migration.title'),
               style: context.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: context.myTheme.error,
+                color: context.colorScheme.error,
               ),
               textAlign: TextAlign.center,
             ),
@@ -70,7 +68,7 @@ class _DatabaseMigrationDialogState extends State<DatabaseMigrationDialog> {
                 child: Text(
                   translate('database_migration.message'),
                   style: context.textTheme.bodyMedium?.copyWith(
-                    color: context.myTheme.onSurface,
+                    color: context.colorScheme.onSurface,
                     height: 1.5,
                   ),
                   textAlign: TextAlign.justify,
@@ -86,9 +84,9 @@ class _DatabaseMigrationDialogState extends State<DatabaseMigrationDialog> {
                     : null,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: context.myTheme.primary,
-                  disabledBackgroundColor:
-                      context.myTheme.onSurface.withOpacity(0.3),
+                  backgroundColor: context.colorScheme.primary,
+                  disabledBackgroundColor: context.colorScheme.onSurface
+                      .withOpacity(0.3),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -100,8 +98,8 @@ class _DatabaseMigrationDialogState extends State<DatabaseMigrationDialog> {
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: _secondsRemaining == 0
-                        ? context.myTheme.onPrimary
-                        : context.myTheme.onSurface.withOpacity(0.5),
+                        ? context.colorScheme.onPrimary
+                        : context.colorScheme.onSurface.withOpacity(0.5),
                   ),
                 ),
               ),
