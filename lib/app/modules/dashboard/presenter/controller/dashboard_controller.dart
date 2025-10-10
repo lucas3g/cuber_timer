@@ -38,9 +38,8 @@ abstract class DashboardControllerBase with Store {
   @action
   Future<void> loadAllRecords() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 300));
-
       isLoading = true;
+      await Future.delayed(const Duration(milliseconds: 600));
       errorMessage = null;
 
       final params = GetDataParams(table: Tables.records);

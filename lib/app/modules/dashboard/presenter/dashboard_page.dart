@@ -34,7 +34,10 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
 
-    dashboardController.loadAllRecords();
+    // Load data asynchronously without blocking the UI
+    Future.microtask(() async {
+      await dashboardController.loadAllRecords();
+    });
   }
 
   @override
@@ -46,16 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Observer(
             builder: (context) {
               if (dashboardController.isLoading) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const MyCircularProgressWidget(),
-                      const SizedBox(height: 16),
-                      Text(translate('dashboard.loading')),
-                    ],
-                  ),
-                );
+                return const Center(child: MyCircularProgressWidget());
               }
 
               if (dashboardController.errorMessage != null) {
