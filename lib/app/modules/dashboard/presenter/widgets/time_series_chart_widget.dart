@@ -46,7 +46,7 @@ class TimeSeriesChartWidget extends StatelessWidget {
                 color: theme.textTheme.bodySmall?.color,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             _buildLegend(theme),
             const SizedBox(height: 16),
             SizedBox(height: 300, child: _buildChart(theme)),
@@ -72,8 +72,7 @@ class TimeSeriesChartWidget extends StatelessWidget {
   }
 
   Widget _buildLegend(ThemeData theme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
       children: [
         _buildLegendItem(
           color: Colors.grey.shade600,

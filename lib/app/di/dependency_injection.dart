@@ -90,31 +90,15 @@ Future<void> _insertDebugRecords() async {
         final record = RecordsCompanion(
           timer: Value(time),
           group: Value(cubeType),
-          createdAt: Value(DateTime.now().subtract(
-            Duration(minutes: sampleTimers.indexOf(time)),
-          )),
+          createdAt: Value(
+            DateTime.now().subtract(
+              Duration(minutes: sampleTimers.indexOf(time)),
+            ),
+          ),
         );
 
         await db.insertRecord(record);
       }
-    }
-  }
-
-  // Também criar alguns registros com o grupo "Old Records" para compatibilidade
-  final oldRecords = await db.getRecordsByGroup('Old Records');
-  if (oldRecords.isEmpty) {
-    const sampleTimers = <int>[1000, 2000, 3000, 4000, 5000];
-
-    for (final time in sampleTimers) {
-      final record = RecordsCompanion(
-        timer: Value(time),
-        group: const Value('Old Records'),
-        createdAt: Value(DateTime.now().subtract(
-          Duration(hours: sampleTimers.indexOf(time)),
-        )),
-      );
-
-      await db.insertRecord(record);
     }
   }
 }
@@ -125,21 +109,98 @@ List<int> _generateSampleTimesForCube(String cubeType) {
     case '2x2':
       return [1500, 2200, 2800, 3100, 3500, 4000, 4500, 5000, 5500, 6000];
     case '3x3':
-      return [8000, 9500, 10200, 11000, 12500, 13000, 14500, 15000, 16000, 17500];
+      return [
+        8000,
+        9500,
+        10200,
+        11000,
+        12500,
+        13000,
+        14500,
+        15000,
+        16000,
+        17500,
+      ];
     case '4x4':
-      return [35000, 38000, 42000, 45000, 48000, 51000, 55000, 58000, 62000, 65000];
+      return [
+        35000,
+        38000,
+        42000,
+        45000,
+        48000,
+        51000,
+        55000,
+        58000,
+        62000,
+        65000,
+      ];
     case '5x5':
-      return [70000, 75000, 80000, 85000, 90000, 95000, 100000, 105000, 110000, 115000];
+      return [
+        70000,
+        75000,
+        80000,
+        85000,
+        90000,
+        95000,
+        100000,
+        105000,
+        110000,
+        115000,
+      ];
     case '6x6':
-      return [120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000, 210000];
+      return [
+        120000,
+        130000,
+        140000,
+        150000,
+        160000,
+        170000,
+        180000,
+        190000,
+        200000,
+        210000,
+      ];
     case '7x7':
-      return [180000, 195000, 210000, 225000, 240000, 255000, 270000, 285000, 300000, 315000];
+      return [
+        180000,
+        195000,
+        210000,
+        225000,
+        240000,
+        255000,
+        270000,
+        285000,
+        300000,
+        315000,
+      ];
     case 'Megaminx':
-      return [60000, 65000, 70000, 75000, 80000, 85000, 90000, 95000, 100000, 105000];
+      return [
+        60000,
+        65000,
+        70000,
+        75000,
+        80000,
+        85000,
+        90000,
+        95000,
+        100000,
+        105000,
+      ];
     case 'Pyraminx':
       return [3000, 4000, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500];
     case 'Square-1':
-      return [15000, 18000, 20000, 22000, 25000, 28000, 30000, 32000, 35000, 38000];
+      return [
+        15000,
+        18000,
+        20000,
+        22000,
+        25000,
+        28000,
+        30000,
+        32000,
+        35000,
+        38000,
+      ];
     case 'Clock':
       return [5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000];
     case 'Skewb':

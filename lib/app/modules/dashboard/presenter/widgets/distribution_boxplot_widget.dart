@@ -1,5 +1,7 @@
+import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 import '../../../../shared/translate/translate.dart';
 import '../../domain/entities/cube_performance_metrics.dart';
@@ -26,7 +28,7 @@ class DistributionBoxplotWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -46,10 +48,9 @@ class DistributionBoxplotWidget extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
         SizedBox(
-          height: 280,
-          child: ListView.builder(
+          height: context.screenHeight * .45,
+          child: SuperListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             itemCount: sortedMetrics.length,
@@ -60,7 +61,7 @@ class DistributionBoxplotWidget extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 3.0),
           child: _buildLegend(theme),
         ),
       ],

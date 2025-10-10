@@ -11,7 +11,8 @@
       "WebSearch",
       "WebFetch(domain:mobbin.com)",
       "Bash(pod repo update:*)",
-      "Bash(pod update:*)"
+      "Bash(pod update:*)",
+      "Bash(awk:*)"
     ],
     "deny": [],
     "ask": []

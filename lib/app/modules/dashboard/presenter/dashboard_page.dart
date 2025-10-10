@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/di/dependency_injection.dart';
 import 'package:cuber_timer/app/modules/dashboard/presenter/controller/dashboard_controller.dart';
@@ -89,11 +91,11 @@ class _DashboardPageState extends State<DashboardPage> {
                           color: context.colorScheme.onSurface.withOpacity(0.6),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
 
                       // Cards de insights (KPIs básicos)
                       _buildInsightsSection(),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
 
                       // Advanced Metrics KPIs
                       if (dashboardController.analytics.hasEnoughDataForAo5)
@@ -187,7 +189,7 @@ class _DashboardPageState extends State<DashboardPage> {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.3,
+              childAspectRatio: Platform.isAndroid ? 1.1 : 1.3,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               children: [
@@ -516,7 +518,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     subtitle: Text(
                       '${translate('dashboard.median')}: ${(metric.medianTime / 1000).toStringAsFixed(2)}s • '
-                      '+${metric.percentDifferenceFromBest.toStringAsFixed(1)}% ${translate('dashboard.percent_from_best')}',
+                      '+${metric.percentDifferenceFromBest.toStringAsFixed(1)}% ${translate('dashboard.percent_from_best', params: {'percent': metric.percentDifferenceFromBest.toStringAsFixed(1)})}',
                     ),
                     trailing: Text(
                       '${metric.totalSolves}',

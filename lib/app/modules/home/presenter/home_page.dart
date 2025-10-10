@@ -274,39 +274,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 Observer(
                   builder: (context) {
-                    if (_tabController == null ||
-                        sortedGroupedRecords.isEmpty) {
-                      return NoDataWidget(
-                        text: translate('home_page.list_empty'),
-                      );
-                    }
-
+                    final subscriptionButton = _buildSubscriptionButton();
                     final state = recordController.state;
-
-                    if (state is! SuccessGetListRecordState &&
-                        state is! SuccessDeleteRecordState) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const MyCircularProgressWidget(),
-                          Text(
-                            translate('home_page.text_loading'),
-                            style: context.textTheme.bodyLarge,
-                          ),
-                        ],
-                      );
-                    }
-
-                    final records = state.records;
-
-                    if (records.isEmpty) {
-                      return NoDataWidget(
-                        text: translate('home_page.list_empty'),
-                      );
-                    }
-
-                    final Widget? subscriptionButton =
-                        _buildSubscriptionButton();
 
                     return Expanded(
                       child: Column(
@@ -324,7 +293,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             const SizedBox(height: 10),
                           ],
 
-                          // Header
+                          // Header - sempre exibido
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -362,8 +331,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ],
                           ),
 
-                          // TabBar e TabBarView
-                          Expanded(child: _buildTabSection()),
+                          const SizedBox(height: 10),
+
+                          // Conteúdo condicional
+                          Expanded(child: _buildContent(state)),
                         ],
                       ),
                     );
@@ -400,6 +371,33 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       label: Text(label),
       icon: isUpgrade ? Icons.upgrade : Icons.star,
     );
+  }
+
+  Widget _buildContent(RecordStates state) {
+    // Verifica se está carregando
+    if (state is! SuccessGetListRecordState &&
+        state is! SuccessDeleteRecordState) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const MyCircularProgressWidget(),
+          Text(
+            translate('home_page.text_loading'),
+            style: context.textTheme.bodyLarge,
+          ),
+        ],
+      );
+    }
+
+    // Verifica se não há records
+    if (_tabController == null ||
+        sortedGroupedRecords.isEmpty ||
+        state.records.isEmpty) {
+      return NoDataWidget(text: translate('home_page.list_empty'));
+    }
+
+    // Exibe a lista de records com tabs
+    return _buildTabSection();
   }
 
   Widget _buildTabSection() {

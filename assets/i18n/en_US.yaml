@@ -93,6 +93,7 @@ dashboard:
   no_data: No data available yet. Start practicing!
   insights_title: Your Stats
   total_solves: Total Solves
+  solves: solves
   best_time: Best Time
   average_time: Average Time
   most_practiced: Most Practiced
@@ -212,6 +213,7 @@ dashboard:
   quartile_1: Q1
   quartile_3: Q3
   standard_deviation: Standard Deviation
+  from_best: From Best
 
 database_migration:
   title: We Apologize! 😔

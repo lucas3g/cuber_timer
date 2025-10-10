@@ -94,6 +94,7 @@ dashboard:
   no_data: Nenhum dado disponível ainda. Comece a praticar!
   insights_title: Suas Estatísticas
   total_solves: Total de Resoluções
+  solves: resoluções
   best_time: Melhor Tempo
   average_time: Tempo Médio
   most_practiced: Mais Praticado
@@ -213,6 +214,7 @@ dashboard:
   quartile_1: Q1
   quartile_3: Q3
   standard_deviation: Desvio Padrão
+  from_best: Do Melhor
 
 database_migration:
   title: Pedimos Desculpas! 😔
