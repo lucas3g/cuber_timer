@@ -24,7 +24,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
   int _currentIndex = 0;
 
   List<Widget> get _pages {
-    if (AppGlobal.instance.isAnnualPremium || kDebugMode) {
+    if (AppGlobal.instance.isPremium || kDebugMode) {
       return const [DashboardPage(), HomePage()];
     }
     return const [HomePage()];
@@ -33,7 +33,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
   List<BottomNavigationBarItem> get _navigationItems {
     final items = <BottomNavigationBarItem>[];
 
-    if (AppGlobal.instance.isAnnualPremium || kDebugMode) {
+    if (AppGlobal.instance.isPremium || kDebugMode) {
       items.add(
         BottomNavigationBarItem(
           icon: const Icon(Icons.dashboard),
@@ -83,7 +83,7 @@ class _MainNavigatorPageState extends State<MainNavigatorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _pages),
-      bottomNavigationBar: (AppGlobal.instance.isAnnualPremium || kDebugMode)
+      bottomNavigationBar: (AppGlobal.instance.isPremium || kDebugMode)
           ? BottomNavigationBar(
               currentIndex: _currentIndex,
               onTap: (index) async {

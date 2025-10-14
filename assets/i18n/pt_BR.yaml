@@ -16,6 +16,10 @@ home_page:
   error_title: Opss...
   button_subscribe: Assinar
   button_upgrade: Upgrade
+  promo_dialog_title: 🚀 Desbloqueie o Dashboard Premium!
+  promo_dialog_message: Você já tem {count} solves registrados! Que tal levar sua performance ao próximo nível?\n\n✨ Com o Dashboard Premium você terá:\n\n📊 Análise detalhada de progresso\n📈 Gráficos de evolução em tempo real\n🎯 Insights personalizados\n💡 Recomendações para melhorar\n🏆 Comparação entre tipos de cubo\n\nTransforme seus dados em resultados!
+  promo_dialog_button_subscribe: Ver Planos Premium
+  promo_dialog_button_later: Talvez Depois
 
 timer_page:
   title_appbar: Cronômetro
@@ -53,8 +57,8 @@ subscriptions_page:
   button_close: Fechar
   remove_ads_description: Remova anúncios do app.
   annual_dashboard_title: Dashboard Completo de Análise
-  annual_dashboard_description: Tenha acesso exclusivo ao Dashboard Completo! Monitore seu progresso em tempo real, visualize estatísticas detalhadas por tipo de cubo, descubra seus pontos fortes e fracos, e receba recomendações personalizadas para melhorar seus tempos. Transforme seus solves em dados inteligentes e alcance novos recordes!
-  annual_exclusive_feature: Recurso Exclusivo do Plano Anual
+  annual_dashboard_description: Tenha acesso ao Dashboard Completo! Monitore seu progresso em tempo real, visualize estatísticas detalhadas por tipo de cubo, descubra seus pontos fortes e fracos, e receba recomendações personalizadas para melhorar seus tempos. Transforme seus solves em dados inteligentes e alcance novos recordes!
+  annual_exclusive_feature: Recurso Premium Incluído
   dashboard_included: Dashboard Completo Incluído
   title_appbar: Premium
   premium_active: Premium Ativo
@@ -64,7 +68,7 @@ subscriptions_page:
   upgrade_title: Torne-se Premium
   upgrade_from_plan: Faça Upgrade do Seu Plano
   upgrade_subtitle: Aproveite uma experiência sem anúncios e apoie o desenvolvimento contínuo
-  upgrade_to_annual: Upgrade para Anual e desbloqueie o Dashboard!
+  upgrade_to_annual: Assine qualquer plano e desbloqueie o Dashboard!
   features_title: O que você ganha
   feature_no_ads: Experiência completamente sem anúncios
   feature_unlimited: Acesso ilimitado a todos os recursos

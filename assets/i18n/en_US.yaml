@@ -16,6 +16,10 @@ home_page:
   error_title: Oops...
   button_subscribe: Subscribe
   button_upgrade: Upgrade
+  promo_dialog_title: 🚀 Unlock Premium Dashboard!
+  promo_dialog_message: You already have {count} solves recorded! How about taking your performance to the next level?\n\n✨ With Premium Dashboard you'll get:\n\n📊 Detailed progress analysis\n📈 Real-time evolution charts\n🎯 Personalized insights\n💡 Improvement recommendations\n🏆 Cube type comparison\n\nTransform your data into results!
+  promo_dialog_button_subscribe: View Premium Plans
+  promo_dialog_button_later: Maybe Later
 
 timer_page:
   title_appbar: Stopwatch
@@ -58,7 +62,7 @@ subscriptions_page:
   upgrade_title: Become Premium
   upgrade_from_plan: Upgrade Your Plan
   upgrade_subtitle: Enjoy an ad-free experience and support continuous development
-  upgrade_to_annual: Upgrade to Annual and unlock the Dashboard!
+  upgrade_to_annual: Subscribe to any plan and unlock the Dashboard!
   features_title: What you get
   feature_no_ads: Completely ad-free experience
   feature_unlimited: Unlimited access to all features
@@ -74,8 +78,8 @@ subscriptions_page:
   benefit_annual_billing: Annual billing
   remove_ads_description: Remove ads from the app.
   annual_dashboard_title: Complete Analytics Dashboard
-  annual_dashboard_description: Get exclusive access to the Complete Dashboard! Track your progress in real-time, view detailed statistics by cube type, discover your strengths and weaknesses, and receive personalized recommendations to improve your times. Transform your solves into intelligent data and achieve new records!
-  annual_exclusive_feature: Annual Plan Exclusive Feature
+  annual_dashboard_description: Get access to the Complete Dashboard! Track your progress in real-time, view detailed statistics by cube type, discover your strengths and weaknesses, and receive personalized recommendations to improve your times. Transform your solves into intelligent data and achieve new records!
+  annual_exclusive_feature: Premium Feature Included
   dashboard_included: Complete Dashboard Included
   price_note: "Suggested prices: Weekly $14.90 (from $19.90 - 25% OFF), Monthly $29.90 (from $49.90 - 40% OFF), Annual $199.90 (from $479.90 - 58% OFF)"
   success_title: Congratulations! 🎉

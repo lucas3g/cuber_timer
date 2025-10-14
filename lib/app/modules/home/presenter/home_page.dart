@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:cuber_timer/app/core/constants/constants.dart';
 import 'package:cuber_timer/app/core/data/clients/local_database/drift_database.dart';
+import 'package:cuber_timer/app/core/data/clients/shared_preferences/adapters/shared_params.dart';
+import 'package:cuber_timer/app/core/data/clients/shared_preferences/local_storage_interface.dart';
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/core/domain/entities/named_routes.dart';
 import 'package:cuber_timer/app/core/domain/entities/subscription_plan.dart';
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final recordController = getIt<RecordController>();
   final PurchaseService purchaseService = getIt<PurchaseService>();
   final IAdService adService = getIt<IAdService>();
+  final ILocalStorage _localStorage = getIt<ILocalStorage>();
 
   int _currentTabIndex = 0;
 
@@ -78,6 +81,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       if (state is SuccessGetListRecordState) {
         if (state.records.isNotEmpty) {
           _updateTabController(state.records);
+          _checkAndShowPromoDialog(state.records.length);
         }
       }
 
@@ -260,6 +264,134 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Future<void> getFiveRecordsByGroup() async =>
       await recordController.getFiveRecordsByGroup();
+
+  Future<void> _checkAndShowPromoDialog(int recordsCount) async {
+    // Não exibir se já é premium
+    if (purchaseService.isPremium) return;
+
+    // Não exibir se não tem records suficientes (mínimo 5)
+    if (recordsCount < 5) return;
+
+    // Verificar quantas vezes o dialog já foi exibido
+    const String promoKey = 'promo_dashboard_shown_count';
+    final int? shownCount = await _localStorage.getData(promoKey);
+    final int currentCount = shownCount ?? 0;
+
+    // Exibir a cada 3 vezes que a home é carregada
+    if (currentCount % 3 != 0) {
+      await _localStorage.setData(
+        params: SharedParams(key: promoKey, value: currentCount + 1),
+      );
+      return;
+    }
+
+    // Incrementar contador
+    await _localStorage.setData(
+      params: SharedParams(key: promoKey, value: currentCount + 1),
+    );
+
+    // Aguardar um pouco para não mostrar imediatamente no load
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    if (!mounted) return;
+
+    // Mostrar o dialog
+    _showPromoDialog(recordsCount);
+  }
+
+  void _showPromoDialog(int recordsCount) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: context.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Ícone de destaque
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    context.colorScheme.primaryContainer,
+                    context.colorScheme.primaryContainer.withOpacity(0.7),
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.dashboard_rounded,
+                size: 48,
+                color: context.colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Título
+            Text(
+              translate('home_page.promo_dialog_title'),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: context.colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+
+            // Mensagem
+            Text(
+              translate(
+                'home_page.promo_dialog_message',
+              ).replaceAll('{count}', recordsCount.toString()),
+              style: TextStyle(
+                fontSize: 14,
+                color: context.colorScheme.onSurface.withOpacity(0.85),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            const SizedBox(height: 24),
+            // Botões
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: FilledButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(
+                        context,
+                        NamedRoutes.subscriptions.route,
+                      );
+                    },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: context.colorScheme.primaryContainer,
+                      foregroundColor: context.colorScheme.onSurface,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      translate('home_page.promo_dialog_button_subscribe'),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -50,8 +50,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   void _showSuccessDialog() {
     if (!mounted) return;
 
-    final isAnnualPurchase = AppGlobal.instance.isAnnualPremium;
-
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -112,19 +110,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
 
                 if (!mounted) return;
 
-                // Se comprou plano anual, volta para a página principal e recarrega
-                if (isAnnualPurchase) {
-                  // Volta para a rota principal, recarregando a MainNavigatorPage
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    NamedRoutes.mainNavigator.route,
-                    (route) => false,
-                  );
-                } else {
-                  // Para outros planos, apenas fecha a página de assinaturas
-                  if (Navigator.of(context).canPop()) {
-                    Navigator.of(context).pop();
-                  }
-                }
+                // Redireciona para a página principal, recarregando para mostrar o Dashboard
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  NamedRoutes.mainNavigator.route,
+                  (route) => false,
+                );
               },
               style: FilledButton.styleFrom(
                 backgroundColor: context.colorScheme.primaryContainer,
@@ -731,6 +721,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     context,
                     plan: SubscriptionPlan.monthly,
                     title: translate('subscriptions_page.plan_monthly'),
+                    hasDashboard: true,
                   ),
 
                   const SizedBox(height: 12),
@@ -739,6 +730,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                     context,
                     plan: SubscriptionPlan.weekly,
                     title: translate('subscriptions_page.plan_weekly'),
+                    hasDashboard: true,
                   ),
 
                   const SizedBox(height: 24),
