@@ -62,6 +62,14 @@ class AppDatabase extends _$AppDatabase {
   Future<bool> updateRecord(Record record) async {
     return update(records).replace(record);
   }
+
+  // Get total count of all records
+  Future<int> getTotalRecordsCount() async {
+    final count = countAll();
+    final query = selectOnly(records)..addColumns([count]);
+    final result = await query.getSingle();
+    return result.read(count) ?? 0;
+  }
 }
 
 LazyDatabase _openConnection() {

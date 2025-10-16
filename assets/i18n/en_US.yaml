@@ -3,6 +3,7 @@ splash_page:
   
 home_page:
   button_start: New Stopwatch
+  button_unlock_solves: Unlock More Solves
   text_loading: Loading...
   list_empty: List is empty.
   title_list: Highscore List
@@ -20,6 +21,9 @@ home_page:
   promo_dialog_message: You already have {count} solves recorded! How about taking your performance to the next level?\n\n✨ With Premium Dashboard you'll get:\n\n📊 Detailed progress analysis\n📈 Real-time evolution charts\n🎯 Personalized insights\n💡 Improvement recommendations\n🏆 Cube type comparison\n\nTransform your data into results!
   promo_dialog_button_subscribe: View Premium Plans
   promo_dialog_button_later: Maybe Later
+  total_solves: Total Solves
+  solves_count_free: "{count}/50 solves"
+  solves_count_premium: "{count} solves"
 
 timer_page:
   title_appbar: Stopwatch
@@ -38,6 +42,10 @@ timer_page:
   titleAppbarScramblesList: Scrambles List
   textDescriptionScrambleSelected: Click on a scramble to highlight it
   alert_title_congrats: Woohoo
+  limit_reached_title: Record Limit Reached!
+  limit_reached_message: You've reached the free limit of 50 solves! 🎉\n\nUpgrade to Premium to enjoy unlimited solves and unlock the complete analytics dashboard with detailed insights about your progress.\n\nYour cubing journey is just getting started!
+  limit_reached_button_upgrade: Upgrade to Premium
+  limit_reached_button_later: Maybe Later
 
 config_page:
   title_appbar: Settings

@@ -89,13 +89,12 @@ class HeatmapWidget extends StatelessWidget {
               const SizedBox(width: 80, height: 30),
               // Hour labels (0-23)
               ...List.generate(24, (hour) {
-                final finalHour = hour + 1; // 0-23
                 return SizedBox(
-                  width: 30.5,
+                  width: 32, // Matches cell width (30) + margin (1+1)
                   height: 30,
                   child: Center(
                     child: Text(
-                      finalHour.toString(),
+                      _formatHour(hour),
                       style: TextStyle(
                         fontSize: 9,
                         color: Colors.grey.shade700,
@@ -132,7 +131,7 @@ class HeatmapWidget extends StatelessWidget {
                   ),
                 ),
                 // Hour cells
-                ...List.generate(23, (hour) {
+                ...List.generate(24, (hour) {
                   final cell = cellMap['$day-$hour'];
                   return _buildHeatmapCell(
                     cell: cell,
@@ -209,6 +208,29 @@ class HeatmapWidget extends StatelessWidget {
         return translate('dashboard.day_sunday');
       default:
         return '';
+    }
+  }
+
+  /// Formats hour based on locale (12h for en_US, 24h for pt_BR)
+  String _formatHour(int hour) {
+    // Check locale using tagDateTime translation
+    final locale = translate('home_page.tagDateTime').toLowerCase();
+    final isEnglish = locale.contains('en');
+
+    if (isEnglish) {
+      // 12-hour format with AM/PM
+      if (hour == 0) {
+        return '12A';
+      } else if (hour < 12) {
+        return '${hour}A';
+      } else if (hour == 12) {
+        return '12P';
+      } else {
+        return '${hour - 12}P';
+      }
+    } else {
+      // 24-hour format
+      return hour.toString();
     }
   }
 

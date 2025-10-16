@@ -52,6 +52,10 @@ class _TimerPageState extends State<TimerPage> {
           builder: (_) => const AlertCongratsBeatRecordWidget(),
         );
       }
+
+      if (state is RecordLimitReachedState && mounted) {
+        _showLimitReachedDialog();
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -71,6 +75,110 @@ class _TimerPageState extends State<TimerPage> {
       listener: BannerAdListener(
         onAdLoaded: (ad) => setState(() => isAdLoaded = true),
         onAdFailedToLoad: (ad, error) => ad.dispose(),
+      ),
+    );
+  }
+
+  void _showLimitReachedDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: context.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    context.colorScheme.errorContainer,
+                    context.colorScheme.errorContainer.withOpacity(0.7),
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.lock_outline,
+                size: 48,
+                color: context.colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Title
+            Text(
+              translate('timer_page.limit_reached_title'),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: context.colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+
+            // Message
+            Text(
+              translate('timer_page.limit_reached_message'),
+              style: TextStyle(
+                fontSize: 14,
+                color: context.colorScheme.onSurface.withOpacity(0.85),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+
+            // Buttons
+            Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(
+                        context,
+                        NamedRoutes.subscriptions.route,
+                      );
+                    },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: context.colorScheme.primaryContainer,
+                      foregroundColor: context.colorScheme.onSurface,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      translate('timer_page.limit_reached_button_upgrade'),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    translate('timer_page.limit_reached_button_later'),
+                    style: TextStyle(
+                      color: context.colorScheme.onSurface.withOpacity(0.6),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -239,6 +239,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  Future<void> _handleStartButton() async {
+    final state = recordController.state;
+
+    // Check if user is NOT premium AND has 50+ records
+    if (!purchaseService.isPremium &&
+        (state is SuccessGetListRecordState ||
+            state is SuccessDeleteRecordState) &&
+        state.records.length >= 50) {
+      // Navigate to subscriptions page
+      await Navigator.pushNamed(context, NamedRoutes.subscriptions.route);
+      return;
+    }
+
+    // Otherwise, proceed with normal flow (show interstitial and navigate to timer)
+    await _showInterstitialAd();
+  }
+
   Future<void> _showInterstitialAd() async {
     if (purchaseService.isPremium) {
       await Navigator.pushReplacementNamed(context, NamedRoutes.timer.route);
@@ -462,6 +479,55 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ],
                           ),
+
+                          const SizedBox(height: 10),
+
+                          // Total solve counter
+                          if (state is SuccessGetListRecordState ||
+                              state is SuccessDeleteRecordState)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: purchaseService.isPremium
+                                    ? context.colorScheme.primaryContainer
+                                    : context.colorScheme.secondaryContainer,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.timer,
+                                    size: 16,
+                                    color: context.colorScheme.onSurface,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    purchaseService.isPremium
+                                        ? translate(
+                                            'home_page.solves_count_premium',
+                                          ).replaceAll(
+                                            '{count}',
+                                            state.records.length.toString(),
+                                          )
+                                        : translate(
+                                            'home_page.solves_count_free',
+                                          ).replaceAll(
+                                            '{count}',
+                                            state.records.length.toString(),
+                                          ),
+                                    style: context.textTheme.bodySmall
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          color: context.colorScheme.onSurface,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
 
                           const SizedBox(height: 10),
 
@@ -695,13 +761,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return const SizedBox();
         }
 
+        // Determine button label based on premium status and record count
+        final bool shouldShowUnlockButton =
+            !purchaseService.isPremium && state.records.length >= 50;
+        final String buttonLabel = shouldShowUnlockButton
+            ? translate('home_page.button_unlock_solves')
+            : translate('home_page.button_start');
+
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             MyElevatedButtonWidget(
-              width: context.screenWidth * .4,
-              label: Text(translate('home_page.button_start')),
-              onPressed: _showInterstitialAd,
+              label: Text(buttonLabel),
+              onPressed: _handleStartButton,
             ),
             const SizedBox(height: 15),
             if (!Platform.isWindows && !purchaseService.isPremium) ...[

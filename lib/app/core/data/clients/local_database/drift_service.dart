@@ -59,4 +59,15 @@ class DriftService implements ILocalDatabase {
 
     return result;
   }
+
+  @override
+  Future<int> count({required CountDataParams params}) async {
+    late int result = 0;
+
+    if (params.table == Tables.records) {
+      result = await db.getTotalRecordsCount();
+    }
+
+    return result;
+  }
 }

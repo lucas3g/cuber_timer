@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/shared/services/ad_service.dart';
@@ -63,6 +64,8 @@ Future<void> _insertDebugRecords() async {
 
   final db = getIt<AppDatabase>();
 
+  await db.deleteAllRecords();
+
   // Lista de todos os tipos de cubo suportados
   const cubeTypes = [
     '2x2',
@@ -91,9 +94,7 @@ Future<void> _insertDebugRecords() async {
           timer: Value(time),
           group: Value(cubeType),
           createdAt: Value(
-            DateTime.now().subtract(
-              Duration(minutes: sampleTimers.indexOf(time)),
-            ),
+            DateTime.now().subtract(Duration(days: Random().nextInt(365))),
           ),
         );
 

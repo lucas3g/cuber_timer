@@ -3,6 +3,7 @@ splash_page:
   
 home_page:
   button_start: Novo Cronômetro
+  button_unlock_solves: Liberar Mais Solves
   text_loading: Carregando...
   list_empty: Lista está vazia.
   title_list: Lista de Recordes
@@ -20,6 +21,9 @@ home_page:
   promo_dialog_message: Você já tem {count} solves registrados! Que tal levar sua performance ao próximo nível?\n\n✨ Com o Dashboard Premium você terá:\n\n📊 Análise detalhada de progresso\n📈 Gráficos de evolução em tempo real\n🎯 Insights personalizados\n💡 Recomendações para melhorar\n🏆 Comparação entre tipos de cubo\n\nTransforme seus dados em resultados!
   promo_dialog_button_subscribe: Ver Planos Premium
   promo_dialog_button_later: Talvez Depois
+  total_solves: Total de Solves
+  solves_count_free: "{count}/50 solves"
+  solves_count_premium: "{count} solves"
 
 timer_page:
   title_appbar: Cronômetro
@@ -38,6 +42,10 @@ timer_page:
   titleAppbarScramblesList: Lista de Embaralhamentos
   textDescriptionScrambleSelected: Clique em um embaralhamento para destacá-lo
   alert_title_congrats: Uhuu
+  limit_reached_title: Limite de Recordes Atingido!
+  limit_reached_message: Você atingiu o limite gratuito de 50 solves! 🎉\n\nFaça upgrade para Premium e tenha solves ilimitados além de desbloquear o dashboard completo de análise com insights detalhados sobre seu progresso.\n\nSua jornada no cubo mágico está apenas começando!
+  limit_reached_button_upgrade: Fazer Upgrade para Premium
+  limit_reached_button_later: Talvez Depois
 
 config_page:
   title_appbar: Configurações

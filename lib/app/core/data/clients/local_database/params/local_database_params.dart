@@ -20,3 +20,9 @@ class RemoveDataParams {
 
   RemoveDataParams({required this.table, required this.id});
 }
+
+class CountDataParams {
+  final Tables table;
+
+  CountDataParams({required this.table});
+}

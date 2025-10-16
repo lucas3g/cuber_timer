@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:cuber_timer/app/core/data/clients/local_database/helpers/tables.dart';
 import 'package:cuber_timer/app/core/data/clients/local_database/local_database.dart';
 import 'package:cuber_timer/app/core/data/clients/local_database/params/local_database_params.dart';
+import 'package:cuber_timer/app/core/domain/entities/app_global.dart';
 import 'package:cuber_timer/app/modules/home/presenter/controller/record_controller.dart';
 import 'package:cuber_timer/app/modules/timer/controller/timer_states.dart';
 import 'package:cuber_timer/app/shared/services/app_review_service.dart';
@@ -95,6 +96,25 @@ abstract class TimerControllerBase with Store {
   }
 
   Future saveTimerLocalDatabase() async {
+    // Check if user is premium
+    final isPremium = AppGlobal.instance.isPremium;
+
+    // If not premium, check record count limit
+    if (!isPremium) {
+      final totalRecords = await localDatabase.count(
+        params: CountDataParams(table: Tables.records),
+      );
+
+      // If user has 50 or more records, show limit dialog
+      if (totalRecords >= 50) {
+        emit(RecordLimitReachedState());
+        await Future.delayed(const Duration(milliseconds: 100));
+        emit(StopTimerState());
+        return;
+      }
+    }
+
+    // Save the record
     final params = UpdateOrInsertDataParams(
         table: Tables.records,
         data: {'timer': timer.rawTime.value, 'group': group});
