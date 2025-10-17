@@ -242,11 +242,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Future<void> _handleStartButton() async {
     final state = recordController.state;
 
-    // Check if user is NOT premium AND has 50+ records
+    // Check if user is NOT premium AND has 10+ records
     if (!purchaseService.isPremium &&
         (state is SuccessGetListRecordState ||
             state is SuccessDeleteRecordState) &&
-        state.records.length >= 50) {
+        state.records.length >= 10) {
       // Navigate to subscriptions page
       await Navigator.pushNamed(context, NamedRoutes.subscriptions.route);
       return;
@@ -763,7 +763,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
         // Determine button label based on premium status and record count
         final bool shouldShowUnlockButton =
-            !purchaseService.isPremium && state.records.length >= 50;
+            !purchaseService.isPremium && state.records.length >= 10;
         final String buttonLabel = shouldShowUnlockButton
             ? translate('home_page.button_unlock_solves')
             : translate('home_page.button_start');

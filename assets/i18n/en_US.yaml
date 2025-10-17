@@ -22,7 +22,7 @@ home_page:
   promo_dialog_button_subscribe: View Premium Plans
   promo_dialog_button_later: Maybe Later
   total_solves: Total Solves
-  solves_count_free: "{count}/50 solves"
+  solves_count_free: "{count}/10 solves"
   solves_count_premium: "{count} solves"
 
 timer_page:
@@ -43,7 +43,7 @@ timer_page:
   textDescriptionScrambleSelected: Click on a scramble to highlight it
   alert_title_congrats: Woohoo
   limit_reached_title: Record Limit Reached!
-  limit_reached_message: You've reached the free limit of 50 solves! 🎉\n\nUpgrade to Premium to enjoy unlimited solves and unlock the complete analytics dashboard with detailed insights about your progress.\n\nYour cubing journey is just getting started!
+  limit_reached_message: You've reached the free limit of 10 solves! 🎉\n\nUpgrade to Premium to enjoy unlimited solves and unlock the complete analytics dashboard with detailed insights about your progress.\n\nYour cubing journey is just getting started!
   limit_reached_button_upgrade: Upgrade to Premium
   limit_reached_button_later: Maybe Later
 

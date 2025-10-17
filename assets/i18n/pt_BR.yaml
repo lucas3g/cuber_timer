@@ -22,7 +22,7 @@ home_page:
   promo_dialog_button_subscribe: Ver Planos Premium
   promo_dialog_button_later: Talvez Depois
   total_solves: Total de Solves
-  solves_count_free: "{count}/50 solves"
+  solves_count_free: "{count}/10 solves"
   solves_count_premium: "{count} solves"
 
 timer_page:
@@ -43,7 +43,7 @@ timer_page:
   textDescriptionScrambleSelected: Clique em um embaralhamento para destacá-lo
   alert_title_congrats: Uhuu
   limit_reached_title: Limite de Recordes Atingido!
-  limit_reached_message: Você atingiu o limite gratuito de 50 solves! 🎉\n\nFaça upgrade para Premium e tenha solves ilimitados além de desbloquear o dashboard completo de análise com insights detalhados sobre seu progresso.\n\nSua jornada no cubo mágico está apenas começando!
+  limit_reached_message: Você atingiu o limite gratuito de 10 solves! 🎉\n\nFaça upgrade para Premium e tenha solves ilimitados além de desbloquear o dashboard completo de análise com insights detalhados sobre seu progresso.\n\nSua jornada no cubo mágico está apenas começando!
   limit_reached_button_upgrade: Fazer Upgrade para Premium
   limit_reached_button_later: Talvez Depois
 

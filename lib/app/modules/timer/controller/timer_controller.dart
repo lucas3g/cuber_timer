@@ -105,8 +105,8 @@ abstract class TimerControllerBase with Store {
         params: CountDataParams(table: Tables.records),
       );
 
-      // If user has 50 or more records, show limit dialog
-      if (totalRecords >= 50) {
+      // If user has 10 or more records, show limit dialog
+      if (totalRecords >= 10) {
         emit(RecordLimitReachedState());
         await Future.delayed(const Duration(milliseconds: 100));
         emit(StopTimerState());
