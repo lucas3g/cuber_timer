@@ -81,6 +81,8 @@ abstract class RecordControllerBase with Store {
     // Check if user is premium
     if (!purchaseService.isPremium) {
       emit(state.deletionRequiresPremium());
+      await Future.delayed(const Duration(milliseconds: 100));
+      emit(state.success(records: state.records));
       return;
     }
 
