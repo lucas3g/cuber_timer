@@ -500,19 +500,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    translate('home_page.delete_premium_button_later'),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: context.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
-                ),
               ],
             ),
           ],
