@@ -24,6 +24,10 @@ home_page:
   total_solves: Total Solves
   solves_count_free: "{count}/10 solves"
   solves_count_premium: "{count} solves"
+  delete_premium_title: Premium Feature
+  delete_premium_message: Record deletion is a premium feature! 🗑️\n\nUpgrade to Premium to unlock the ability to manage your records, delete individual solves, and have full control over your solve history.\n\nKeep your records organized with Premium!
+  delete_premium_button_upgrade: Upgrade to Premium
+  delete_premium_button_later: Maybe Later
 
 timer_page:
   title_appbar: Stopwatch

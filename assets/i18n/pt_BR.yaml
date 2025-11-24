@@ -24,6 +24,10 @@ home_page:
   total_solves: Total de Solves
   solves_count_free: "{count}/10 solves"
   solves_count_premium: "{count} solves"
+  delete_premium_title: Recurso Premium
+  delete_premium_message: A exclusão de recordes é um recurso premium! 🗑️\n\nFaça upgrade para Premium e desbloqueie a capacidade de gerenciar seus recordes, excluir solves individuais e ter controle total sobre seu histórico de resoluções.\n\nMantenha seus recordes organizados com Premium!
+  delete_premium_button_upgrade: Fazer Upgrade para Premium
+  delete_premium_button_later: Talvez Depois
 
 timer_page:
   title_appbar: Cronômetro

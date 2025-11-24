@@ -93,6 +93,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           _updateTabController(state.records);
         }
       }
+
+      if (state is RecordDeletionRequiresPremiumState) {
+        _showDeletePremiumDialog();
+      }
     });
   }
 
@@ -399,6 +403,113 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeletePremiumDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: context.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Ícone de destaque
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    context.colorScheme.primaryContainer,
+                    context.colorScheme.primaryContainer.withOpacity(0.7),
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.delete_outline_rounded,
+                size: 48,
+                color: context.colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Título
+            Text(
+              translate('home_page.delete_premium_title'),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: context.colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+
+            // Mensagem
+            Text(
+              translate('home_page.delete_premium_message'),
+              style: TextStyle(
+                fontSize: 14,
+                color: context.colorScheme.onSurface.withOpacity(0.85),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            const SizedBox(height: 24),
+
+            // Botões
+            Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(
+                        context,
+                        NamedRoutes.subscriptions.route,
+                      );
+                    },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: context.colorScheme.primaryContainer,
+                      foregroundColor: context.colorScheme.onSurface,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      translate('home_page.delete_premium_button_upgrade'),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    translate('home_page.delete_premium_button_later'),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: context.colorScheme.onSurface.withOpacity(0.6),
                     ),
                   ),
                 ),

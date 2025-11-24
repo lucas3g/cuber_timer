@@ -20,6 +20,10 @@ abstract class RecordStates {
   SuccessDeleteRecordState successDelete(String groupDelete) {
     return SuccessDeleteRecordState(records: records, groupDelete: groupDelete);
   }
+
+  RecordDeletionRequiresPremiumState deletionRequiresPremium() {
+    return RecordDeletionRequiresPremiumState(records: records);
+  }
 }
 
 class InitialRecordState extends RecordStates {
@@ -44,4 +48,8 @@ class ErrorRecordState extends RecordStates {
   final String message;
 
   ErrorRecordState({required super.records, required this.message});
+}
+
+class RecordDeletionRequiresPremiumState extends RecordStates {
+  RecordDeletionRequiresPremiumState({required super.records});
 }

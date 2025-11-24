@@ -68,7 +68,10 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.singleton<_i529.RecordController>(
-      () => _i529.RecordController(localDatabase: gh<_i654.ILocalDatabase>()),
+      () => _i529.RecordController(
+        localDatabase: gh<_i654.ILocalDatabase>(),
+        purchaseService: gh<_i957.PurchaseService>(),
+      ),
     );
     gh.factory<_i53.TimerController>(
       () => _i53.TimerController(

@@ -5,6 +5,7 @@ import '../../../../core/data/clients/local_database/drift_database.dart';
 import '../../../../core/data/clients/local_database/helpers/tables.dart';
 import '../../../../core/data/clients/local_database/local_database.dart';
 import '../../../../core/data/clients/local_database/params/local_database_params.dart';
+import '../../../subscriptions/services/purchase_service.dart';
 import 'record_states.dart';
 
 part 'record_controller.g.dart';
@@ -14,8 +15,12 @@ class RecordController = RecordControllerBase with _$RecordController;
 
 abstract class RecordControllerBase with Store {
   final ILocalDatabase localDatabase;
+  final PurchaseService purchaseService;
 
-  RecordControllerBase({required this.localDatabase});
+  RecordControllerBase({
+    required this.localDatabase,
+    required this.purchaseService,
+  });
 
   @observable
   RecordStates state = InitialRecordState();
@@ -73,6 +78,12 @@ abstract class RecordControllerBase with Store {
 
   @action
   Future deleteRecord(Record record) async {
+    // Check if user is premium
+    if (!purchaseService.isPremium) {
+      emit(state.deletionRequiresPremium());
+      return;
+    }
+
     final params = RemoveDataParams(table: Tables.records, id: record.id);
 
     await localDatabase.remove(params: params);
